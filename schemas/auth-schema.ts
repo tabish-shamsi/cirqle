@@ -46,7 +46,8 @@ export const registerSchema = z
       .default(false)
       .refine((value) => value === true, {
         message: "You must accept the terms and conditions",
-      }).optional()
+      })
+      .optional(),
   })
   .refine((data) => data.password === data.cpassword, {
     path: ["cpassword"],
@@ -70,7 +71,13 @@ export const forgotPasswordSchema = z.object({
 export type TForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
 
 export const verifyAccountSchema = z.object({
-  code: z.string().min(1, "Code is required"),
+  code: z.string().min(1, "Verification Code is required"),
 });
 
 export type TVerifyAccountSchema = z.infer<typeof verifyAccountSchema>;
+
+export const findMyAccountSchema = z.object({
+  identifier: z.string().min(1, "Username or Email is required"),
+});
+
+export type TFindMyAccountSchema = z.infer<typeof findMyAccountSchema>;
