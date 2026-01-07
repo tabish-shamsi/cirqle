@@ -8,8 +8,13 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       <Header />
       <div className="flex mt-16 lg:mt-24">
         <Sidebar />
-        {children}
+        <main className="lg:ml-70 w-full">
+          <div className="w-full max-w-240 mx-auto pt-4 px-4">
+            {children}
+          </div>
+        </main>
       </div>
     </div>
   );
 }
+

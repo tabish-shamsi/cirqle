@@ -87,3 +87,13 @@ export const MORE_PAGES = [
     icon: VideoIcon,
   },
 ]
+
+export const PROFILE_NAV = [
+  'About',
+  'Membership',
+  'Discussion',
+  'Video',
+  'Group',
+  'Events',
+  'Media',
+]

@@ -17,7 +17,7 @@ export const notifications = [
     avatar: "/avatars/emma.jpg",
     message: "started following you",
   },
-]
+];
 
 export const chats = [
   {
@@ -41,4 +41,13 @@ export const chats = [
     message: "Let me know what you think",
     unread: true,
   },
-]
+];
+
+export const user = {
+  cover:
+    "https://images.unsplash.com/photo-1503264116251-35a269479413?q=80&w=1600&auto=format&fit=crop",
+  avatar:
+    "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?q=80&w=400&auto=format&fit=crop",
+  name: "Alex Johnson",
+  email: "alex.johnson@example.com",
+};
