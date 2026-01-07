@@ -10,7 +10,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
     <section>
       <header className="h-16 md:h-24 w-full flex items-center justify-between bg-transparent px-6 md:px-14 fixed top-0 left-0 z-1">
         {/* Logo */}
-        <div className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <Image
             height={32}
             width={120}
@@ -18,7 +18,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             alt="logo"
             className="h-full w-auto"
           />
-        </div>
+        </Link>
 
         {/* Navigation */}
         <div className="flex items-center gap-4">

@@ -13,6 +13,8 @@ type TInputWithIcon<T extends FieldValues = FieldValues> = {
   control: Control<T>;
   name: Path<T>;
   label?: string;
+  onFocus?: () => void;
+  onBlur?: () => void;
 };
 
 export default function InputWithIcon<T extends FieldValues = FieldValues>({
@@ -22,10 +24,13 @@ export default function InputWithIcon<T extends FieldValues = FieldValues>({
   control,
   name,
   label,
+  className,
+  onFocus,
+  onBlur,
 }: TInputWithIcon<T>) {
   return (
     <FormFieldWrapper control={control} name={name} label={label}>
-      {({field, fieldState}) => (
+      {({ field, fieldState }) => (
         <div className="relative">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">
             {icon}
@@ -35,8 +40,10 @@ export default function InputWithIcon<T extends FieldValues = FieldValues>({
             {...field}
             type={type}
             placeholder={placeholder}
-            className="peer pl-12 h-12"
+            className={"peer pl-12 h-12 " + className}
             aria-invalid={fieldState.error ? "true" : "false"}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
         </div>
       )}

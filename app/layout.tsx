@@ -1,4 +1,5 @@
 import "@/styles/main.css";
+import { ThemeProvider } from "next-themes";
 import { ReactNode } from "react";
 
 export const metadata = {
@@ -9,7 +10,11 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
