@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 export default function ProfileHeader() {
   return (
-    <Card className="p-0 gap-0 overflow-hidden  ">
+    <Card className="p-0 gap-0 overflow-hidden w-full">
       {/* Cover Photo */}
       <div className="h-60.5 w-full bg-gray-200">
         <Image

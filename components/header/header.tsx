@@ -12,7 +12,7 @@ import ToggleSidebarButton from "./toggle-sidebar-button";
 
 export function Header() {
   return (
-    <header className="fixed top-0 left-0 h-16 lg:h-24 bg-card shadow-2xl flex items-center w-full">
+    <header className="fixed top-0 left-0 h-16 lg:h-24 bg-card shadow-2xl flex items-center w-full z-4">
       <Link
         href="/"
         className="flex items-center gap-2 pl-8 lg:pl-12 w-70 text-left h-10 lg:h-14"

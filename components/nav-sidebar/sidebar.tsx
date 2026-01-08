@@ -7,7 +7,7 @@ export default function Sidebar() {
   return (
     <aside
       id="main-layout-sidebard"
-      className="bg-card lg:bg-background fixed top-0 -left-full lg:left-0 mt-16 lg:mt-24 lg:-z-1 z-3 transition-all"
+      className="bg-card lg:bg-background fixed top-0 -left-full lg:left-0 mt-16 lg:mt-24 z-3 transition-all"
     >
       <ScrollArea className="h-[calc(100vh-4rem)] lg:h-[calc(100vh-6rem)] p-4 pr-4 w-70">
         <Card className="gap-2 p-4 mb-4 shadow-none border-none lg:border lg:shadow-sm">
