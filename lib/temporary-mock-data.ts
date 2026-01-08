@@ -139,7 +139,7 @@ export const posts = [
     ],
     likes: 324,
     comments: 41,
-    createdAt: new Date((new Date).getTime() - 3 * 60 * 1000),
+    createdAt: new Date(new Date().getTime() - 3 * 60 * 1000),
   },
   {
     id: "post_2",
@@ -164,7 +164,7 @@ export const posts = [
     ],
     likes: 210,
     comments: 30,
-    createdAt: new Date((new Date).getTime() - 4 * 60 * 60 * 1000), // 4 hours ago,
+    createdAt: new Date(new Date().getTime() - 4 * 60 * 60 * 1000), // 4 hours ago,
   },
   {
     id: "post_3",
@@ -189,7 +189,7 @@ export const posts = [
     ],
     likes: 95,
     comments: 12,
-    createdAt: new Date((new Date).getTime() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+    createdAt: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
   },
   {
     id: "post_4",
@@ -209,7 +209,7 @@ export const posts = [
     ],
     likes: 50,
     comments: 5,
-    createdAt: new Date((new Date).getTime() - 3 * 7 * 24 * 60 * 60 * 1000), // 3 weeks ago
+    createdAt: new Date(new Date().getTime() - 3 * 7 * 24 * 60 * 60 * 1000), // 3 weeks ago
   },
   {
     id: "post_5",
@@ -299,5 +299,29 @@ export const posts = [
     likes: 250,
     comments: 38,
     createdAt: "2024-09-27T11:45:00Z",
+  },
+];
+
+export const friendRequests = [
+  {
+    id: "1",
+    name: "Sarah Johnson",
+    username: "sarahj",
+    avatar:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
+  },
+  {
+    id: "2",
+    name: "Michael Lee",
+    username: "michaell",
+    avatar:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop",
+  },
+  {
+    id: "3",
+    name: "Aisha Khan",
+    username: "aishak",
+    avatar:
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&h=200&fit=crop",
   },
 ];

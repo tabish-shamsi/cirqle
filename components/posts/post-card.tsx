@@ -7,7 +7,7 @@ import { formatDate } from "@/utils/formatDate"
 
 export function PostCard({ post }: { post: any }) {
   return (
-    <Card className="w-full max-w-xl">
+    <Card className="w-full">
       <CardHeader className="flex flex-row gap-3 items-center">
         <Avatar className="w-11 h-11">
           <AvatarImage src={post.author.avatar} />
