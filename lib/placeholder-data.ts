@@ -21,8 +21,8 @@ export const NAV_LINKS = [
     icon: Home,
   },
   {
-    name: "Stories",
-    path: "/stories",
+    name: "Reels",
+    path: "/reels",
     icon: BookOpen,
   },
   {

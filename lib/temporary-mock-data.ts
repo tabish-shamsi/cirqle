@@ -325,3 +325,62 @@ export const friendRequests = [
       "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&h=200&fit=crop",
   },
 ];
+
+// lib/stories.ts
+export const stories = [
+  {
+    id: "1",
+    user: {
+      id: "1",
+      name: "Tabish",
+      avatar: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=200&q=80",
+    },
+    media: [
+      {
+        id: "m1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+        duration: 5000,
+      },
+      {
+        id: "m2",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+        duration: 5000,
+      },
+    ],
+  },
+  {
+    id: "2",
+    user: {
+      id: "2",
+      name: "Alex",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80",
+    },
+    media: [
+      {
+        id: "m1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=80",
+        duration: 5000,
+      },
+    ],
+  },
+  {
+    id: "3",
+    user: {
+      id: "3",
+      name: "Sarah",
+      avatar: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=200&q=80",
+    },
+    media: [
+      {
+        id: "m1",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=800&q=80",
+        duration: 5000,
+      },
+    ],
+  },
+  
+]
