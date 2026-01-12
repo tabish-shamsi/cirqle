@@ -409,7 +409,7 @@ export const stories = [
     id: "1",
     user: {
       id: "1",
-      name: "Tabish",
+      name: "tabish",
       avatar:
         "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=200&q=80",
     },
@@ -432,7 +432,7 @@ export const stories = [
     id: "2",
     user: {
       id: "2",
-      name: "Alex",
+      name: "alex",
       avatar:
         "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80",
     },
@@ -449,7 +449,7 @@ export const stories = [
     id: "3",
     user: {
       id: "3",
-      name: "Sarah",
+      name: "sarah",
       avatar:
         "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=200&q=80",
     },

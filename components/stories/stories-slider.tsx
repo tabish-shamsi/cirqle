@@ -1,7 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import StoryCard from "./story-card";
 import CreateStoryCard from "./create-story-card";
-import Link from "next/link";
 
 export default function StoriesSlider({ stories }: { stories: any }) {
   return (
@@ -24,10 +23,8 @@ export default function StoriesSlider({ stories }: { stories: any }) {
       </SwiperSlide>
 
       {stories.map((story: any) => (
-        <SwiperSlide key={story.user.id}>
-          <Link href={`/?storyId=${story.id}`}>
-            <StoryCard key={story.id} story={story} />
-          </Link>
+        <SwiperSlide key={story.user.id} className="h-50!">
+          <StoryCard key={story.id} story={story} />
         </SwiperSlide>
       ))}
     </Swiper>

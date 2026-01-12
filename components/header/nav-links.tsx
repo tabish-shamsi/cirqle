@@ -1,13 +1,12 @@
-"use client"
+"use client";
 
+import { useActivePath } from "@/hooks/useActivePath";
 import { NAV_LINKS } from "@/lib/placeholder-data";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 export default function Navlinks() {
-  const pathname = usePathname()
-  const isActive = (path: string) => pathname === path
+  const { isActive } = useActivePath();
 
   return NAV_LINKS.slice(0, 5).map((link, i) => (
     <div key={link.name} className="p-2 hidden xl:block">

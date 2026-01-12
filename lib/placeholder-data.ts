@@ -13,6 +13,7 @@ import {
   LocateIcon,
   VideoIcon,
   Users,
+  Activity,
 } from "lucide-react";
 
 export const NAV_LINKS = [
@@ -37,9 +38,9 @@ export const NAV_LINKS = [
     icon: User,
   },
   {
-    name: "Marketplace",
-    path: "/marketplace",
-    icon: Store,
+    name: "Stories",
+    path: "/stories",
+    icon: Activity,
   },
 ];
 
@@ -97,4 +98,19 @@ export const PROFILE_NAV = [
   "Group",
   "Events",
   "Media",
+];
+
+export const FRIEND_TABS = [
+  {
+    label: "All Friends",
+    href: "/friends",
+  },
+  {
+    label: "Friend Requests",
+    href: "/friends/requests",
+  },
+  {
+    label: "Suggestions",
+    href: "/friends/suggestions",
+  },
 ];
