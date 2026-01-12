@@ -12,6 +12,7 @@ import {
   Hotel,
   LocateIcon,
   VideoIcon,
+  Users,
 } from "lucide-react";
 
 export const NAV_LINKS = [
@@ -21,9 +22,9 @@ export const NAV_LINKS = [
     icon: Home,
   },
   {
-    name: "Reels",
-    path: "/reels",
-    icon: BookOpen,
+    name: "Friends",
+    path: "/friends",
+    icon: Users,
   },
   {
     name: "Videos",
@@ -86,14 +87,14 @@ export const MORE_PAGES = [
     path: "#",
     icon: VideoIcon,
   },
-]
+];
 
 export const PROFILE_NAV = [
-  'About',
-  'Membership',
-  'Discussion',
-  'Video',
-  'Group',
-  'Events',
-  'Media',
-]
+  "About",
+  "Membership",
+  "Discussion",
+  "Video",
+  "Group",
+  "Events",
+  "Media",
+];
