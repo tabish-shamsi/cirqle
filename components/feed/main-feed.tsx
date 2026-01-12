@@ -10,7 +10,6 @@ export default function Feed() {
       <Stories />
       <CreatePost />
       <PostList posts={posts} />
-      <FriendSuggestionsSlider />
     </div>
   );
 }

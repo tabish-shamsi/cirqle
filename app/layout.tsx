@@ -1,5 +1,5 @@
+import ThemeProvider from "@/context/ThemeProvider";
 import "@/styles/main.css";
-import { ThemeProvider } from "next-themes";
 import { ReactNode } from "react";
 
 export const metadata = {
@@ -9,11 +9,9 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          {children}
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

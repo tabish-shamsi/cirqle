@@ -119,7 +119,7 @@ export const posts = [
       avatar:
         "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop",
     },
-    content: "Weekend dump 🌊☀️",
+    content: "Weekend memories ✨",
     media: [
       {
         id: "m1",
@@ -133,14 +133,20 @@ export const posts = [
       },
       {
         id: "m3",
-        type: "video",
-        url: "https://www.w3schools.com/html/mov_bbb.mp4",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1493558103817-58b2924bce98?w=800",
+      },
+      {
+        id: "m4",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800",
       },
     ],
-    likes: 324,
-    comments: 41,
-    createdAt: new Date(new Date().getTime() - 3 * 60 * 1000),
+    likes: 420,
+    comments: 56,
+    createdAt: new Date(Date.now() - 10 * 60 * 1000),
   },
+
   {
     id: "post_2",
     author: {
@@ -149,23 +155,19 @@ export const posts = [
       avatar:
         "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop",
     },
-    content: "Check out this cool view from the hike 🏞️",
+    content: "Morning hike views 🏞️",
     media: [
       {
-        id: "m4",
+        id: "m6",
         type: "image",
         url: "https://images.unsplash.com/photo-1519817650390-64a93db511e9?w=800",
-      },
-      {
-        id: "m5",
-        type: "image",
-        url: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?w=800",
       },
     ],
     likes: 210,
     comments: 30,
-    createdAt: new Date(new Date().getTime() - 4 * 60 * 60 * 1000), // 4 hours ago,
+    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
   },
+
   {
     id: "post_3",
     author: {
@@ -174,23 +176,19 @@ export const posts = [
       avatar:
         "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200&h=200&fit=crop",
     },
-    content: "Trying out a new recipe 🍲",
+    content: "Quick cooking reel 🍲",
     media: [
       {
-        id: "m6",
-        type: "image",
-        url: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800",
-      },
-      {
-        id: "m7",
+        id: "v1",
         type: "video",
         url: "https://www.w3schools.com/html/movie.mp4",
       },
     ],
-    likes: 95,
-    comments: 12,
-    createdAt: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+    likes: 134,
+    comments: 18,
+    createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000),
   },
+
   {
     id: "post_4",
     author: {
@@ -199,106 +197,185 @@ export const posts = [
       avatar:
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop",
     },
-    content: "Morning coffee vibes ☕",
+    content: "Coffee first ☕",
     media: [
       {
-        id: "m8",
+        id: "m7",
         type: "image",
-        url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800",
+        url: "https://images.unsplash.com/photo-1511920170033-f8396924c348?w=800",
       },
     ],
-    likes: 50,
-    comments: 5,
-    createdAt: new Date(new Date().getTime() - 3 * 7 * 24 * 60 * 60 * 1000), // 3 weeks ago
+    likes: 78,
+    comments: 9,
+    createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
   },
+
   {
     id: "post_5",
-    author: {
-      name: "Emma Wilson",
-      username: "emmaw",
-      avatar:
-        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop",
-    },
-    media: [
-      {
-        id: "m9",
-        type: "image",
-        url: "https://images.unsplash.com/photo-1499696012240-60e8a3e5d244?w=800",
-      },
-    ],
-    likes: 22,
-    comments: 41,
-    createdAt: "2022-09-30T12:00:00Z",
-    message: "Updated cover photo",
-  },
-  {
-    id: "post_6",
     author: {
       name: "Alex Chen",
       username: "alexchen",
       avatar:
         "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=200&h=200&fit=crop",
     },
-    content: "Sunset time 🌇",
+    content: "Sunset timelapse 🌇",
     media: [
       {
-        id: "m10",
-        type: "image",
-        url: "https://images.unsplash.com/photo-1496588152823-e2f05c55b0f8?w=800",
-      },
-      {
-        id: "m11",
+        id: "v2",
         type: "video",
         url: "https://www.w3schools.com/html/mov_bbb.mp4",
       },
     ],
-    likes: 178,
-    comments: 23,
-    createdAt: "2024-09-29T19:30:00Z",
+    likes: 190,
+    comments: 24,
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
   },
+
   {
-    id: "post_7",
+    id: "post_6",
     author: {
       name: "Sarah Johnson",
       username: "sarahj",
       avatar:
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop",
     },
-    content: "Just finished a great book! 📚",
-    media: [],
-    likes: 80,
-    comments: 10,
-    createdAt: "2024-09-28T15:00:00Z",
+    content: "Reading by the window 📖",
+    media: [
+      {
+        id: "m8",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800",
+      },
+    ],
+    likes: 102,
+    comments: 14,
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
   },
+
+  {
+    id: "post_7",
+    author: {
+      name: "Liam Brown",
+      username: "liamb",
+      avatar:
+        "https://images.unsplash.com/photo-1502767089025-6572583495b0?w=200&h=200&fit=crop",
+    },
+    content: "City lights ✨",
+    media: [
+      {
+        id: "m9",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1499346030926-9a72daac6c63?w=800",
+      },
+    ],
+    likes: 165,
+    comments: 21,
+    createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
+  },
+
   {
     id: "post_8",
     author: {
-      name: "Michael Lee",
-      username: "michaell",
+      name: "Nina Patel",
+      username: "ninap",
       avatar:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop",
+        "https://images.unsplash.com/photo-1544725176-7c40e5a2c9f9?w=200&h=200&fit=crop",
     },
-    content: "Throwback to last summer 🏖️",
+    content: "Studio setup tour 🎥",
     media: [
       {
-        id: "m12",
+        id: "v3",
+        type: "video",
+        url: "https://www.w3schools.com/html/movie.mp4",
+      },
+    ],
+    likes: 220,
+    comments: 33,
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+  },
+
+  {
+    id: "post_9",
+    author: {
+      name: "Chris Evans",
+      username: "chrise",
+      avatar:
+        "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&h=200&fit=crop",
+    },
+    content: "New desk setup 💻",
+    media: [
+      {
+        id: "m10",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800",
+      },
+    ],
+    likes: 88,
+    comments: 11,
+    createdAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
+  },
+
+  {
+    id: "post_10",
+    author: {
+      name: "Olivia Martinez",
+      username: "oliviam",
+      avatar:
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop",
+    },
+    content: "Beach walk 🌊",
+    media: [
+      {
+        id: "m11",
         type: "image",
         url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
       },
+    ],
+    likes: 143,
+    comments: 19,
+    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+  },
+
+  {
+    id: "post_11",
+    author: {
+      name: "James Park",
+      username: "jamesp",
+      avatar:
+        "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=200&h=200&fit=crop",
+    },
+    content: "Skate clip 🛹",
+    media: [
       {
-        id: "m13",
-        type: "image",
-        url: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800",
-      },
-      {
-        id: "m14",
+        id: "v4",
         type: "video",
         url: "https://www.w3schools.com/html/mov_bbb.mp4",
       },
     ],
-    likes: 250,
-    comments: 38,
-    createdAt: "2024-09-27T11:45:00Z",
+    likes: 260,
+    comments: 40,
+    createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000),
+  },
+
+  {
+    id: "post_12",
+    author: {
+      name: "Emily Zhao",
+      username: "emilyz",
+      avatar:
+        "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200&h=200&fit=crop",
+    },
+    content: "Plant corner 🌱",
+    media: [
+      {
+        id: "m12",
+        type: "image",
+        url: "https://images.unsplash.com/photo-1493666438817-866a91353ca9?w=800",
+      },
+    ],
+    likes: 97,
+    comments: 13,
+    createdAt: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000),
   },
 ];
 
@@ -333,7 +410,8 @@ export const stories = [
     user: {
       id: "1",
       name: "Tabish",
-      avatar: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=200&q=80",
+      avatar:
+        "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=200&q=80",
     },
     media: [
       {
@@ -355,7 +433,8 @@ export const stories = [
     user: {
       id: "2",
       name: "Alex",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80",
+      avatar:
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80",
     },
     media: [
       {
@@ -371,7 +450,8 @@ export const stories = [
     user: {
       id: "3",
       name: "Sarah",
-      avatar: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=200&q=80",
+      avatar:
+        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=200&q=80",
     },
     media: [
       {
@@ -382,5 +462,4 @@ export const stories = [
       },
     ],
   },
-  
-]
+];

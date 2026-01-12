@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function PostSkeleton() {
   return (
-    <div className="w-full border rounded-md shadow-sm p-4 space-y-4 bg-card">
+    <div className="w-full border rounded-md shadow-sm p-4 space-y-4 bg-card mb-4">
       {/* Header */}
       <div className="flex flex-row gap-3 items-center">
         <Skeleton className="w-12 h-12 rounded-full" />
