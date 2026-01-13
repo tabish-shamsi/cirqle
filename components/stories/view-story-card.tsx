@@ -14,7 +14,7 @@ export default function ViewStoryCard({
   children,
 }: Props) {
   return (
-    <div className="relative h-[600px] w-[350px] overflow-hidden rounded-xl bg-black">
+    <div className="relative h-[600px] my-8 w-[350px] overflow-hidden rounded-xl bg-black">
       <img
         src={imageUrl}
         className="absolute inset-0 h-full w-full object-cover"

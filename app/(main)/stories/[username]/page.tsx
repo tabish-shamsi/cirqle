@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { stories } from "@/lib/temporary-mock-data";
 import ViewStoryCard from "@/components/stories/view-story-card";
@@ -21,15 +21,6 @@ export default function StoriesPage() {
 
   const story = stories[userIndex];
   const media = story.media[mediaIndex];
-
-  // Sync with query param
-  useEffect(() => {
-    const mediaUrl = searchParams.get("m");
-    if (!mediaUrl) return;
-
-    const idx = story.media.findIndex((m) => m.url === mediaUrl);
-    if (idx !== -1) setMediaIndex(idx);
-  }, [searchParams, story.media]);
 
   // Auto progress
   useEffect(() => {
@@ -52,13 +43,9 @@ export default function StoriesPage() {
   const next = () => {
     if (mediaIndex < story.media.length - 1) {
       setMediaIndex(mediaIndex + 1);
-      router.replace(
-        `/stories/${story.user.name}?m=${story.media[mediaIndex + 1].url}`
-      );
     } else if (userIndex < stories.length - 1) {
       setUserIndex(userIndex + 1);
       setMediaIndex(0);
-      router.replace(`/stories/${stories[userIndex + 1].user.name}`);
     }
   };
 
@@ -73,7 +60,7 @@ export default function StoriesPage() {
   };
 
   return (
-    <div className="flex w-full items-center justify-center">
+    <div className="flex h-[calc(100vh-64px)] w-full items-center justify-center">
       <div className="relative">
         <ViewStoryCard
           imageUrl={media.url}

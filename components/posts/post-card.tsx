@@ -1,9 +1,11 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Heart, MessageCircle, Share2 } from "lucide-react"
-import PostMediaGrid from "./post-media-grid"
-import { formatDate } from "@/utils/formatDate"
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Heart, MessageCircle, Share2 } from "lucide-react";
+import PostMediaGrid from "./post-media-grid";
+import { formatDate } from "@/utils/formatDate";
+import Link from "next/link";
+import MediaSlider from "./media-slider";
 
 export function PostCard({ post }: { post: any }) {
   return (
@@ -22,10 +24,14 @@ export function PostCard({ post }: { post: any }) {
         <div>
           <p className="text-lg font-medium leading-none">
             {post.author.name}
-            {post.message && <span className="text-xs text-muted-foreground ml-1">{post.message}</span>}
+            {post.message && (
+              <span className="text-xs text-muted-foreground ml-1">
+                {post.message}
+              </span>
+            )}
           </p>
           <p className="text-sm text-muted-foreground capitalize">
-             {formatDate(post.createdAt)}
+            {formatDate(post.createdAt)}
           </p>
         </div>
       </CardHeader>
@@ -33,9 +39,8 @@ export function PostCard({ post }: { post: any }) {
       <CardContent className="space-y-4">
         <p className="text-sm">{post.content}</p>
 
-        {post.media.length > 0 && (
-          <PostMediaGrid media={post.media} />
-        )}
+        {/* {post.media.length > 0 && <PostMediaGrid media={post.media} />} */}
+        <MediaSlider media={post.media} />
 
         <div className="flex justify-between text-muted-foreground">
           <div className="flex gap-4">
@@ -44,10 +49,12 @@ export function PostCard({ post }: { post: any }) {
               {post.likes}
             </Button>
 
-            <Button variant="ghost" size="sm" className="gap-1">
-              <MessageCircle className="h-4 w-4" />
-              {post.comments}
-            </Button>
+            <Link href={`/p/${post.id}`}>
+              <Button variant="ghost" size="sm" className="gap-1">
+                <MessageCircle className="h-4 w-4" />
+                {post.comments}
+              </Button>
+            </Link>
           </div>
 
           <Button variant="ghost" size="sm">
@@ -56,5 +63,5 @@ export function PostCard({ post }: { post: any }) {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
