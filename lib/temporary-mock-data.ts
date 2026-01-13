@@ -487,3 +487,53 @@ export const suggestions = [
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop",
   },
 ];
+
+export type Notification = {
+  id: string;
+  user: {
+    name: string;
+    avatar?: string;
+  };
+  message: string;
+  createdAt: Date;
+  unread?: boolean;
+};
+
+export const notifications2: Notification[] = [
+  {
+    id: "1",
+    user: {
+      name: "Faiz Ahmed",
+      avatar: "/avatars/faiz.png",
+    },
+    message: 'posted "How I solved this linear equation..."',
+    createdAt: new Date(),
+    unread: true,
+  },
+  {
+    id: "2",
+    user: {
+      name: "Sofia Ali",
+      avatar: "/avatars/sofia.png",
+    },
+    message: "sent you a friend request",
+    createdAt: new Date(),
+    unread: true,
+  },
+  {
+    id: "3",
+    user: {
+      name: "John Doe",
+    },
+    message: "liked your post",
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24),
+  },
+  {
+    id: "4",
+    user: {
+      name: "Aisha Khan",
+    },
+    message: "commented on your photo",
+    createdAt: new Date("2025-01-01"),
+  },
+];

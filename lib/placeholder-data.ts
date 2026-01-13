@@ -14,6 +14,11 @@ import {
   VideoIcon,
   Users,
   Activity,
+  Bird,
+  Locate,
+  CardSim,
+  Bell,
+  Lock,
 } from "lucide-react";
 
 export const NAV_LINKS = [
@@ -114,3 +119,54 @@ export const FRIEND_TABS = [
     href: "/friends/suggestions",
   },
 ];
+
+export const SETTINGS_LINKS = {
+  General: [
+    {
+      label: "Account Information",
+      href: "/account-information",
+      icon: Home,
+      tab: "General",
+    },
+    {
+      label: "Social Account",
+      href: "/socials",
+      icon: Bird,
+      tab: "General",
+    },
+    {
+      label: "Saved Address",
+      href: "#",
+      icon: Locate,
+      tab: "General",
+    },
+  ],
+  Account: [
+    {
+      label: "My Card",
+      href: "#",
+      icon: CardSim,
+      tab: "Account",
+    },
+    {
+      label: "Change Password",
+      href: "/password",
+      icon: CardSim,
+      tab: "Account",
+    },
+  ],
+  Other: [
+    {
+      label: "Notifications",
+      href: "/notifications",
+      icon: Bell,
+      tab: "Other",
+    },
+    {
+      label: "Logout",
+      href: "LOGOUT",
+      icon: Lock,
+      tab: "Other",
+    },
+  ],
+};
