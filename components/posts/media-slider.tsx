@@ -28,7 +28,7 @@ export default function MediaSlider({ media }: { media: MediaItem[] }) {
   }, [index]);
 
   return (
-    <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-black">
+    <div className="relative h-96 w-full overflow-hidden rounded-lg bg-black">
       {media[index].type === "image" ? (
         <Image
           src={media[index].url}

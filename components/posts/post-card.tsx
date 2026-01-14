@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Heart, MessageCircle, Share2 } from "lucide-react";
-import PostMediaGrid from "./post-media-grid";
 import { formatDate } from "@/utils/formatDate";
 import Link from "next/link";
 import MediaSlider from "./media-slider";

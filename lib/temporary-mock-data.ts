@@ -537,3 +537,105 @@ export const notifications2: Notification[] = [
     createdAt: new Date("2025-01-01"),
   },
 ];
+
+export const comments = [
+  {
+    id: 1,
+    user: {
+      name: "Alice",
+      avatar: "https://i.pravatar.cc/150?img=1",
+    },
+    text: "Love this photo 😍",
+    parentId: null,
+  },
+  {
+    id: 2,
+    user: {
+      name: "Bob",
+      avatar: "https://i.pravatar.cc/150?img=2",
+    },
+    text: "Thanks a lot!",
+    parentId: 1,
+  },
+  {
+    id: 3,
+    user: {
+      name: "Charlie",
+      avatar: "https://i.pravatar.cc/150?img=3",
+    },
+    text: "Amazing shot 🔥",
+    parentId: null,
+  },
+  {
+    id: 4,
+    user: {
+      name: "Diana",
+      avatar: "https://i.pravatar.cc/150?img=4",
+    },
+    text: "Where was this taken?",
+    parentId: null,
+  },
+  {
+    id: 5,
+    user: {
+      name: "Alice",
+      avatar: "https://i.pravatar.cc/150?img=1",
+    },
+    text: "Paris 🇫🇷",
+    parentId: 4,
+  },
+  {
+    id: 6,
+    user: {
+      name: "Ethan",
+      avatar: "https://i.pravatar.cc/150?img=5",
+    },
+    text: "This looks incredible!",
+    parentId: 1,
+  },
+  {
+    id: 7,
+    user: {
+      name: "Fiona",
+      avatar: "https://i.pravatar.cc/150?img=6",
+    },
+    text: "The colors are amazing 😍",
+    parentId: 1,
+  },
+  {
+    id: 8,
+    user: {
+      name: "George",
+      avatar: "https://i.pravatar.cc/150?img=7",
+    },
+    text: "What camera did you use?",
+    parentId: 1,
+  },
+  {
+    id: 9,
+    user: {
+      name: "Hannah",
+      avatar: "https://i.pravatar.cc/150?img=8",
+    },
+    text: "Totally agree with you!",
+    parentId: 1,
+  },
+  {
+    id: 10,
+    user: {
+      name: "Ivan",
+      avatar: "https://i.pravatar.cc/150?img=9",
+    },
+    text: "This deserves way more likes 🔥",
+    parentId: 1,
+  },
+  {
+    id: 11,
+    user: {
+      name: "Julia",
+      avatar: "https://i.pravatar.cc/150?img=10",
+    },
+    text: "Absolutely stunning shot 👏",
+    parentId: 1,
+  },
+];

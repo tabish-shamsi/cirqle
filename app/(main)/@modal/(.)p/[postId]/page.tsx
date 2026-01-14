@@ -1,5 +1,4 @@
-import SinglePostCard from "@/components/posts/single-post-card";
-
+import PostDialog from "@/components/posts/PostDialog";
 import { posts } from "@/lib/temporary-mock-data";
 
 export default async function page({
@@ -9,11 +8,5 @@ export default async function page({
 }) {
   const { postId } = await params;
   const post = posts.filter((post) => post.id === postId)[0];
-  return (
-    <div className="flex items-center justify-center mb-4">
-      <div className="w-full md:w-3/4">
-        <SinglePostCard post={post} />
-      </div>
-    </div>
-  );
+  return <PostDialog post={post} />;
 }
