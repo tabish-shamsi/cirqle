@@ -16,9 +16,9 @@ export default function MainLayout({
         <Sidebar />
         <main className="lg:ml-70 w-full">
           <div className="w-full max-w-240 mx-auto pt-4 px-4">{children}</div>
-          {modal}
         </main>
       </div>
+      {modal}
     </div>
   );
 }

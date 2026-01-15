@@ -170,3 +170,5 @@ export const SETTINGS_LINKS = {
     },
   ],
 };
+
+export const SEARCH_TABS = ["posts", "people", "videos"];

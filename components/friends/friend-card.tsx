@@ -1,7 +1,6 @@
 import { getUserInitials } from "@/utils/getUserInitials";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Card, CardContent } from "../ui/card";
-import { Button } from "../ui/button";
 
 export default function FriendCard({ friend, actions }: any) {
   return (
