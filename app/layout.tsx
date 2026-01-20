@@ -1,6 +1,7 @@
 import ThemeProvider from "@/context/ThemeProvider";
 import "@/styles/main.css";
 import { ReactNode } from "react";
+import { Toaster } from "sonner";
 
 export const metadata = {
   title: "My App",
@@ -12,6 +13,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );

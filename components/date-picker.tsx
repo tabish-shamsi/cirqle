@@ -8,15 +8,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
+import { cn } from "@/lib/utils";
 
 type DatePickerProps = {
   value?: Date;
   onChange?: (date: Date | undefined) => void;
   ariaInvalid: boolean;
+  style?: CSSProperties;
 };
 
-export function DatePicker({ value, onChange, ariaInvalid }: DatePickerProps) {
+export function DatePicker({
+  value,
+  onChange,
+  ariaInvalid,
+  style,
+}: DatePickerProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -27,9 +34,13 @@ export function DatePicker({ value, onChange, ariaInvalid }: DatePickerProps) {
             aria-invalid={ariaInvalid}
             variant="input"
             id="date"
-            className="w-full h-12 justify-between font-normal"
+            className={cn(
+              "w-full h-12 justify-between font-normal",
+              !value && "text-muted-foreground"
+            )}
+            style={style}
           >
-            {value ? value.toLocaleDateString() : "Select date"}
+            {value ? value.toLocaleDateString() : "Select Birthdate"}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>

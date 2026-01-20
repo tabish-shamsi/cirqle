@@ -2,12 +2,17 @@
 
 import Form from "@/components/form";
 import InputWithIcon from "@/components/input-with-icon";
-import { Lock, Mail, User } from "lucide-react";
+import { Calendar, Lock, Mail, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { TRegisterSchema, registerSchema } from "@/schemas/auth-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import Checkbox from "../checkbox";
+import { signUp } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { DatePicker } from "../date-picker";
+import { FormFieldWrapper } from "../form-field-wrapper";
+import DatePickerWithIcon from "../date-picker-with-icon";
 
 export default function RegisterForm() {
   const form = useForm({
@@ -15,15 +20,28 @@ export default function RegisterForm() {
     defaultValues: {
       name: "",
       email: "",
-      birthday: new Date(),
+      birthday: undefined,
       password: "",
-      cpassword: "",
       terms: false,
     },
   });
 
   const handleRegister = async (data: TRegisterSchema) => {
-    console.log(data);
+    const { name, email, password } = data;
+    const { error, data: res } = await signUp.email({
+      email,
+      password,
+      name,
+      username: "tabish-123",
+      callbackURL: "/profile",
+    });
+
+    console.log(res);
+
+    if (error) {
+      console.error(error);
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -58,14 +76,11 @@ export default function RegisterForm() {
           className="h-12"
         />
 
-        {/* Confirm Password */}
-        <InputWithIcon
-          icon={<Lock />}
+        {/* Birthday */}
+        <DatePickerWithIcon
           control={form.control}
-          name="cpassword"
-          placeholder="Confirm Password"
-          type="password"
-          className="h-12"
+          name="birthday"
+          icon={<Calendar />}
         />
 
         {/* Accept Terms And Condition */}
@@ -75,7 +90,9 @@ export default function RegisterForm() {
           label="Accept Terms And Condition"
         />
 
-        <Button className="w-full h-12 text-base">Register</Button>
+        <Button type="submit" className="w-full h-12 text-base">
+          Register
+        </Button>
       </div>
     </Form>
   );
