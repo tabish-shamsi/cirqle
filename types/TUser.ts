@@ -16,6 +16,10 @@ type TUser = {
   email: string;
   birthday: Date;
   password: string;
+  isVerified: boolean;
+
+  verifyEmailToken?: string;
+
   createdAt: Date;
   updatedAt: Date;
 };

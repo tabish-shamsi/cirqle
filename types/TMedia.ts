@@ -3,6 +3,7 @@ import TUser from "./TUser";
 
 type TMedia = {
   _id: mongoose.Types.ObjectId;
+  
   authorId: mongoose.Types.ObjectId;
   author?: TUser;
 

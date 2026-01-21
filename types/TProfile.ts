@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import TMedia from "./TMedia";
 
 type TProfile = {
   _id: mongoose.Types.ObjectId;
@@ -8,6 +9,8 @@ type TProfile = {
   hometown?: string;
   profession?: string;
   birthday?: Date;
+  avatar?: TMedia;
+  cover?: TMedia;
 
   socials?: {
     platform: string;

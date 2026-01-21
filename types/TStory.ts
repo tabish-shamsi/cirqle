@@ -6,7 +6,7 @@ type TStory = {
   authorId: mongoose.Types.ObjectId;
   author?: TUser;
 
-  media: string;
+  media: mongoose.Types.ObjectId;
 
   expiresAt: Date;
   createdAt: Date;
