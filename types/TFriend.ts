@@ -1,0 +1,15 @@
+import mongoose from "mongoose";
+import TUser from "./TUser";
+
+type TFriend = {
+  _id: mongoose.Types.ObjectId;
+  requestorId: mongoose.Types.ObjectId;
+  requestor?: TUser;
+  acceptorId: mongoose.Types.ObjectId;
+  acceptor?: TUser;
+  status: "pending" | "accepted" | "rejected" | "blocked";
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export default TFriend;

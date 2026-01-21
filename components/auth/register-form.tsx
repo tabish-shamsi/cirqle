@@ -8,10 +8,6 @@ import { TRegisterSchema, registerSchema } from "@/schemas/auth-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import Checkbox from "../checkbox";
-import { signUp } from "@/lib/auth-client";
-import { toast } from "sonner";
-import { DatePicker } from "../date-picker";
-import { FormFieldWrapper } from "../form-field-wrapper";
 import DatePickerWithIcon from "../date-picker-with-icon";
 
 export default function RegisterForm() {
@@ -20,29 +16,13 @@ export default function RegisterForm() {
     defaultValues: {
       name: "",
       email: "",
-      birthday: undefined,
+      birthday: new Date(),
       password: "",
       terms: false,
     },
   });
 
-  const handleRegister = async (data: TRegisterSchema) => {
-    const { name, email, password } = data;
-    const { error, data: res } = await signUp.email({
-      email,
-      password,
-      name,
-      username: "tabish-123",
-      callbackURL: "/profile",
-    });
-
-    console.log(res);
-
-    if (error) {
-      console.error(error);
-      toast.error(error.message);
-    }
-  };
+  const handleRegister = async (data: TRegisterSchema) => {};
 
   return (
     <Form form={form} onSubmit={handleRegister}>

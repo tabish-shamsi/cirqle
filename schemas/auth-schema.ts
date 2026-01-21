@@ -30,14 +30,14 @@ export const registerSchema = z.object({
     },
     {
       message: "You must be at least 18 years old",
-    }
+    },
   ),
   password: z
     .string()
     .min(1, "Password is required")
     .regex(
       PASSWORD_REGEX,
-      "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character"
+      "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character",
     ),
   terms: z
     .boolean()
@@ -57,7 +57,7 @@ export const forgotPasswordSchema = z.object({
     .min(1, "Password is required")
     .regex(
       PASSWORD_REGEX,
-      "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character"
+      "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character",
     ),
   cpassword: z.string().min(1, "Confirm password is required"),
 });
