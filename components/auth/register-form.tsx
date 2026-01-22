@@ -62,6 +62,12 @@ export default function RegisterForm() {
       return;
     }
 
+    try {
+      
+    } catch (error) {
+      
+    }
+    
     setLoading(false);
     router.push("/account/verify");
   };

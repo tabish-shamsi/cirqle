@@ -3,7 +3,6 @@
 import db from "@/lib/db";
 import User from "@/models/User";
 import { TRegisterSchema } from "@/schemas/auth-schema";
-import bcrypt from "bcryptjs";
 
 const registerUser = async (data: TRegisterSchema) => {
   const { name, username, email, password, birthday } = data;
