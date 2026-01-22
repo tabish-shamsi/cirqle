@@ -1,7 +1,7 @@
-import TComment from "@/types/TComment";
+import IComment from "@/types/Comment";
 import mongoose from "mongoose";
 
-const commentSchema = new mongoose.Schema<TComment>(
+const commentSchema = new mongoose.Schema<IComment>(
   {
     comment: { type: String, required: true },
 
@@ -21,6 +21,6 @@ const commentSchema = new mongoose.Schema<TComment>(
 );
 
 const Comment =
-  mongoose.models.Comment || mongoose.model<TComment>("Comment", commentSchema);
+  mongoose.models.Comment || mongoose.model<IComment>("Comment", commentSchema);
 
 export default Comment;

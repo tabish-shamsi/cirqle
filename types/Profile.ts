@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import TMedia from "./TMedia";
+import TMedia from "./Media";
 
-type TProfile = {
+interface IProfile extends Document {
   _id: mongoose.Types.ObjectId;
 
   bio?: string;
@@ -21,4 +21,4 @@ type TProfile = {
   updatedAt: Date;
 };
 
-export default TProfile;
+export default IProfile;

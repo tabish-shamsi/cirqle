@@ -19,6 +19,10 @@ export const registerSchema = z.object({
     .string()
     .min(1, "Name is required")
     .min(3, "Name must be at least 3 characters long"),
+  username: z
+    .string()
+    .min(1, "Username is required")
+    .min(3, "Username must be at least 3 characters long"),
 
   email: z
     .email("Please enter a valid email address")

@@ -1,7 +1,7 @@
-import TPost from "@/types/TPost";
+import IPost from "@/types/Post";
 import mongoose from "mongoose";
 
-const postSchema = new mongoose.Schema<TPost>(
+const postSchema = new mongoose.Schema<IPost>(
   {
     content: { type: String, required: true },
     media: [{ type: mongoose.Types.ObjectId, ref: "Media" }],
@@ -14,5 +14,5 @@ const postSchema = new mongoose.Schema<TPost>(
   { timestamps: true },
 );
 
-const Post = mongoose.models.Post || mongoose.model<TPost>("Post", postSchema);
+const Post = mongoose.models.Post || mongoose.model<IPost>("Post", postSchema);
 export default Post

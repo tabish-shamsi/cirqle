@@ -10,12 +10,9 @@ type TDatePickerWithIcon<T extends FieldValues = FieldValues> = {
   icon: ReactNode;
 };
 
-export default function DatePickerWithIcon({
-  control,
-  name,
-  label,
-  icon,
-}: TDatePickerWithIcon) {
+export default function DatePickerWithIcon<
+  T extends FieldValues = FieldValues,
+>({ control, name, label, icon }: TDatePickerWithIcon<T>) {
   return (
     <FormFieldWrapper control={control} name={name} label={label}>
       {({ field, fieldState }) => (
@@ -24,10 +21,10 @@ export default function DatePickerWithIcon({
             {icon}
           </div>
           <DatePicker
-            ariaInvalid={!!fieldState.error}
             onChange={field.onChange}
             value={field.value}
             style={{ paddingLeft: "48px" }}
+            ariaInvalid={!!fieldState.error}
           />
         </div>
       )}

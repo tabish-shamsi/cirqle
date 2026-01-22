@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import TUser from "./TUser";
+import TUser from "./User";
 
-type TStory = {
+interface IStory extends Document {
   _id: mongoose.Types.ObjectId;
   authorId: mongoose.Types.ObjectId;
   author?: TUser;
@@ -13,4 +13,4 @@ type TStory = {
   updatedAt: Date;
 };
 
-export default TStory;
+export default IStory;

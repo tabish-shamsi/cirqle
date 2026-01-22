@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import TUser from "./TUser";
+import TUser from "./User";
 
-type TComment = {
+interface IComment {
   _id: mongoose.Types.ObjectId;
 
   authorId: mongoose.Types.ObjectId;
@@ -11,9 +11,9 @@ type TComment = {
   parentId: mongoose.Types.ObjectId;
 
   comment: string;
-  
+
   createdAt: Date;
   updatedAt: Date;
-};
+}
 
-export default TComment;
+export default IComment;

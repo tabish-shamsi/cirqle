@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import TUser from "./TUser";
+import TUser from "./User";
 
-type TFriend = {
+interface IFriend extends Document {
   _id: mongoose.Types.ObjectId;
   
   requestorId: mongoose.Types.ObjectId;
@@ -16,4 +16,4 @@ type TFriend = {
   updatedAt: Date;
 };
 
-export default TFriend;
+export default IFriend;

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import TUser from "./TUser";
+import TUser from "./User";
 
-type TMedia = {
+interface IMedia extends Document {
   _id: mongoose.Types.ObjectId;
   
   authorId: mongoose.Types.ObjectId;
@@ -18,4 +18,4 @@ type TMedia = {
   updatedAt: Date;
 };
 
-export default TMedia;
+export default IMedia;

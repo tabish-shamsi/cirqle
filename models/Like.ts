@@ -1,7 +1,7 @@
-import TLike from "@/types/TLike";
+import ILike from "@/types/Like";
 import mongoose from "mongoose";
 
-const likeSchema = new mongoose.Schema<TLike>(
+const likeSchema = new mongoose.Schema<ILike>(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
@@ -10,5 +10,5 @@ const likeSchema = new mongoose.Schema<TLike>(
   { timestamps: true },
 );
 
-const Like = mongoose.models.Like || mongoose.model<TLike>("Like", likeSchema);
+const Like = mongoose.models.Like || mongoose.model<ILike>("Like", likeSchema);
 export default Like;

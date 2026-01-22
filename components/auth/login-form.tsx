@@ -9,19 +9,41 @@ import { TLoginSchema, loginSchema } from "@/schemas/auth-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import Checkbox from "../checkbox";
+import { signIn } from "next-auth/react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function LoginForm() {
   const form = useForm<TLoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "test@gmail.com",
+      password: "Test@123",
       rememberMe: false,
     },
   });
 
-  const handleLogin = async (data: TLoginSchema) => {
-    console.log(data);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (data: TLoginSchema) => { 
+    setLoading(true);
+    const res = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      remember: data.rememberMe,
+      redirect: false,
+    });
+
+    if (res?.error) {
+      toast.error(res.error);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(false);
+    router.push("/profile");
   };
 
   return (
@@ -60,7 +82,9 @@ export default function LoginForm() {
           </Link>
         </div>
 
-        <Button className="w-full h-12 text-base">Login</Button>
+        <Button className="w-full h-12 text-base">
+          {loading ? "Logging in..." : "Login"}
+        </Button>
       </div>
     </Form>
   );

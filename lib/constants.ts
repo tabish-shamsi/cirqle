@@ -10,4 +10,6 @@ export const FRIEND_STATUS = {
   blocked: "blocked",
 };
 
-export const STORY_EXPIRES_TIME = Date.now() + 24 * 60 * 60 * 1000;
+export const STORY_EXPIRES_TIME = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+
+export const OTP_EXPIRY = 10; // 10 minutes

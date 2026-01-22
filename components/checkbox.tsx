@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { FormFieldWrapper } from "./form-field-wrapper";
 import { Checkbox as ShadcnCheckbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
@@ -18,21 +17,17 @@ export default function Checkbox<T extends FieldValues>({
 }: CheckboxProps<T>) {
   return (
     <FormFieldWrapper control={control} name={name}>
-      {({ field, fieldState }) => (
+      {({ field }) => (
         <div className="flex gap-2 items-center">
           <ShadcnCheckbox
-            value={field.value}
+            checked={field.value}
             onCheckedChange={field.onChange}
-            aria-invalid={fieldState.error ? "true" : "false"}
             id={name}
             name={name}
           />
           <Label
             htmlFor={name}
-            className={cn(
-              "text-sm text-muted-foreground font-normal",
-              fieldState.error && "text-destructive",
-            )}
+            className="text-sm text-muted-foreground font-normal"
           >
             {label}
           </Label>

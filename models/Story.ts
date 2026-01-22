@@ -1,8 +1,8 @@
 import { STORY_EXPIRES_TIME } from "@/lib/constants";
-import TStory from "@/types/TStory";
+import IStory from "@/types/Story";
 import mongoose from "mongoose";
 
-const storySchema = new mongoose.Schema<TStory>(
+const storySchema = new mongoose.Schema<IStory>(
   {
     media: { type: mongoose.Schema.Types.ObjectId, ref: "Media" },
 
@@ -14,5 +14,5 @@ const storySchema = new mongoose.Schema<TStory>(
 );
 
 const Story =
-  mongoose.models.Story || mongoose.model<TStory>("Story", storySchema);
+  mongoose.models.Story || mongoose.model<IStory>("Story", storySchema);
 export default Story;

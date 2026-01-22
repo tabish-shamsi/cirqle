@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import TProfile from "./TProfile";
+import TProfile from "./Profile";
 
-type TUser = {
+interface IUser extends Document {
   _id: mongoose.Types.ObjectId;
 
   profileId?: mongoose.Types.ObjectId;
@@ -18,10 +18,11 @@ type TUser = {
   password: string;
   isVerified: boolean;
 
-  verifyEmailToken?: string;
+  otpResendCount: number;
+  lastOtpSentAt: Date;
 
   createdAt: Date;
   updatedAt: Date;
-};
+}
 
-export default TUser;
+export default IUser;

@@ -1,7 +1,7 @@
-import TUser from "./TUser";
+import TUser from "./User";
 import mongoose from "mongoose";
 
-type TPost = {
+interface IPost extends Document {
   _id: mongoose.Types.ObjectId;
 
   content: string;
@@ -21,4 +21,4 @@ type TPost = {
   updatedAt: Date;
 };
 
-export default TPost;
+export default IPost;

@@ -1,4 +1,4 @@
-import TMedia from "@/types/TMedia";
+import TMedia from "@/types/Media";
 import mongoose from "mongoose";
 
 const mediaSchema = new mongoose.Schema<TMedia>(
