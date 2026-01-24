@@ -75,7 +75,7 @@ export default function LoginForm() {
           />
 
           <Link
-            href="/account/forget-password"
+            href="/account/find-account"
             className="font-medium hover:underline"
           >
             Forgot your Password?

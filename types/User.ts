@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import TProfile from "./Profile";
+import IMedia from "./Media";
 
 interface IUser extends Document {
   _id: mongoose.Types.ObjectId;
@@ -17,6 +18,7 @@ interface IUser extends Document {
   birthday: Date;
   password: string;
   isVerified: boolean;
+  avatar?: IMedia;
 
   otpResendCount: number;
   lastOtpSentAt: Date;

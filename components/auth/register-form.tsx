@@ -18,6 +18,7 @@ import { useDebounce } from "use-debounce";
 import checkUsernameUnique from "@/actions/auth/check-username-unique";
 import LogoutButton from "../temporary-logout-button";
 import sendVerifyEmail from "@/actions/auth/send-verify-email";
+import emailOTP from "@/actions/email/send-email";
 
 export default function RegisterForm() {
   const form = useForm<TRegisterSchema>({
@@ -64,7 +65,7 @@ export default function RegisterForm() {
       return;
     }
 
-    const sendOTP = await sendVerifyEmail()
+    const sendOTP = await emailOTP({ email: values.email, emailType: "email_verification", resend: false })
     if (sendOTP?.error) {
       toast.error(sendOTP.error)
     }

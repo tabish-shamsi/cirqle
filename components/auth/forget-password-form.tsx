@@ -10,6 +10,7 @@ import {
 } from "@/schemas/auth-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 export default function FindMyAccountForm() {
   const form = useForm<TFindMyAccountSchema>({
@@ -19,12 +20,14 @@ export default function FindMyAccountForm() {
     },
   });
 
-  const handlePasswordChange = async (data: TFindMyAccountSchema) => {
-    console.log(data);
+  const router = useRouter()
+
+  const handle = async (data: TFindMyAccountSchema) => {
+    router.push(`/account/find-account?identifier=${data.identifier}`)
   };
 
   return (
-    <Form form={form} onSubmit={handlePasswordChange}>
+    <Form form={form} onSubmit={handle}>
       <div className="space-y-5">
         <InputWithIcon
           icon={<Mail />}

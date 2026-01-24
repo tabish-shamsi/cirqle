@@ -8,7 +8,6 @@ import {
   Section,
   Text,
   Heading,
-  Button,
 } from "@react-email/components";
 
 interface VerificationEmailProps {
@@ -70,46 +69,19 @@ export const VerificationEmail = ({
           </Section>
 
           {/* OTP */}
-          <Section style={{ textAlign: "center", marginBottom: "24px" }}>
-            <Text
-              style={{
-                fontSize: "24px",
-                fontWeight: "bold",
-                letterSpacing: "4px",
-                color: primaryColor,
-                backgroundColor: "#E0E7FF",
-                padding: "16px 24px",
-                borderRadius: "8px",
-                display: "inline-block",
-              }}
-            >
-              {otp}
-            </Text>
+          <Section>
+            <div style={{
+              fontSize: "32px",
+              fontWeight: 700,
+              letterSpacing: "6px",
+              textAlign: "center",
+              background: "#f3f4f6",
+              padding: "20px 0",
+              borderRadius: "10px",
+              margin: "24px 0",
+              color: "#111",
+            }}>{otp}</div>
           </Section>
-
-          {/* Verify Button */}
-          {/* <Section style={{ textAlign: "center", marginBottom: "24px" }}>
-            <Button
-              // pX={24}
-              // pY={12}
-              style={{
-                backgroundColor: primaryColor,
-                color: "#ffffff",
-                borderRadius: "6px",
-                textDecoration: "none",
-                fontWeight: "bold",
-                padding: "12px 24px",
-              }}
-              href="#"
-            >
-              Verify Email
-            </Button>
-            <Text
-              style={{ fontSize: "14px", color: "#777777", marginTop: "8px" }}
-            >
-              Or enter the OTP above manually
-            </Text>
-          </Section> */}
 
           {/* Footer */}
           <Section

@@ -9,11 +9,11 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import InputOTP from "../input-otp";
-import sendVerifyEmail from "@/actions/auth/send-verify-email";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import verifyEmail from "@/actions/auth/verify-email";
 import useAuth from "@/hooks/useAuth";
+import verifyEmail from "@/actions/email/verify-email";
+import emailOTP from "@/actions/email/send-email";
 
 export default function VerifyEmailForm() {
   const form = useForm<TVerifyAccountSchema>({
@@ -30,7 +30,7 @@ export default function VerifyEmailForm() {
 
   const handleEmailVerify = async (data: TVerifyAccountSchema) => {
     setLoading(true)
-    const res = await verifyEmail(data.code)
+    const res = await verifyEmail({ code: data.code, type: "email_verification" })
     if (res?.error) {
       toast.error(res.error)
     }
@@ -44,7 +44,7 @@ export default function VerifyEmailForm() {
   };
 
   const resendOTP = async () => {
-    const res = await sendVerifyEmail("resend_email")
+    const res = await emailOTP({ emailType: "email_verification", resend: true })
     if (res?.error) {
       toast.error(res.error)
     }

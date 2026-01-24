@@ -9,7 +9,6 @@ interface IProfile extends Document {
   hometown?: string;
   profession?: string;
   birthday?: Date;
-  avatar?: TMedia;
   cover?: TMedia;
 
   socials?: {

@@ -9,7 +9,6 @@ const otpSchema = new mongoose.Schema<IOTP>({
   type: {
     type: String,
     required: true,
-    enum: ["email_verification", "change_password"],
   },
 });
 

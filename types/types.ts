@@ -1,0 +1,1 @@
+export type OtpEmailType = "password_reset" | "change_email" | "email_verification";
