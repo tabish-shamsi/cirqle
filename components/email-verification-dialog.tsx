@@ -12,14 +12,18 @@ import InputOTP from "./input-otp";
 import verifyEmail from "@/actions/email/verify-email";
 import emailOTP from "@/actions/email/send-email";
 import { useRouter } from "next/navigation";
+import { OtpEmailType } from "@/types/types";
 
 interface Props {
     setOpen: Dispatch<SetStateAction<boolean>>,
     open: boolean
-    email: string
+    email?: string
+    redirectUrl?: string;
+    type: OtpEmailType;
+    defaultOpen?: boolean
 }
 
-export default function EmailVerificationDialog({ open, setOpen, email }: Props) {
+export default function EmailVerificationDialog({ open, setOpen, email, redirectUrl, type, defaultOpen }: Props) {
     const form = useForm<TVerifyAccountSchema>({
         resolver: zodResolver(verifyAccountSchema),
         defaultValues: {
@@ -37,21 +41,20 @@ export default function EmailVerificationDialog({ open, setOpen, email }: Props)
         const res = await verifyEmail({
             code: data.code,
             email,
-            type: "password_reset"
+            type: type
         })
         if (res?.error) toast.error(res.error)
         if (res.success) {
             toast.message(res.message);
             setOpen(false);
-            router.push(`/account/change-password?email=${email}`)
+            if (redirectUrl) router.push(redirectUrl)
         }
 
         setLoading(false)
-
     };
 
     const resendOTP = async () => {
-        const res = await emailOTP({ email, emailType: "password_reset", resend: true })
+        const res = await emailOTP({ email, emailType: type, resend: true })
         if (res?.error) toast.error(res.error)
         if (res?.success) {
             setResendCount(resendCount + 1)
@@ -66,7 +69,7 @@ export default function EmailVerificationDialog({ open, setOpen, email }: Props)
     }, [countdown])
 
     return (
-        <Dialog open={open} onOpenChange={() => setOpen(false)}>
+        <Dialog defaultOpen={defaultOpen} open={open} onOpenChange={() => setOpen(false)}>
             <DialogContent className="space-y-6 ">
                 <DialogHeader>
                     <DialogTitle>Email Verification</DialogTitle>

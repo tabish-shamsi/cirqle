@@ -22,8 +22,8 @@ export default function AccountRecoveryCard({
     setLoading(true)
     const res = await emailOTP({ emailType: "password_reset", email, resend: false })
 
-    if (res.error) toast.error(res.error)
-    if (res.success) toast.success(res.message)
+    if (res?.error) toast.error(res.error)
+    if (res?.success) toast.success(res.message)
     setLoading(false)
     setOpenDialog(true)
   }
@@ -57,7 +57,7 @@ export default function AccountRecoveryCard({
           <Button disabled={loading} onClick={sendOTP} className="w-full">{loading ? "Please wait..." : "Continue"}</Button>
         </CardContent>
       </Card>
-      <EmailVerificationDialog open={openDialog} setOpen={setOpenDialog} email={email} />
+      <EmailVerificationDialog open={openDialog} setOpen={setOpenDialog} email={email} redirectUrl={`/account/change-password?email=${email}`} type="password_reset" />
     </>
   );
 }

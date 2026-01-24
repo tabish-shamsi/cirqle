@@ -1,9 +1,14 @@
+import { OtpEmailType } from "@/types/types";
+
 export default function getEmailSubject(
-    emailType: "password_reset" | "email_verification" | "change_email"
+    emailType: OtpEmailType
 ): string {
     switch (emailType) {
         case "password_reset":
             return "Reset your Cirqle password";
+        
+        case "change_password":
+            return "Change your Cirqle password";
 
         case "email_verification":
             return "Verify your Cirqle account";

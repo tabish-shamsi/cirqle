@@ -34,6 +34,13 @@ const CONTENT_MAP: Record<
         securityNote:
             "If you didn't request a password reset, you can safely ignore this email.",
     },
+    change_password: {
+        preview: "Change your Cirqle password",
+        message:
+            "We received a request to change your Cirqle password. Use the verification code below to continue:",
+        securityNote:
+            "If you didn't request a password reset, you can safely ignore this email.",
+    },
     change_email: {
         preview: "Confirm your new email address",
         message:

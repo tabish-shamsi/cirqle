@@ -32,6 +32,8 @@ const emailOTP = async ({ emailType, email, resend }: EmailOTPProps) => {
             return { error: "User not found" }
         }
 
+        if (emailType === "change_password" && user.allowChangePassword) return { error: "User is already verified" }
+
         const now = Date.now();
 
         if (
@@ -52,11 +54,20 @@ const emailOTP = async ({ emailType, email, resend }: EmailOTPProps) => {
             }
         }
 
-        await OTP.deleteMany({ userId: user.id, type: emailType });
+        const alreadySentOTP = await OTP.findOne({ userId: user._id, type: emailType })
+
+        if (alreadySentOTP && alreadySentOTP.expiresAt > new Date() && !resend) {
+            return {}
+        }
+
+        await OTP.deleteMany({ userId: user._id, type: emailType });
 
         const { expiresAt, otp } = generateOtpToken();
+        // TODO: REMOVE IN PRODUCTION
+        console.log("VERIFICATION CODE: ", otp)
+
         await OTP.create({
-            userId: user.id,
+            userId: user._id,
             code: otp,
             expiresAt,
             type: emailType,
@@ -64,14 +75,14 @@ const emailOTP = async ({ emailType, email, resend }: EmailOTPProps) => {
 
         try {
             const transporter = createTransporter();
-            await transporter.sendMail({
-                from: "Cirqle",
-                to: user.email,
-                subject: "Verify your Cirqle account",
-                html: await render(OtpActionEmail({ type: emailType, otp, name: user.name })),
-            });
+            // await transporter.sendMail({
+            //     from: "Cirqle",
+            //     to: user.email,
+            //     subject: "Verify your Cirqle account",
+            //     html: await render(OtpActionEmail({ type: emailType, otp, name: user.name })),
+            // });
         } catch (error) {
-            await OTP.deleteMany({ userId: user.id, type: emailType });
+            await OTP.deleteMany({ userId: user._id, type: emailType });
             console.error(error)
             return { error: "Something went wrong while sending email" }
         }

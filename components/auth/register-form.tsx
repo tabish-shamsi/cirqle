@@ -16,8 +16,7 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import checkUsernameUnique from "@/actions/auth/check-username-unique";
-import LogoutButton from "../temporary-logout-button";
-import sendVerifyEmail from "@/actions/auth/send-verify-email";
+import LogoutButton from "../temporary-logout-button"; 
 import emailOTP from "@/actions/email/send-email";
 
 export default function RegisterForm() {

@@ -13,4 +13,9 @@ export const changePasswordSchema = z.object({
   confirmPassword: z
     .string()
     .min(8, "Password must be at least 8 characters long"),
+}).refine((data) => data.newPassword === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"], // 👈 shows error on confirm password field
 });
+
+export type TChangePassword = z.infer<typeof changePasswordSchema>

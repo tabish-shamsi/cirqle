@@ -24,7 +24,7 @@ export default async function changePassword({ email, type, password, oldPasswor
         }
 
         await db()
-        const user = await User.findOne({ email: userEmail })
+        const user = await User.findOne({ email: userEmail }).select("+password")
 
         if (!user.allowChangePassword) return { error: "You must verify your email before applying this change" }
 
