@@ -43,7 +43,7 @@ export default function EmailVerificationDialog({ open, setOpen, email }: Props)
         if (res.success) {
             toast.message(res.message);
             setOpen(false);
-            router.push("/account/change-password")
+            router.push(`/account/change-password?email=${email}`)
         }
 
         setLoading(false)

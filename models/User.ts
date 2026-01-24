@@ -17,6 +17,8 @@ const userSchema = new mongoose.Schema<IUser>(
 
     otpResendCount: { type: Number, default: 0 },
     lastOtpSentAt: Date,
+
+    allowChangePassword: { type: Boolean, default: false }
   },
   { timestamps: true },
 );

@@ -30,6 +30,7 @@ const verifyEmail = async ({ code, email, type }: { code: string, email?: string
 
         await OTP.findByIdAndDelete(otpEntry._id)
         if (type === "email_verification") user.isVerified = true
+        if (type === "password_reset") user.allowChangePassword = true
         user.otpResendCount = 0;
         user.lastOtpSentAt = null;
 

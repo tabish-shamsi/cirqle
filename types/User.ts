@@ -22,6 +22,7 @@ interface IUser extends Document {
 
   otpResendCount: number;
   lastOtpSentAt: Date;
+  allowChangePassword: Boolean
 
   createdAt: Date;
   updatedAt: Date;

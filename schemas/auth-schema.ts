@@ -55,16 +55,21 @@ export const registerSchema = z.object({
 // register schema types
 export type TRegisterSchema = z.infer<typeof registerSchema>;
 
-export const forgotPasswordSchema = z.object({
-  newPassword: z
-    .string()
-    .min(1, "Password is required")
-    .regex(
-      PASSWORD_REGEX,
-      "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character",
-    ),
-  cpassword: z.string().min(1, "Confirm password is required"),
-});
+export const forgotPasswordSchema = z
+  .object({
+    newPassword: z
+      .string()
+      .min(1, "Password is required")
+      .regex(
+        PASSWORD_REGEX,
+        "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character",
+      ),
+    cpassword: z.string().min(1, "Confirm password is required"),
+  })
+  .refine((data) => data.newPassword === data.cpassword, {
+    message: "Passwords do not match",
+    path: ["cpassword"], // 👈 shows error on confirm password field
+  });
 
 export type TForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
 
