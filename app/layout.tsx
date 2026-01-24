@@ -1,4 +1,4 @@
-import ThemeProvider from "@/context/ThemeProvider";
+import Providers from "@/context/Providers";
 import "@/styles/main.css";
 import { ReactNode } from "react";
 import { Toaster } from "sonner";
@@ -12,7 +12,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <Providers>{children}</Providers>
         <Toaster />
       </body>
     </html>

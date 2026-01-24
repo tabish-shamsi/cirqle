@@ -10,7 +10,7 @@ import User from "@/models/User";
 import generateOtpToken from "@/utils/generate-otp";
 import { render } from "@react-email/components";
 
-const sendVerifyEmail = async () => {
+const sendVerifyEmail = async (type?: "resend_email") => {
   try {
     const { id, email, name, isVerified } = await checkAuth();
     if (isVerified) {
@@ -71,6 +71,8 @@ const sendVerifyEmail = async () => {
       await OTP.deleteMany({ userId: id, type: "email_verification" });
       return { error: "Something went wrong while sending email" }
     }
+
+    if (type !== "resend_email") return { success: true, message: "Verification code sent." };
 
     user.otpResendCount += 1;
     user.lastOtpSentAt = new Date();

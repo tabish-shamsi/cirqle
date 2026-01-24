@@ -27,7 +27,7 @@ export default function LoginForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (data: TLoginSchema) => { 
+  const handleLogin = async (data: TLoginSchema) => {
     setLoading(true);
     const res = await signIn("credentials", {
       email: data.email,
@@ -82,7 +82,7 @@ export default function LoginForm() {
           </Link>
         </div>
 
-        <Button className="w-full h-12 text-base">
+        <Button disabled={loading} className="w-full h-12 text-base">
           {loading ? "Logging in..." : "Login"}
         </Button>
       </div>

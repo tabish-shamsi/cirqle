@@ -65,8 +65,8 @@ export default function RegisterForm() {
     }
 
     const sendOTP = await sendVerifyEmail()
-    if (res?.error) {
-      toast.error(res.error)
+    if (sendOTP?.error) {
+      toast.error(sendOTP.error)
     }
 
     setLoading(false);

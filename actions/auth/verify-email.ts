@@ -1,7 +1,9 @@
+"use server"
+
 import checkAuth from "@/data/check-auth";
 import db from "@/lib/db";
+import OTP from "@/models/OTP";
 import User from "@/models/User";
-import jwt from "jsonwebtoken";
 
 const verifyEmail = async (code: string) => {
   try {
@@ -9,58 +11,23 @@ const verifyEmail = async (code: string) => {
     const { id } = await checkAuth();
 
     await db();
-    const user = await User.findById(id).select("verifyEmailToken -password");
+    const user = await User.findByIdAndUpdate(id, { isVerified: true, otpResendCount: 0, lastOtpSentAt: null })
+    if (user.isVerified) return { error: "User is already verified" }
 
-    if (!user?.verificationToken) {
-      return Response.json(
-        { error: "User not found or no verification token", success: false },
-        { status: 404 },
-      );
-    }
+    const otpEntry = await OTP.findOne({ userId: id, type: "email_verification" })
+    if (!otpEntry) return { error: "That code didn’t work or has expired. Please resend a new one." }
 
-    const verify = jwt.verify(
-      user.verificationToken,
-      process.env.JWT_SECRET as string,
-    ) as jwt.JwtPayload & { verificationCode: string };
+    const isValid = await otpEntry.verifyCode(code)
+    const isExpired = otpEntry.expiresAt < new Date()
 
-    if (verify.verificationCode.toString() !== code) {
-      return Response.json(
-        { error: "Invalid code", success: false },
-        { status: 400 },
-      );
-    }
+    if (!isValid || isExpired) return { error: "That code didn’t work or has expired. Please resend a new one." }
 
-    user.verificationToken = null;
-    user.isVerified = true;
+    await OTP.findOneAndDelete({ userId: id, type: "email_verification" })
 
-    await user.save();
-
-    return Response.json(
-      { success: true, message: "Email has been verified!" },
-      { status: 200 },
-    );
+    return { success: true, message: "Email has been verified." }
   } catch (error) {
-    console.error(error);
-
-    // Handle JWT specific errors
-    if (error instanceof jwt.JsonWebTokenError) {
-      if (error.name === "TokenExpiredError") {
-        return Response.json(
-          { error: "Verification code has expired", success: false },
-          { status: 401 },
-        );
-      } else if (error.name === "JsonWebTokenError") {
-        return Response.json(
-          { error: "Invalid verification token", success: false },
-          { status: 401 },
-        );
-      }
-    }
-
-    return Response.json(
-      { error: "Something went wrong", success: false },
-      { status: 500 },
-    );
+    console.error(error)
+    return { error: "Something went wrong while verifying email." }
   }
 };
 export default verifyEmail;
