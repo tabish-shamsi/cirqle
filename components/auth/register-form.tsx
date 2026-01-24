@@ -16,6 +16,8 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import checkUsernameUnique from "@/actions/auth/check-username-unique";
+import LogoutButton from "../temporary-logout-button";
+import sendVerifyEmail from "@/actions/auth/send-verify-email";
 
 export default function RegisterForm() {
   const form = useForm<TRegisterSchema>({
@@ -62,12 +64,11 @@ export default function RegisterForm() {
       return;
     }
 
-    try {
-      
-    } catch (error) {
-      
+    const sendOTP = await sendVerifyEmail()
+    if (res?.error) {
+      toast.error(res.error)
     }
-    
+
     setLoading(false);
     router.push("/account/verify");
   };
@@ -96,6 +97,7 @@ export default function RegisterForm() {
 
   return (
     <Form form={form} onSubmit={handleRegister}>
+      <LogoutButton />
       <div className="space-y-5">
         {/* Name */}
         <InputWithIcon

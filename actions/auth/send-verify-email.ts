@@ -15,7 +15,6 @@ const sendVerifyEmail = async () => {
     const { id, email, name, isVerified } = await checkAuth();
     if (isVerified) {
       return { error: "Email already verified" }
-      // throw new Error("Email already verified")
     }
 
     await db();
@@ -23,7 +22,6 @@ const sendVerifyEmail = async () => {
     const user = await User.findById(id)
     if (!user) {
       return { error: "User not found" }
-      // throw new Error("Email already verified")
     }
 
     const now = Date.now();
@@ -80,13 +78,8 @@ const sendVerifyEmail = async () => {
 
     return { success: true, message: "Verification code sent." };
   } catch (error) {
-    return Response.json(
-      {
-        success: false,
-        message: "Something went wrong. Please try again later.",
-      },
-      { status: 500 },
-    );
+    console.log(error)
+    return { error: "Something went wrong. Please try again later." }
   }
 };
 export default sendVerifyEmail;
