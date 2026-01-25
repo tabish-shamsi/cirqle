@@ -3,7 +3,6 @@ import z from "zod";
 export const accountInfoSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters long"),
   lastName: z.string().min(2, "Last name must be at least 2 characters long"),
-  email: z.email("Invalid email"),
   username: z.string().min(2, "Username must be at least 2 characters long"),
   bio: z.string().optional(),
   birthday: z.date().refine(
@@ -16,6 +15,8 @@ export const accountInfoSchema = z.object({
     }
   ),
   hometown: z.string().optional(),
-  livesIn: z.string().optional(),
-  occupation: z.string().optional(),
+  current_city: z.string().optional(),
+  profession: z.string().optional(),
 });
+
+export type TAccountInfoSchema = z.infer<typeof accountInfoSchema>

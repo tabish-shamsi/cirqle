@@ -2,7 +2,8 @@ import db from "@/lib/db"
 import User from "@/models/User"
 import "server-only"
 import checkAuth from "./check-auth"
-import { EMAIL_CHANGE_RESET_WINDOW } from "@/lib/constants" 
+import { EMAIL_CHANGE_RESET_WINDOW } from "@/lib/constants"
+import Profile from "@/models/Profile"
 
 export const findAccount = async (identifier: string) => {
     try {
@@ -20,6 +21,7 @@ export const findAccount = async (identifier: string) => {
     }
 }
 
+// settings/password
 export const checkAllowChangePassword = async () => {
     const { id } = await checkAuth()
     try {
@@ -34,19 +36,7 @@ export const checkAllowChangePassword = async () => {
     }
 }
 
-export const checkAllowChangeEmail = async () => {
-    const { id } = await checkAuth()
-    try {
-        await db()
-        const user = await User.findById(id)
-        if (!user) return null
-
-        return { allowChange: user.allowChangeEmail, lastChange: user.lastEmailChange }
-    } catch (error: any) {
-        throw new Error(error)
-    }
-}
-
+// settings/change-email
 export async function getEmailChangeInfo() {
     const { id } = await checkAuth()
     await db()
@@ -79,4 +69,28 @@ export async function getEmailChangeInfo() {
         lastEmailChange: user.lastEmailChange,
         allowChange: user.allowChangeEmail
     };
+}
+
+// settings/account-information
+export async function getAccountInformation() {
+    await db()
+    const { id } = await checkAuth()
+    const user = await User.findById(id).select("name username birthday")
+
+    if (!user) throw new Error("User not found")
+
+    const profile = await Profile.findOne({ userId: user._id })
+
+    const accountInformation = {
+        firstName: user.name.split(" ")[0],
+        lastName: (user.name.split(" ").slice(1)).join(" "),
+        username: user.username,
+        birthday: user.birthday,
+        hometown: profile?.hometown ?? "",
+        current_city: profile?.current_city ?? "",
+        profession: profile?.profession ?? "",
+        bio: profile?.bio ?? "",
+    }
+
+    return accountInformation
 }

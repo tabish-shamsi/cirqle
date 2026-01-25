@@ -19,7 +19,7 @@ interface IUser extends Document {
   password: string;
   isVerified: boolean;
   avatar?: IMedia;
-
+  
   newEmail?: string;
   lastEmailChange?: Date
 

@@ -1,15 +1,15 @@
 import mongoose from "mongoose";
-import TMedia from "./Media";
+import IMedia from "./Media";
 
 interface IProfile extends Document {
   _id: mongoose.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
 
   bio?: string;
   current_city?: string;
   hometown?: string;
   profession?: string;
-  birthday?: Date;
-  cover?: TMedia;
+  cover?: IMedia;
 
   socials?: {
     platform: string;

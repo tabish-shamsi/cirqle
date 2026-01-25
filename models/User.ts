@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema<IUser>(
     birthday: { type: Date, required: true },
     password: { type: String, required: true, select: false },
     isVerified: { type: Boolean, default: false },
+    avatar: { type: mongoose.Schema.Types.ObjectId, ref: "Media" },
 
     newEmail: { type: String },
     lastEmailChange: Date,
