@@ -142,16 +142,17 @@ export const SETTINGS_LINKS = {
     },
   ],
   Account: [
-    {
-      label: "My Card",
-      href: "#",
-      icon: CardSim,
-      tab: "Account",
-    },
+
     {
       label: "Change Password",
       href: "/password",
-      icon: CardSim,
+      icon: Lock,
+      tab: "Account",
+    },
+    {
+      label: "Change Email",
+      href: "/change-email",
+      icon: Mail,
       tab: "Account",
     },
   ],

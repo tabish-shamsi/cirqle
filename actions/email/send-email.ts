@@ -1,15 +1,13 @@
 "use server"
 
 import checkAuth from "@/data/check-auth";
-import OtpActionEmail from "@/emails/OtpActionEmail";
-import { MAX_RESENDS, RESEND_COOLDOWN, RESEND_RESET_WINDOW } from "@/lib/constants";
+import { EMAIL_CHANGE_RESET_WINDOW, MAX_RESENDS, RESEND_COOLDOWN, RESEND_RESET_WINDOW } from "@/lib/constants";
 import db from "@/lib/db";
 import { createTransporter } from "@/lib/nodemailer";
 import OTP from "@/models/OTP";
 import User from "@/models/User";
 import { OtpEmailType } from "@/types/types";
 import generateOtpToken from "@/utils/generate-otp";
-import { render } from "@react-email/components";
 
 interface EmailOTPProps {
     emailType: OtpEmailType, email?: string, resend: boolean
@@ -27,12 +25,29 @@ const emailOTP = async ({ emailType, email, resend }: EmailOTPProps) => {
 
         await db();
         const user = await User.findOne({ email: userEmail })
-
+        
         if (!user) {
             return { error: "User not found" }
         }
 
         if (emailType === "change_password" && user.allowChangePassword) return { error: "User is already verified" }
+        if (emailType === "change_email" && user.lastEmailChange) {
+
+            const now = Date.now()
+            const lastChange = user.lastEmailChange.getTime()
+
+            if (lastChange > now) {
+                return { error: "Email change temporarily unavailable. Please contact support." };
+            }
+
+            const timeSinceLastChange = Date.now() - lastChange
+            const changedWithin30Days = timeSinceLastChange < EMAIL_CHANGE_RESET_WINDOW;
+
+            if (changedWithin30Days) {
+                return { error: "You can only change your email after every 30 days." }
+            }
+
+        }
 
         const now = Date.now();
 
@@ -87,10 +102,16 @@ const emailOTP = async ({ emailType, email, resend }: EmailOTPProps) => {
             return { error: "Something went wrong while sending email" }
         }
 
-        if (!resend) return { success: true, message: "Verification code sent." };
+        if (emailType === "confirm_new_email") {
+            if (!email) return { error: "email is reuired" }
+            user.newEmail = email
+        }
 
-        user.otpResendCount += 1;
-        user.lastOtpSentAt = new Date();
+        if (resend) {
+            user.otpResendCount += 1;
+            user.lastOtpSentAt = new Date();
+        }
+
         await user.save();
 
         return { success: true, message: "Verification code sent." };

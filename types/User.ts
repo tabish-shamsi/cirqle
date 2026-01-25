@@ -20,9 +20,13 @@ interface IUser extends Document {
   isVerified: boolean;
   avatar?: IMedia;
 
+  newEmail?: string;
+  lastEmailChange?: Date
+
   otpResendCount: number;
   lastOtpSentAt: Date;
   allowChangePassword: Boolean
+  allowChangeEmail: Boolean
 
   createdAt: Date;
   updatedAt: Date;

@@ -21,9 +21,10 @@ interface Props {
     redirectUrl?: string;
     type: OtpEmailType;
     defaultOpen?: boolean
+    onEmailVerified?: () => void
 }
 
-export default function EmailVerificationDialog({ open, setOpen, email, redirectUrl, type, defaultOpen }: Props) {
+export default function EmailVerificationDialog({ open, setOpen, email, redirectUrl, type, defaultOpen, onEmailVerified }: Props) {
     const form = useForm<TVerifyAccountSchema>({
         resolver: zodResolver(verifyAccountSchema),
         defaultValues: {
@@ -47,6 +48,7 @@ export default function EmailVerificationDialog({ open, setOpen, email, redirect
         if (res.success) {
             toast.message(res.message);
             setOpen(false);
+            if (onEmailVerified) onEmailVerified()
             if (redirectUrl) router.push(redirectUrl)
         }
 

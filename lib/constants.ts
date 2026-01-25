@@ -17,3 +17,5 @@ export const OTP_EXPIRY = 10 * 60 * 1000; // 10 minutes
 export const MAX_RESENDS = 3;
 export const RESEND_COOLDOWN = 60 * 1000; // 60 seconds
 export const RESEND_RESET_WINDOW = 60 * 60 * 1000; // 1 hour
+
+export const EMAIL_CHANGE_RESET_WINDOW = 60 * 60 * 1000 * 24 * 30 // 30 days

@@ -11,6 +11,9 @@ const userSchema = new mongoose.Schema<IUser>(
     password: { type: String, required: true, select: false },
     isVerified: { type: Boolean, default: false },
 
+    newEmail: { type: String },
+    lastEmailChange: Date,
+
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     stories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Story" }],
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "Friend" }],
@@ -18,7 +21,8 @@ const userSchema = new mongoose.Schema<IUser>(
     otpResendCount: { type: Number, default: 0 },
     lastOtpSentAt: Date,
 
-    allowChangePassword: { type: Boolean, default: false }
+    allowChangePassword: { type: Boolean, default: false },
+    allowChangeEmail: { type: Boolean, default: false },
   },
   { timestamps: true },
 );

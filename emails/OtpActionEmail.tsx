@@ -10,8 +10,6 @@ import {
     Heading,
 } from "@react-email/components";
 
-
-
 interface OtpActionEmailProps {
     name?: string;
     otp: string;
@@ -41,8 +39,15 @@ const CONTENT_MAP: Record<
         securityNote:
             "If you didn't request a password reset, you can safely ignore this email.",
     },
-    change_email: {
+    confirm_new_email: {
         preview: "Confirm your new email address",
+        message:
+            "We received a request to change the email address associated with your Cirqle account. Use the verification code below to confirm:",
+        securityNote:
+            "If you didn't request this change, please secure your account immediately.",
+    },
+    change_email: {
+        preview: "Change your email address",
         message:
             "We received a request to change the email address associated with your Cirqle account. Use the verification code below to confirm:",
         securityNote:
@@ -50,12 +55,11 @@ const CONTENT_MAP: Record<
     },
     email_verification: {
         preview: "Welcome to Cirqle! Verify your email",
-
         message:
             "To get started, please verify your email address by using the OTP below:",
         securityNote:
             "If you didn't create a Cirqle account, you can safely ignore this email.",
-    }
+    },
 };
 
 export const OtpActionEmail = ({

@@ -14,14 +14,15 @@ const verifyEmail = async ({ code, email, type }: { code: string, email?: string
             userEmail = email
         } else {
             userEmail = email
-        }
+        } 
 
         await db();
-        const user = await User.findOne({ email: userEmail })
+        const user = await User.findOne({ email: userEmail }) 
         if (user.isVerified && type === "email_verification") return { error: "User is already verified" }
 
-        const otpEntry = await OTP.findOne({ userId: user.id, type })
-        if (!otpEntry) return { error: "That code didn’t work or has expired. Please resend a new one." }
+        const otpEntry = await OTP.findOne({ userId: user._id, type }) 
+        
+        if (!otpEntry) return { error: "The code has expired" }
 
         const isValid = await otpEntry.verifyCode(code)
         const isExpired = otpEntry.expiresAt < new Date()
@@ -29,8 +30,11 @@ const verifyEmail = async ({ code, email, type }: { code: string, email?: string
         if (!isValid || isExpired) return { error: "That code didn’t work or has expired. Please resend a new one." }
 
         await OTP.findByIdAndDelete(otpEntry._id)
+
         if (type === "email_verification") user.isVerified = true
         if (type === "password_reset" || type === "change_password") user.allowChangePassword = true
+        if (type === "change_email") user.allowChangeEmail = true
+
         user.otpResendCount = 0;
         user.lastOtpSentAt = null;
 

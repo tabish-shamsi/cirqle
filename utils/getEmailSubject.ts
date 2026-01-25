@@ -6,7 +6,7 @@ export default function getEmailSubject(
     switch (emailType) {
         case "password_reset":
             return "Reset your Cirqle password";
-        
+
         case "change_password":
             return "Change your Cirqle password";
 
@@ -14,8 +14,9 @@ export default function getEmailSubject(
             return "Verify your Cirqle account";
 
         case "change_email":
-            return "Confirm your new email address";
-
+            return "Confirm your email address to change it.";
+        case "confirm_new_email":
+            return "Confirm your new email address.";
         default:
             return "Cirqle Notification";
     }
