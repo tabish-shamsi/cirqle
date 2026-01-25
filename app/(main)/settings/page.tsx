@@ -1,6 +1,8 @@
+import LogoutButton from "@/components/settings/logout-button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { SETTINGS_LINKS } from "@/lib/placeholder-data";
 import { ChevronRight } from "lucide-react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 
 export default function Settings() {
@@ -19,12 +21,9 @@ export default function Settings() {
             {links.map((item) => {
               if (item.href === "LOGOUT") {
                 return (
-                  <button
-                    key={item.label}
-                    className="flex w-full cursor-pointer items-center justify-between border-b"
-                  >
+                  <LogoutButton key={item.label}>
                     <SettingsItem {...item} />
-                  </button>
+                  </LogoutButton>
                 );
               } else {
                 return (
