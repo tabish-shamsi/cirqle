@@ -129,7 +129,7 @@ export const SETTINGS_LINKS = {
       tab: "General",
     },
     {
-      label: "Social Account",
+      label: "Social Networks",
       href: "/socials",
       icon: Bird,
       tab: "General",

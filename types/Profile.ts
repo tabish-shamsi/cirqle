@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 import IMedia from "./Media";
 
+export interface ISocial {
+  platform: string;
+  url: string;
+}
+
 interface IProfile extends Document {
   _id: mongoose.Types.ObjectId;
   userId: mongoose.Types.ObjectId;
@@ -11,10 +16,7 @@ interface IProfile extends Document {
   profession?: string;
   cover?: IMedia;
 
-  socials?: {
-    platform: string;
-    url: string;
-  }[];
+  socials: ISocial[]
 
   createdAt: Date;
   updatedAt: Date;

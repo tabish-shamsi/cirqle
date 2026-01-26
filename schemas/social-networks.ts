@@ -8,3 +8,5 @@ export const socialNetworksSchema = z.object({
   linkedin: z.string().optional(),
   tiktok: z.string().optional(),
 });
+
+export type TSocialNetworks = z.infer<typeof socialNetworksSchema>

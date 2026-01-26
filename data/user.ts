@@ -4,6 +4,8 @@ import "server-only"
 import checkAuth from "./check-auth"
 import { EMAIL_CHANGE_RESET_WINDOW } from "@/lib/constants"
 import Profile from "@/models/Profile"
+import IProfile from "@/types/Profile"
+import { Key } from "lucide-react"
 
 export const findAccount = async (identifier: string) => {
     try {
@@ -93,4 +95,27 @@ export async function getAccountInformation() {
     }
 
     return accountInformation
+}
+
+// settings/socials
+export async function getSocials() {
+    const { id } = await checkAuth()
+
+    await db()
+    const profile = await Profile.findOne({ userId: id }) as IProfile
+    if (!profile || !profile.socials || profile.socials.length <= 0) return {
+        facebook: "",
+        twitter: "",
+        instagram: "",
+        youtube: "",
+        linkedin: "",
+        tiktok: "",
+    }
+
+    const socialsObj = profile.socials.reduce((acc: Record<string, string>, item) => {
+        acc[item.platform.toLowerCase()] = item.url
+        return acc
+    }, {} as Record<string, string>)
+
+    return socialsObj
 }
