@@ -4,6 +4,7 @@ import "next-auth/jwt";
 declare module "next-auth" {
   interface User {
     name?: string;
+    username?: string;
     avatar?: string;
     email?: string;
     id?: string;
@@ -14,6 +15,7 @@ declare module "next-auth" {
     user: {
       name?: string;
       avatar?: string;
+      username?: string;
       email?: string;
       id?: string;
       isVerified?: boolean;
@@ -26,6 +28,7 @@ declare module "next-auth/jwt" {
     user?: {
       name?: string;
       avatar?: string;
+      username?: string;
       email?: string;
       id?: string;
       isVerified?: boolean;

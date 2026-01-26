@@ -31,11 +31,11 @@ export default function AboutCard() {
                 <span className="text-muted-foreground">
                   {key === "birthday" || key === "joined"
                     ? new Date(value).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })
-                    : value }
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                    : value}
                 </span>
               </div>
             );
