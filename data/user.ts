@@ -6,6 +6,7 @@ import { EMAIL_CHANGE_RESET_WINDOW } from "@/lib/constants"
 import Profile from "@/models/Profile"
 import IProfile from "@/types/Profile"
 import { Key } from "lucide-react"
+import { toDateString } from "@/utils/formatDate"
 
 export const findAccount = async (identifier: string) => {
     try {
@@ -118,4 +119,28 @@ export async function getSocials() {
     }, {} as Record<string, string>)
 
     return socialsObj
+}
+
+export async function getAboutDetails(username: string) {
+    await checkAuth()
+
+    await db()
+
+    const user = await User.findOne({ username }).select("birthday createdAt")
+
+    if (!user) return null
+
+    const profile = await Profile.findOne({ userId: user._id }) as IProfile
+
+    const about = {
+        "current city": profile?.current_city ?? "",
+        hometown: profile?.hometown ?? "",
+        profession: profile?.profession ?? "",
+        birthday: toDateString(user.birthday),
+        joined: toDateString(user.createdAt)
+    }
+
+    const bio = profile?.bio ?? ""
+
+    return { about, bio }
 }
