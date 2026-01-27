@@ -30,7 +30,7 @@ export default function AccountInfoForm({ accountInfo }: { accountInfo: TAccount
         if (!res.error) toast.error(res.error)
         if (res.success) {
             toast.success(res.message)
-            update({ name: `${data.firstName} ${data.lastName}` })
+            update({ name: `${data.firstName} ${data.lastName}`, username: data.username })
         }
         setLoading(false)
     };

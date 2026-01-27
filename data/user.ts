@@ -5,23 +5,18 @@ import checkAuth from "./check-auth"
 import { EMAIL_CHANGE_RESET_WINDOW } from "@/lib/constants"
 import Profile from "@/models/Profile"
 import IProfile from "@/types/Profile"
-import { Key } from "lucide-react"
 import { toDateString } from "@/utils/formatDate"
 
 export const findAccount = async (identifier: string) => {
-    try {
-        if (!identifier) return null
+    if (!identifier) return null
 
-        await db()
+    await db()
 
-        const user = await User.findOne({ $or: [{ email: identifier }, { username: identifier }] }).select("name email avatar")
+    const user = await User.findOne({ $or: [{ email: identifier }, { username: identifier }] }).select("name email avatar")
 
-        if (!user) return null
+    if (!user) return null
 
-        return JSON.parse(JSON.stringify(user))
-    } catch (error: any) {
-        throw new Error(error)
-    }
+    return JSON.parse(JSON.stringify(user))
 }
 
 // settings/password
@@ -99,7 +94,7 @@ export async function getAccountInformation() {
 }
 
 // settings/socials
-export async function getSocials() {
+export async function getSocialsObject() {
     const { id } = await checkAuth()
 
     await db()
@@ -121,26 +116,43 @@ export async function getSocials() {
     return socialsObj
 }
 
-export async function getAboutDetails(username: string) {
+export async function getAboutDetails(userId: string) {
     await checkAuth()
 
     await db()
 
-    const user = await User.findOne({ username }).select("birthday createdAt")
+    const user = await User.findById(userId).select("birthday createdAt")
 
-    if (!user) return null
+    if (!user) throw new Error("User not found")
 
     const profile = await Profile.findOne({ userId: user._id }) as IProfile
 
     const about = {
+        bio: profile?.bio ?? "",
         "current city": profile?.current_city ?? "",
         hometown: profile?.hometown ?? "",
         profession: profile?.profession ?? "",
         birthday: toDateString(user.birthday),
-        joined: toDateString(user.createdAt)
+        joined: toDateString(user.createdAt),
     }
 
-    const bio = profile?.bio ?? ""
+    return about
+}
 
-    return { about, bio }
+export async function getSocials(userId: string) {
+    await checkAuth()
+
+    await db()
+
+    const profile = await Profile.findOne({ userId }) as IProfile
+    if (!profile || !profile.socials) return []
+
+    // to remove those that are empty
+    const socials = profile?.socials.filter((value) => {
+        if (value.url.length > 0) {
+            return value
+        }
+    })
+
+    return socials
 }
