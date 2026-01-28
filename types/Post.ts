@@ -6,7 +6,6 @@ interface IPost extends Document {
 
   content: string;
   media: mongoose.Types.ObjectId[];
-  feeling?: string;
 
   authorId: mongoose.Types.ObjectId;
   author?: TUser;

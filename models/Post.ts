@@ -1,18 +1,51 @@
-import IPost from "@/types/Post";
-import mongoose from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
-const postSchema = new mongoose.Schema<IPost>(
+const PostSchema = new Schema(
   {
-    content: { type: String, required: true },
-    media: [{ type: mongoose.Types.ObjectId, ref: "Media" }],
-    feeling: { type: String },
-
-    authorId: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
-    comments: [{ type: mongoose.Types.ObjectId, ref: "Comment" }],
-    likes: [{ type: mongoose.Types.ObjectId, ref: "Comment" }],
+    content: {
+      type: String,
+      trim: true,
+      maxlength: 2000,
+    },
+    media: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Media",
+      },
+    ],
+    mediaType: {
+      type: String,
+      enum: ["image", "video", null],
+      default: null,
+    },
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-const Post = mongoose.models.Post || mongoose.model<IPost>("Post", postSchema);
-export default Post
+/**
+ * Custom validation
+ */
+PostSchema.pre("validate", async function (next) {
+  if (!this.media || this.media.length === 0) {
+    this.mediaType = null;
+    return
+  }
+
+  if (this.mediaType === "video" && this.media.length !== 1) {
+    return new Error("A post can contain only one video")
+  }
+
+  if (this.mediaType === "image" && this.media.length > 4) {
+    return new Error("A post can contain up to 4 images")
+  }
+
+  return
+});
+
+export default mongoose.models.Post ||
+  mongoose.model("Post", PostSchema);

@@ -15,4 +15,5 @@ const checkAuth = async () => {
 
   return session.user as IUser;
 };
+
 export default checkAuth;
