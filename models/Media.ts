@@ -1,8 +1,9 @@
+import IMedia from "@/types/Media";
 import mongoose, { Schema, Types } from "mongoose";
 
 export type MediaType = "image" | "video";
 
-const MediaSchema = new Schema(
+const MediaSchema = new Schema<IMedia>(
   {
     type: {
       type: String,
@@ -27,4 +28,4 @@ const MediaSchema = new Schema(
 );
 
 export default mongoose.models.Media ||
-  mongoose.model("Media", MediaSchema);
+  mongoose.model<IMedia>("Media", MediaSchema);

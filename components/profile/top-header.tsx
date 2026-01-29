@@ -6,6 +6,7 @@ import { Ellipsis, Mail, User } from "lucide-react";
 import { PROFILE_NAV } from "@/lib/placeholder-data";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import UploadAvatar from "./upload-avatar";
 
 export default function ProfileHeader() {
   return (
@@ -23,15 +24,7 @@ export default function ProfileHeader() {
 
       <div className="relative p-4 md:pb-8.5">
         {/* Profile Image */}
-        <div className="w-30 h-30 border-4 border-card rounded-full absolute -top-22 md:-top-6 left-1/2 -translate-x-1/2 md:left-20 overflow-hidden">
-          <Image
-            width={100}
-            height={100}
-            src={user.avatar}
-            alt={`${user.name} cover`}
-            className="w-full h-full object-cover"
-          />
-        </div>
+        {/* <UploadAvatar /> */}
 
         <div className="mt-6 md:mt-0 md:ml-35 flex gap-4 flex-col text-center md:text-left md:flex-row items-center md:justify-between">
           {/* User Details  */}

@@ -46,7 +46,7 @@ const uploadMedia = async (file: File) => {
             if (fileType && url && fileId && height && width) {
                 const media = await createMedia({ type: fileType, url, fileId, height, width })
                 if (media.error) return { error: media.error }
-                return { fileId: media.mediaId as string }
+                return { fileId: media.mediaId as string, url }
             }
         } else {
             return { error: "Something went wrong uploading media" }

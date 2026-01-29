@@ -6,7 +6,7 @@ const profileSchema = new mongoose.Schema<IProfile>({
     bio: String,
     current_city: String,
     hometown: String,
-    profession: String, 
+    profession: String,
     cover: { type: mongoose.Schema.Types.ObjectId, ref: "Media" },
     socials: [{ platform: String, url: String }],
 }, { timestamps: true })

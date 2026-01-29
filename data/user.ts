@@ -156,3 +156,16 @@ export async function getSocials(userId: string) {
 
     return socials
 }
+
+export async function getProfileHeader(userId: string) {
+    await checkAuth()
+    await db()
+
+    const profile = await Profile.findOne({ userId }).select("cover").populate("cover", "Media")
+    if (!profile) return null
+
+    const user = await User.findById(userId).select("name username avatar").populate("avatar", "Media")
+
+    if(!user) return null
+    return { avatar: user.avatar, cover: profile.cover, name: user.name, username: user.username }
+}
