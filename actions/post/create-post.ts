@@ -7,30 +7,23 @@ import Post from "@/models/Post";
 
 type Props = {
     content: string
-    media: { imagekitId: string; url: string, type: string }[]
+    media?: string[]
+    postType: "image" | "video" | null
 }
 
-export default async function createPost({ content, media }: Props) {
-    if (media.length === 0) {
-        return { error: "Atleast one image or video is required" }
-    }
-
+export default async function createPost({ content, media, postType }: Props) {
     try {
         const { id } = await checkAuth()
         await db()
+        const post = await Post.create({ content, media, author: id, postType })
 
-        const newMedia = async () => {
-            return media.map(async ({ imagekitId, url, type }) => {
-                try {
-                    const newMedia = await Media.create({ imagekitId, url, type, authorId: id })
-                    return newMedia._id
-                } catch (error) {
-                    console.error(error)
-                    return { error: "Something went wrong while uploading media files" }
-                }
-            })
+        if (post.media && post.media.length > 0) {
+            Promise.all(
+                post.media.map(async (mediaId: string) => {
+                    await Media.findByIdAndUpdate(mediaId, { isUsed: true })
+                })
+            )
         }
-        await Post.create({ content, media: newMedia, authorId: id })
         return { success: true, message: "Post created" }
     } catch (error) {
         console.error(error)

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const PostSchema = new Schema(
   {
@@ -13,7 +13,7 @@ const PostSchema = new Schema(
         ref: "Media",
       },
     ],
-    mediaType: {
+    postType: {
       type: String,
       enum: ["image", "video", null],
       default: null,
@@ -32,15 +32,15 @@ const PostSchema = new Schema(
  */
 PostSchema.pre("validate", async function (next) {
   if (!this.media || this.media.length === 0) {
-    this.mediaType = null;
+    this.postType = null;
     return
   }
 
-  if (this.mediaType === "video" && this.media.length !== 1) {
+  if (this.postType === "video" && this.media.length !== 1) {
     return new Error("A post can contain only one video")
   }
 
-  if (this.mediaType === "image" && this.media.length > 4) {
+  if (this.postType === "image" && this.media.length > 4) {
     return new Error("A post can contain up to 4 images")
   }
 

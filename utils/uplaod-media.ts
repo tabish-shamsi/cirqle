@@ -1,3 +1,4 @@
+import createMedia from "@/actions/media/create-media";
 import { upload } from "@imagekit/next"
 
 const authenticator = async () => {
@@ -5,7 +6,7 @@ const authenticator = async () => {
         const response = await fetch("/api/upload-auth");
         if (!response.ok) {
             const errorText = await response.text();
-            throw new Error(`Request failed with status ${response.status}: ${errorText}`);
+            return { error: `Request failed with status ${response.status}: ${errorText}` }
         }
 
         const data = await response.json();
@@ -13,18 +14,15 @@ const authenticator = async () => {
         return { signature, expire, token, publicKey };
     } catch (error) {
         console.error("Authentication error:", error);
-        throw new Error("Authentication request failed");
+        return { error: "Authentication request failed" }
     }
 };
 
 const uploadMedia = async (file: File) => {
-    let authParams;
 
-    try {
-        authParams = await authenticator();
-    } catch (authError) {
-        console.error("Failed to authenticate for upload:", authError);
-        return
+    const authParams = await authenticator();
+    if (authParams.error) {
+        return { error: authParams.error }
     }
 
     const { signature, expire, token, publicKey } = authParams;
@@ -44,10 +42,18 @@ const uploadMedia = async (file: File) => {
         });
 
         if (uploadResponse) {
-            return { url: uploadResponse.url, imagekitId: uploadResponse.fileId, type: uploadResponse.fileType }
+            const { fileType, url, fileId, height, width } = uploadResponse
+            if (fileType && url && fileId && height && width) {
+                const media = await createMedia({ type: fileType, url, fileId, height, width })
+                if (media.error) return { error: media.error }
+                return { fileId: media.mediaId as string }
+            }
+        } else {
+            return { error: "Something went wrong uploading media" }
         }
     } catch (error) {
         console.error(error)
+        return { error: "Something went wrong uploading media" }
     }
 };
 
