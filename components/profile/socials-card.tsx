@@ -28,7 +28,7 @@ export async function SocialsCard({ userId }: { userId: string }) {
                     Social Networks
                 </h3>
 
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-6">
+                <div className="grid grid-cols-2 gap-3">
                     {socials.map(({ platform, url }) => {
                         const Icon =
                             iconMap[platform.toLowerCase()] || Globe;

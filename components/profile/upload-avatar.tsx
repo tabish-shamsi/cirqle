@@ -42,7 +42,6 @@ export default function UploadAvatar({ avatar, name, userId }: { avatar?: IMedia
 
         setPreview({ url: media.url, status: "success" })
         await update({ avatar: media.url })
-        console.log(media)
 
         const post = await createAvatarCoverPost({ mediaId: media.fileId, type: "avatar", userId })
         if (post.error) {
@@ -58,7 +57,7 @@ export default function UploadAvatar({ avatar, name, userId }: { avatar?: IMedia
 
     return (
         <>
-            <div className="w-30 h-30 border-4 border-card rounded-full absolute -top-22 md:-top-6 left-1/2 -translate-x-1/2 md:left-20 overflow-hidden">
+            <div className="w-30 h-30 border-4 border-card rounded-full absolute -top-22 md:-top-6 left-1/2 -translate-x-1/2 md:left-20 overflow-hidden z-2">
                 <Avatar className="w-full h-full text-3xl font-bold">
                     <AvatarImage src={preview?.url} className="w-full h-full object-cover" />
                     <AvatarFallback>{getUserInitials(name)}</AvatarFallback>

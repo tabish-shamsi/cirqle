@@ -8,6 +8,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { getProfileHeader } from "@/data/user";
 import UploadAvatar from "./upload-avatar";
+import UploadCover from "./upload-cover";
 
 export default async function ProfileHeader({ userId }: { userId: string }) {
   const profileDetails = await getProfileHeader(userId)
@@ -16,7 +17,7 @@ export default async function ProfileHeader({ userId }: { userId: string }) {
   return (
     <Card className="p-0 gap-0 overflow-hidden w-full">
       {/* Cover Photo */}
-      <div className="h-60.5 w-full bg-gray-200">
+      {/* <div className="h-60.5 w-full bg-gray-200">
         <Image
           width={960}
           height={242}
@@ -24,7 +25,8 @@ export default async function ProfileHeader({ userId }: { userId: string }) {
           alt={`${user.name} cover`}
           className="w-full h-full object-cover"
         />
-      </div>
+      </div> */}
+      <UploadCover name={profileDetails.name} cover={profileDetails.cover} userId={userId} />
 
       <div className="relative p-4 md:pb-8.5">
         {/* Profile Image */}
