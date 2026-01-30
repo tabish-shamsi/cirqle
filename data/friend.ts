@@ -1,11 +1,14 @@
 import Friend from "@/models/Friend";
 import checkAuth from "./check-auth";
 import { FriendType } from "@/types/Friend";
+import db from "@/lib/db";
+import toJSON from "@/utils/toJSON";
 
 export async function getFriendStatus(userId: string) {
     const { id } = await checkAuth()
     if (userId === id) return null // it means we are on the /profile page or the we are seeing our own profile
 
+    await db()
     const friend = await Friend.findOne({
         $or: [
             { requestor: id, acceptor: userId },
@@ -22,5 +25,15 @@ export async function getFriendStatus(userId: string) {
         friendType = "requestor"; // the user sent the request
     }
 
-    return { friendType, friend: JSON.parse(JSON.stringify(friend)) }
+    return { friendType, friend: toJSON(friend) }
+}
+
+export async function getFriendRequests() {
+    const { id } = await checkAuth()
+    await db()
+
+    const friend = await Friend.find({ acceptor: id, status: "pending" }).populate({path: "requestor", select: "name username avatar", populate: {path: "avatar", select: "url"}})
+    if (!friend) return []
+
+    return toJSON(friend)
 }

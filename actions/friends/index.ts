@@ -5,14 +5,12 @@ import db from "@/lib/db"
 import Friend from "@/models/Friend"
 import { FriendType } from "@/types/Friend"
 
-type RequestType = "send-request" | "accept-request" | "decline-request" | "remove" | "cancel-request";
+export type RequestType = "send-request" | "accept-request" | "decline-request" | "remove" | "cancel-request";
 
 export async function updateFriendStatus(userId: string, friendType: FriendType, requestType: RequestType, friendId?: string) {
     // userId id of the user whose profile we are seeing
     const { id } = await checkAuth()
     await db()
-
-    if (userId === id) return { error: "You cannot add yourself as friend" }
 
     let friend
     if (friendId) {
@@ -22,6 +20,7 @@ export async function updateFriendStatus(userId: string, friendType: FriendType,
 
     switch (requestType) {
         case "send-request":
+            if (userId === id) return { error: "You cannot add yourself as friend" }
             const newFriend = await Friend.create({ acceptor: userId, requestor: id, status: "pending" })
             return { success: true, message: "Friend request sent", friend: JSON.parse(JSON.stringify(newFriend)), friendType: "acceptor" }
 
