@@ -3,12 +3,13 @@ import mongoose from "mongoose";
 
 const friendSchema = new mongoose.Schema<IFriend>(
   {
-    requestorId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    acceptorId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    requestor: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    acceptor: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
     status: {
       type: String,
-      enum: ["pending", "accepted", "rejected", "blocked"],
+      enum: ["pending", "accepted"],
+      default: "pending"
     },
   },
   { timestamps: true },

@@ -1,31 +1,22 @@
-import Image from "next/image";
 import { Card } from "../ui/card";
-import { user } from "@/lib/temporary-mock-data";
 import { Button } from "../ui/button";
-import { Ellipsis, Mail, User } from "lucide-react";
+import { Ellipsis, Mail } from "lucide-react";
 import { PROFILE_NAV } from "@/lib/placeholder-data";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { getProfileHeader } from "@/data/user";
 import UploadAvatar from "./upload-avatar";
 import UploadCover from "./upload-cover";
+import { getFriendStatus } from "@/data/friend";
+import FriendButton from "./friend-button";
 
 export default async function ProfileHeader({ userId }: { userId: string }) {
   const profileDetails = await getProfileHeader(userId)
-  console.log(profileDetails)
+  const friend = await getFriendStatus(userId)
 
   return (
     <Card className="p-0 gap-0 overflow-hidden w-full">
       {/* Cover Photo */}
-      {/* <div className="h-60.5 w-full bg-gray-200">
-        <Image
-          width={960}
-          height={242}
-          src={user.cover}
-          alt={`${user.name} cover`}
-          className="w-full h-full object-cover"
-        />
-      </div> */}
       <UploadCover name={profileDetails.name} cover={profileDetails.cover} userId={userId} />
 
       <div className="relative p-4 md:pb-8.5">
@@ -35,16 +26,13 @@ export default async function ProfileHeader({ userId }: { userId: string }) {
         <div className="mt-6 md:mt-0 md:ml-35 flex gap-4 flex-col text-center md:text-left md:flex-row items-center md:justify-between">
           {/* User Details  */}
           <div>
-            <h1 className="text-2xl font-bold">{user.name}</h1>
-            <p className="text-gray-500">{user.email}</p>
+            <h1 className="text-2xl font-bold">{profileDetails.name}</h1>
+            <p className="text-gray-500">@{profileDetails.username}</p>
           </div>
 
           {/* Action Buttons */}
           <div className="flex items-center gap-2">
-            <Button className="h-9 md:h-11">
-              <User />
-              Add Friend
-            </Button>
+            {friend && <FriendButton friend={friend?.friend} friendType={friend?.friendType} userId={userId} />}
             <Button variant="secondary" className="h-9 md:size-11">
               <Mail className="h-4 md:h-6! w-4 md:w-6!" />
               <span className="md:hidden">Message</span>
