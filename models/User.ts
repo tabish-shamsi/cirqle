@@ -1,6 +1,7 @@
 import IUser from "@/types/User";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
+import Media from "@/models/Media"
 
 const userSchema = new mongoose.Schema<IUser>(
   {

@@ -1,31 +1,28 @@
 "use client"
 
-import createPost from "@/actions/post/create-post";
 import useAuth from "@/hooks/useAuth";
 import IMedia from "@/types/Media";
 import uploadMedia from "@/utils/uplaod-media";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { ChangeEvent, useRef, useState } from "react";
 import { toast } from "sonner";
-import { Skeleton } from "../ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getUserInitials } from "@/utils/getUserInitials";
+import { Loader2 } from "lucide-react";
+import createAvatarCoverPost from "@/actions/user/upload-avatar-cover";
+import deleteMedia from "@/actions/media/delete-media";
 
-export default function UploadAvatar({ avatar, name }: { avatar?: IMedia, name: string }) {
-    const { update, user, isLoading } = useAuth()
+export default function UploadAvatar({ avatar, name, userId }: { avatar?: IMedia, name: string, userId: string }) {
+    const { update, user } = useAuth()
     const pathname = usePathname()
-
-    const [loading, setLoading] = useState(false)
-    const [preview, setPreview] = useState<{ url: string; status: "pending" | "error" | "success" } | null>(null)
+    const [preview, setPreview] = useState<{ url: string; status: "pending" | "error" | "success" } | null>(avatar ? { url: avatar.url, status: "success", } : null)
     const fileInputRef = useRef<HTMLInputElement>(null)
-    const router = useRouter()
 
     async function handleAvatarUpload(e: ChangeEvent<HTMLInputElement>) {
-        if (pathname !== "profile") {
+        if (pathname !== "/profile") {
             return
         }
 
-        setLoading(true)
         const files = e.target.files
         if (!files || files.length <= 0) {
             toast.error("Select an image to upload")
@@ -33,43 +30,62 @@ export default function UploadAvatar({ avatar, name }: { avatar?: IMedia, name: 
         }
 
         const file = files[0]
+        setPreview({ url: URL.createObjectURL(file), status: "pending" })
 
         const media = await uploadMedia(file)
         if (media?.error || !media?.fileId) {
             toast.error(media?.error ?? "Something went wrong, please try again later")
+            setPreview(preview && { ...preview, status: "error" })
             return
         }
 
-        await update({ avatar: media.url })
 
-        const post = await createPost({ content: "Uploaded a new avatar", postType: "image", media: [media?.fileId] })
+        setPreview({ url: media.url, status: "success" })
+        await update({ avatar: media.url })
+        console.log(media)
+
+        const post = await createAvatarCoverPost({ mediaId: media.fileId, type: "avatar", userId })
         if (post.error) {
             toast.error(post.error)
+            await deleteMedia(media.fileId)
             return
         }
 
-        setLoading(false)
-        router.refresh()
+        toast.success(post.message)
     }
+
+    const isOwner = userId === user?.id
 
     return (
         <>
             <div className="w-30 h-30 border-4 border-card rounded-full absolute -top-22 md:-top-6 left-1/2 -translate-x-1/2 md:left-20 overflow-hidden">
+                <Avatar className="w-full h-full text-3xl font-bold">
+                    <AvatarImage src={preview?.url} className="w-full h-full object-cover" />
+                    <AvatarFallback>{getUserInitials(name)}</AvatarFallback>
+                </Avatar>
+
                 {
-                    isLoading ? (<Skeleton className="w-full h-full rounded-full" />) : (
-                        <Avatar className="w-full h-full text-3xl font-bold">
-                            <AvatarImage src={avatar?.url} className="w-full h-full object-cover" />
-                            <AvatarFallback>{getUserInitials(name)}</AvatarFallback>
-                        </Avatar>
+                    preview?.status === "pending" && (
+                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                            <Loader2 className="animate-spin text-white" />
+                        </div>
+
                     )
                 }
 
-                {user && (
+                {
+                    preview?.status === "error" && (
+                        <div className="absolute inset-0 bg-red-500/50 flex items-center justify-center text-white">
+                            Failed
+                        </div>
+                    )
+                }
+
+                {isOwner && (
                     <div onClick={() => fileInputRef.current?.click()} className="bg-none absolute top-0 left-0 rounded-full w-full h-full flex z-1">
                         <input type="file" accept="image/*" ref={fileInputRef} onChange={handleAvatarUpload} className="hidden" />
                     </div>
                 )}
-
             </div>
         </>
     )

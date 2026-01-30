@@ -6,9 +6,13 @@ import { Ellipsis, Mail, User } from "lucide-react";
 import { PROFILE_NAV } from "@/lib/placeholder-data";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { getProfileHeader } from "@/data/user";
 import UploadAvatar from "./upload-avatar";
 
-export default function ProfileHeader() {
+export default async function ProfileHeader({ userId }: { userId: string }) {
+  const profileDetails = await getProfileHeader(userId)
+  console.log(profileDetails)
+
   return (
     <Card className="p-0 gap-0 overflow-hidden w-full">
       {/* Cover Photo */}
@@ -24,7 +28,7 @@ export default function ProfileHeader() {
 
       <div className="relative p-4 md:pb-8.5">
         {/* Profile Image */}
-        {/* <UploadAvatar /> */}
+        <UploadAvatar name={profileDetails.name} avatar={profileDetails.avatar} userId={userId} />
 
         <div className="mt-6 md:mt-0 md:ml-35 flex gap-4 flex-col text-center md:text-left md:flex-row items-center md:justify-between">
           {/* User Details  */}
@@ -58,7 +62,7 @@ export default function ProfileHeader() {
             className={cn(
               "pb-3 text-muted-foreground font-semibold text-sm",
               i === 0 &&
-                "border-b-2 border-b-card-foreground text-card-foreground",
+              "border-b-2 border-b-card-foreground text-card-foreground",
             )}
           >
             {link}

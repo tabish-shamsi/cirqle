@@ -15,10 +15,12 @@ export default async function RenderProfilePage({ username }: { username?: strin
   const user = await findAccount(username ? username : authUsername)
   if (!user) return notFound()
 
+  const userId = user._id.toString()
+
   return (
     <div className="flex flex-col lg:flex-row flex-wrap mb-4">
-      <ProfileHeader />
-      <ProfileSidebar userId={user._id.toString()} />
+      <ProfileHeader userId={userId} />
+      <ProfileSidebar userId={userId} />
       <Feed />
     </div>
   );

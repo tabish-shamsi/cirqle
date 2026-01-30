@@ -1,5 +1,6 @@
 import db from "@/lib/db"
 import User from "@/models/User"
+import "@/models/Media"
 import "server-only"
 import checkAuth from "./check-auth"
 import { EMAIL_CHANGE_RESET_WINDOW } from "@/lib/constants"
@@ -161,11 +162,10 @@ export async function getProfileHeader(userId: string) {
     await checkAuth()
     await db()
 
-    const profile = await Profile.findOne({ userId }).select("cover").populate("cover", "Media")
-    if (!profile) return null
+    const profile = await Profile.findOne({ userId }).select("cover").populate("cover").exec()
+    const user = await User.findById(userId).select("name username avatar").populate("avatar").exec()
 
-    const user = await User.findById(userId).select("name username avatar").populate("avatar", "Media")
-
-    if(!user) return null
-    return { avatar: user.avatar, cover: profile.cover, name: user.name, username: user.username }
-}
+    if (!user) throw new Error("User not found")
+    const profileData = JSON.parse(JSON.stringify({ avatar: user.avatar, cover: profile?.cover, name: user.name, username: user.username }))
+    return profileData
+}``
