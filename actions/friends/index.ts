@@ -30,7 +30,7 @@ export async function updateFriendStatus(userId: string, friendType: FriendType,
             return { success: true, message: "Friend request accepted", friend: JSON.parse(JSON.stringify(updatedFriend)), friendType }
 
         case "decline-request":
-            if (id === friend.acceptor.toString()) return { error: "Invalid request type" }
+            if (id !== friend.acceptor.toString()) return { error: "Invalid request type" }
             await Friend.findByIdAndDelete(friendId)
             return { success: true, message: "Declined friend request", friend: {}, friendType: "notFriend" }
 

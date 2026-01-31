@@ -4,13 +4,10 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { getFriendRequests } from "@/data/friend";
-import IFriend from "@/types/Friend";
-import { getUserInitials } from "@/utils/getUserInitials"; 
-import FriendRequestsActions from "./friend-request-actions";
+import FriendRequests from "./friend-requests-list";
 
 export default async function FriendRequestsCard() {
   const friendRequests = await getFriendRequests()
@@ -28,30 +25,7 @@ export default async function FriendRequestsCard() {
         </div>
       </CardHeader>
       <CardContent className="space-y-6 border-t pt-6">
-        {friendRequests.length > 0 ? (
-          friendRequests.map(({ _id: friendId, requestor }: IFriend) => (
-            <div key={friendId.toString()} className="space-y-2">
-              <div className="flex items-center gap-2 relative">
-                <Avatar className="w-11 h-11">
-                  <AvatarImage src={requestor?.avatar?.url} />
-                  <AvatarFallback>{getUserInitials(requestor?.name)}</AvatarFallback>
-                </Avatar>
-
-                <div>
-                  <p className="text-lg font-medium leading-none">
-                    {requestor?.name}
-                  </p>
-                  <p className="text-sm text-muted-foreground capitalize">
-                    @{requestor?.username}
-                  </p>
-                </div>
-
-                <FriendRequestsActions friendId={friendId.toString()} />
- 
-              </div>
-            </div>
-          ))
-        ) : ("No requests found")}
+        <FriendRequests friendRequests={friendRequests} />
       </CardContent>
     </Card>
   );
