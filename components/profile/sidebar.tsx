@@ -4,6 +4,7 @@ import AboutCard from "./about-card";
 import FriendsCard from "./friends-card";
 import { SocialsCard } from "./socials-card";
 import AboutCardSkeleton from "../skeletons/about-card-skeleton";
+import FriendsCardSkeleton from "../skeletons/friends-card-skeleton";
 
 export default function ProfileSidebar({ userId }: { userId: string }) {
   return (
@@ -17,7 +18,7 @@ export default function ProfileSidebar({ userId }: { userId: string }) {
         <SocialsCard userId={userId} />
       </Suspense>
 
-      <FriendsCard />
+      <Suspense fallback={<FriendsCardSkeleton />}><FriendsCard /></Suspense>
     </div>
   );
 }

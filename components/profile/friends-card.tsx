@@ -1,48 +1,51 @@
-import { friends } from "@/lib/temporary-mock-data";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { getAcceptedFriends } from "@/data/friend";
+import Link from "next/link";
+import IUser from "@/types/User";
+import { getUserInitials } from "@/utils/getUserInitials";
 
-export default function FriendsCard() {
+export default async function FriendsCard() {
+  const friends = await getAcceptedFriends()
+
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle>Friends</CardTitle>
           <p className="text-sm text-muted-foreground">
-            {friends.total} friends
+            {friends.length} friends
           </p>
         </div>
 
-        <Button variant="ghost" size="sm">
-          See all
+        <Button variant="link" size="sm">
+          <Link href="/friends">See all</Link>
         </Button>
       </CardHeader>
 
       <CardContent>
-        <div className="grid grid-cols-3 gap-4">
-          {friends.friends.map((friend) => (
-            <div
-              key={friend.id}
+        <div className="grid grid-cols-2 gap-4">
+          {friends.map(({ user }: { user: IUser }) => (
+            <Link
+              href={`/u/${user.username}`}
+              key={user._id.toString()}
               className="flex flex-col items-center gap-2 text-center"
             >
-              <Avatar className="h-12 w-12">
-                <AvatarImage src={friend.avatar} alt={friend.name} />
+              <Avatar className="h-16 w-16">
+                <AvatarImage src={user?.avatar?.url} alt={user.name} />
                 <AvatarFallback>
-                  {friend.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
+                  {getUserInitials(user.name)}
                 </AvatarFallback>
               </Avatar>
 
               <div className="text-sm">
-                <p className="font-medium leading-none">{friend.name}</p>
+                <p className="font-medium leading-none">{user.name}</p>
                 <p className="text-xs text-muted-foreground">
-                  @{friend.username}
+                  @{user.username}
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </CardContent>
