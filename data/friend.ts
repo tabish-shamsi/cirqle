@@ -34,7 +34,10 @@ export async function getFriendRequests() {
     const { id } = await checkAuth()
     await db()
 
-    const friend = await Friend.find({ acceptor: id, status: "pending" }).populate({ path: "requestor", select: "name username avatar", populate: { path: "avatar", select: "url" } })
+    const friend = 
+        await Friend.find({ acceptor: id, status: "pending" })
+        .populate({ path: "requestor", select: "name username avatar", populate: { path: "avatar", select: "url" } })
+        
     if (!friend) return []
 
     return toJSON(friend)

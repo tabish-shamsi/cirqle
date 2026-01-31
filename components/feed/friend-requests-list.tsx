@@ -14,8 +14,6 @@ import { toast } from "sonner"
 export default function FriendRequests({ friendRequests: initialFriendRequests }: { friendRequests: IFriend[] }) {
     const [friendRequests, setFriendRequests] = useState<IFriend[]>(initialFriendRequests)
 
-
-
     const { user } = useAuth()
 
     const handleRequests = async (requestType: RequestType, friendId: string) => {
