@@ -48,7 +48,7 @@ export async function getAcceptedFriends() {
     await db()
 
     const friends =
-        await Friend.find({ $or: [{ acceptor: id }, { requestor: id }] })
+        await Friend.find({ $or: [{ acceptor: id }, { requestor: id }], status: "accepted" })
             .populate({ path: "requestor", select: "name username avatar", populate: { path: "avatar", select: "url" } })
             .populate({ path: "acceptor", select: "name username avatar", populate: { path: "avatar", select: "url" } })
 

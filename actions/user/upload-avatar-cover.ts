@@ -22,7 +22,7 @@ export default async function createAvatarCoverPost({ type, mediaId, userId }: {
         } else {
             const profile = await Profile.findOneAndUpdate({ userId: id }, { cover: mediaId })
             if (!profile) {
-                await Profile.create({ cover: mediaId })
+                await Profile.create({ userId: id, cover: mediaId })
             }
         }
 

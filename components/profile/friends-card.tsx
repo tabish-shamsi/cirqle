@@ -25,28 +25,32 @@ export default async function FriendsCard() {
       </CardHeader>
 
       <CardContent>
-        <div className="grid grid-cols-2 gap-4">
-          {friends.map(({ user }: { user: IUser }) => (
-            <Link
-              href={`/u/${user.username}`}
-              key={user._id.toString()}
-              className="flex flex-col items-center gap-2 text-center"
-            >
-              <Avatar className="h-16 w-16">
-                <AvatarImage src={user?.avatar?.url} alt={user.name} />
-                <AvatarFallback>
-                  {getUserInitials(user.name)}
-                </AvatarFallback>
-              </Avatar>
+        <div className="grid grid-cols-2 gap-4 content-center">
+          {friends.length > 0 ? (
+            friends.map(({ user }: { user: IUser }) => (
+              <Link
+                href={`/u/${user.username}`}
+                key={user._id.toString()}
+                className="flex flex-col items-center gap-2 text-center"
+              >
+                <Avatar className="h-16 w-16">
+                  <AvatarImage src={user?.avatar?.url} alt={user.name} />
+                  <AvatarFallback>
+                    {getUserInitials(user.name)}
+                  </AvatarFallback>
+                </Avatar>
 
-              <div className="text-sm">
-                <p className="font-medium leading-none">{user.name}</p>
-                <p className="text-xs text-muted-foreground">
-                  @{user.username}
-                </p>
-              </div>
-            </Link>
-          ))}
+                <div className="text-sm">
+                  <p className="font-medium leading-none">{user.name}</p>
+                  <p className="text-xs text-muted-foreground">
+                    @{user.username}
+                  </p>
+                </div>
+              </Link>
+            ))
+          ) : (
+            <p className="text-sm text-muted-foreground">You don't have any friends</p>
+          )}
         </div>
       </CardContent>
     </Card>
