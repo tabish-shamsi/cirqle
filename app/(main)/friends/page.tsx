@@ -1,21 +1,20 @@
-import { friends } from "@/lib/temporary-mock-data";
-import { Button } from "@/components/ui/button";
 import FriendCard from "@/components/friends/friend-card";
+import { getAcceptedFriends } from "@/data/friend";
+import IUser from "@/types/User";
+import { FriendType } from "@/types/Friend";
+import RemoveFriend from "@/components/friends/remove-friend";
 
-export default function Friends() {
-  return friends.friends.map((user) => (
-    <FriendCard
-      key={user.id}
-      friend={user}
-      actions={
-        <>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">
-              Remove
-            </Button>
-          </div>
-        </>
-      }
-    />
-  ));
+export default async function Friends() {
+  const friends = await getAcceptedFriends()
+  if (friends.length > 0) {
+    return friends.map(({ friendId, user, friendType }: { friendId: string, user: IUser, friendType: FriendType }) => (
+      <FriendCard
+        key={friendId}
+        friend={user}
+        actions={<RemoveFriend friendId={friendId} friendType={friendType} />}
+      />
+    ));
+  } else {
+    return <p className="text-muted-foreground">You don't have any friends</p>
+  }
 }
