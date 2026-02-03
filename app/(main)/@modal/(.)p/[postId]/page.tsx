@@ -1,12 +1,15 @@
-import PostDialog from "@/components/posts/PostDialog";
-import { posts } from "@/lib/temporary-mock-data";
+import PostDiaglogWrapper from "@/components/posts/post-dialog-wrapper";
+import PostDialogSkeleton from "@/components/skeletons/post-dialog-skeleton";
+import { Suspense } from "react";
 
-export default async function page({
+export default function page({
   params,
 }: {
   params: Promise<{ postId: string }>;
 }) {
-  const { postId } = await params;
-  const post = posts.filter((post) => post.id === postId)[0];
-  return <PostDialog post={post} />;
+  return (
+    <Suspense fallback={<PostDialogSkeleton />}>
+      <PostDiaglogWrapper params={params} />
+    </Suspense>
+  );
 }

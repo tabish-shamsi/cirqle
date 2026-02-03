@@ -8,10 +8,11 @@ import {
   DialogOverlay,
   DialogTitle,
 } from "@/components/ui/dialog";
+import IPost from "@/types/Post";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function PostDialog({ post }: any) {
+export default function PostDialog({ post }: { post: IPost }) {
   const [open, setOpen] = useState(true);
   const router = useRouter();
 
@@ -25,7 +26,7 @@ export default function PostDialog({ post }: any) {
       <DialogOverlay>
         <DialogContent
           showCloseButton={false}
-          className="p-0 rounded-xl md:max-w-[600px]"
+          className="p-0 rounded-xl md:max-w-150"
         >
           <DialogHeader className="hidden">
             <DialogTitle>{post.author.name}'s Post</DialogTitle>

@@ -3,9 +3,10 @@ import checkAuth from "./check-auth";
 import Post from "@/models/Post";
 import Comment from "@/models/Comment";
 import Like from "@/models/Like";
-import toJSON from "@/utils/toJSON"; 
+import toJSON from "@/utils/toJSON";
+import sleep from "@/utils/sleep";
 
-export default async function getPosts(userId?: string) {
+export default async function getPosts() {
   const { id } = await checkAuth();
   await db();
 
@@ -29,7 +30,50 @@ export default async function getPosts(userId?: string) {
       const likesCount = await Like.countDocuments({ postId: post._id });
       const isLiked = await Like.findOne({ postId: post._id, userId: id });
 
-      return { ...toJSON(post), commentsCount, likesCount, isLiked: isLiked ? true : false };
+      return {
+        ...toJSON(post),
+        commentsCount,
+        likesCount,
+        isLiked: isLiked ? true : false,
+      };
     }),
   );
+}
+
+export async function getPostById(postId: string) {
+  const { id } = await checkAuth();
+  await db();
+
+  await sleep(1000);
+
+  const post = await Post.findById(postId)
+    .sort({ createdAt: -1 })
+    .populate({
+      path: "author",
+      select: "name avatar",
+      populate: { path: "avatar", select: "url" },
+    })
+    .populate({
+      path: "media",
+      select: "url type",
+    });
+
+  if (!post) return null;
+  const commentsCount = await Comment.countDocuments({ postId });
+  const likesCount = await Like.countDocuments({ postId });
+  const isLiked = await Like.findOne({ postId, userId: id });
+
+  return {
+    ...toJSON(post),
+    commentsCount,
+    likesCount,
+    isLiked: isLiked ? true : false,
+  };
+}
+
+export async function getComments(postId: string) {
+  const res = await fetch(`/api/posts/${postId}/get-comments`);
+  const data = await res.json();
+
+  return data;
 }

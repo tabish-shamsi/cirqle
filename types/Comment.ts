@@ -4,11 +4,9 @@ import TUser from "./User";
 interface IComment {
   _id: mongoose.Types.ObjectId;
 
-  authorId: mongoose.Types.ObjectId;
-  author?: TUser;
-
+  author: TUser;
   postId: mongoose.Types.ObjectId;
-  parentId: mongoose.Types.ObjectId;
+  parentId?: mongoose.Types.ObjectId;
 
   comment: string;
 

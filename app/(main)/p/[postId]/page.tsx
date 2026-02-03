@@ -1,19 +1,14 @@
-import SinglePostCard from "@/components/posts/single-post-card";
-
-import { posts } from "@/lib/temporary-mock-data";
+import SinglePost from "@/components/posts/single-post"; 
+import { Suspense } from "react";
 
 export default async function page({
   params,
 }: {
   params: Promise<{ postId: string }>;
-}) {
-  const { postId } = await params;
-  const post = posts.filter((post) => post.id === postId)[0];
+}) { 
   return (
-    <div className="flex items-center justify-center mb-4">
-      <div className="w-full md:w-3/4">
-        <SinglePostCard post={post} />
-      </div>
-    </div>
+    <Suspense fallback={<p>Loading...</p>}>
+      <SinglePost params={params} />
+    </Suspense>
   );
 }
