@@ -3,17 +3,10 @@ import checkAuth from "./check-auth";
 import Post from "@/models/Post";
 import Comment from "@/models/Comment";
 import Like from "@/models/Like";
-import toJSON from "@/utils/toJSON";
-import IPost from "@/types/Post";
-
-export type GetPosts = {
-  post: IPost;
-  likesCount: number;
-  commentsCount: number;
-};
+import toJSON from "@/utils/toJSON"; 
 
 export default async function getPosts(userId?: string) {
-  await checkAuth();
+  const { id } = await checkAuth();
   await db();
 
   const posts = await Post.find()
@@ -34,8 +27,9 @@ export default async function getPosts(userId?: string) {
     posts.map(async (post) => {
       const commentsCount = await Comment.countDocuments({ postId: post._id });
       const likesCount = await Like.countDocuments({ postId: post._id });
+      const isLiked = await Like.findOne({ postId: post._id, userId: id });
 
-      return { ...toJSON(post), commentsCount, likesCount };
+      return { ...toJSON(post), commentsCount, likesCount, isLiked: isLiked ? true : false };
     }),
   );
 }

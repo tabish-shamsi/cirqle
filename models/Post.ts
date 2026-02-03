@@ -22,9 +22,9 @@ const PostSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
-    },
+    }, 
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 /**
@@ -33,19 +33,18 @@ const PostSchema = new Schema(
 PostSchema.pre("validate", async function (next) {
   if (!this.media || this.media.length === 0) {
     this.postType = null;
-    return
+    return;
   }
 
   if (this.postType === "video" && this.media.length !== 1) {
-    return new Error("A post can contain only one video")
+    return new Error("A post can contain only one video");
   }
 
   if (this.postType === "image" && this.media.length > 4) {
-    return new Error("A post can contain up to 4 images")
+    return new Error("A post can contain up to 4 images");
   }
 
-  return
+  return;
 });
 
-export default mongoose.models.Post ||
-  mongoose.model("Post", PostSchema);
+export default mongoose.models.Post || mongoose.model("Post", PostSchema);
