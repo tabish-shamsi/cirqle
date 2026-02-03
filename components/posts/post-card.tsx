@@ -5,30 +5,19 @@ import { Heart, MessageCircle, Share2 } from "lucide-react";
 import { formatDate } from "@/utils/formatDate";
 import Link from "next/link";
 import MediaSlider from "./media-slider";
+import { getUserInitials } from "@/utils/getUserInitials";
 
 export function PostCard({ post }: { post: any }) {
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row gap-3 items-center">
         <Avatar className="w-11 h-11">
-          <AvatarImage src={post.author.avatar} />
-          <AvatarFallback>
-            {post.author.name
-              .split(" ")
-              .map((n: any[]) => n[0])
-              .join("")}
-          </AvatarFallback>
+          <AvatarImage src={post.author.avatar.url} />
+          <AvatarFallback>{getUserInitials(post.author.name)}</AvatarFallback>
         </Avatar>
 
         <div>
-          <p className="text-lg font-medium leading-none">
-            {post.author.name}
-            {post.message && (
-              <span className="text-xs text-muted-foreground ml-1">
-                {post.message}
-              </span>
-            )}
-          </p>
+          <p className="text-lg font-medium leading-none">{post.author.name}</p>
           <p className="text-sm text-muted-foreground capitalize">
             {formatDate(post.createdAt)}
           </p>

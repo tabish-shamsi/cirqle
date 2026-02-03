@@ -27,7 +27,7 @@ export default function AccountInfoForm({ accountInfo }: { accountInfo: TAccount
     const handleSubmit = async (data: TAccountInfoSchema) => {
         setLoading(true)
         const res = await updateAccountInfo(data)
-        if (!res.error) toast.error(res.error)
+        if (res.error) toast.error(res.error)
         if (res.success) {
             toast.success(res.message)
             update({ name: `${data.firstName} ${data.lastName}`, username: data.username })

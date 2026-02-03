@@ -15,8 +15,7 @@ import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import checkUsernameUnique from "@/actions/auth/check-username-unique";
-import LogoutButton from "../temporary-logout-button"; 
+import checkUsernameUnique from "@/actions/auth/check-username-unique"; 
 import emailOTP from "@/actions/email/send-email";
 
 export default function RegisterForm() {
@@ -27,7 +26,7 @@ export default function RegisterForm() {
       username: "",
       email: "test@gmail.com",
       birthday: new Date("01/09/2007"),
-      password: "Test@123",
+      password: "Tabish@123",
       terms: true,
     },
   });
@@ -97,7 +96,6 @@ export default function RegisterForm() {
 
   return (
     <Form form={form} onSubmit={handleRegister}>
-      <LogoutButton />
       <div className="space-y-5">
         {/* Name */}
         <InputWithIcon

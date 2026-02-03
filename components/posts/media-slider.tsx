@@ -4,14 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import IMedia from "@/types/Media";
 
-type MediaItem = {
-  id: string;
-  type: "image" | "video";
-  url: string;
-};
-
-export default function MediaSlider({ media }: { media: MediaItem[] }) {
+export default function MediaSlider({ media }: { media: IMedia[] }) {
   const [index, setIndex] = useState(0);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
