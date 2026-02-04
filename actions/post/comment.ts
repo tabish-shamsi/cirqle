@@ -9,7 +9,7 @@ import toJSON from "@/utils/toJSON";
 export async function postComment(
   postId: string,
   comment: string,
-  parentId?: string,
+  parentId: string | null,
 ) {
   try {
     const { id } = await checkAuth();
@@ -84,4 +84,20 @@ export async function deleteComment(commentId: string) {
     console.error(error);
     return { error: "Something went wrong while deleting comment" };
   }
+}
+
+export async function getCommentReplies(commentId: string) {
+  await checkAuth();
+  await db();
+
+  const replies = await Comment.find({ parentId: commentId })
+    .populate({
+      path: "author",
+      select: "name",
+      populate: { path: "avatar", select: "url" },
+    })
+    .sort({ createdAt: -1 });
+  if (!replies || replies.length === 0) return [];
+
+  return toJSON(replies);
 }

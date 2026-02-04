@@ -9,6 +9,8 @@ interface IComment {
   parentId?: mongoose.Types.ObjectId;
 
   comment: string;
+  repliesCount: number;
+  replies: any[];
 
   createdAt: Date;
   updatedAt: Date;

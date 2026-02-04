@@ -29,8 +29,7 @@ export function PostCard({ post }: { post: IPost }) {
       <CardContent className="space-y-4">
         <p className="text-sm">{post.content}</p>
 
-        {/* {post.media.length > 0 && <PostMediaGrid media={post.media} />} */}
-        <MediaSlider media={post.media} />
+        {post.media.length > 0 && <MediaSlider media={post.media} />}
 
         <div className="flex justify-between text-muted-foreground">
           <div className="flex gap-4">

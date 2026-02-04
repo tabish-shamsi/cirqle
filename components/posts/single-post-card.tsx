@@ -33,6 +33,8 @@ import {
   editComment,
   postComment,
 } from "@/actions/post/comment";
+import CommentReplies from "./comment-replies";
+import { ScrollArea } from "../ui/scroll-area";
 
 export default function SinglePostCard({
   post,
@@ -50,7 +52,7 @@ export default function SinglePostCard({
 
   const [comment, setComment] = useState("");
   const [repliengTo, setRepliengTo] = useState("");
-  const [replyingId, setReplyingId] = useState("");
+  const [replyingId, setReplyingId] = useState<string | null>(null);
   const [editCommentId, setEditCommentId] = useState("");
 
   const handleCommenting = async () => {
@@ -67,7 +69,7 @@ export default function SinglePostCard({
       return;
     }
 
-    const res = await postComment(post._id.toString(), comment);
+    const res = await postComment(post._id.toString(), comment, replyingId);
     if (res.error) {
       toast.error(res.error);
       return;
@@ -76,8 +78,24 @@ export default function SinglePostCard({
     if (res.success) {
       setComment("");
       if (comments.length > 1) {
-        setComments((prev) => [res.comment, ...prev]);
-        setCommentsCount((prev) => prev + 1);
+        if (replyingId && repliengTo) {
+          setComments((prev: IComment[]) =>
+            prev.map((c: IComment) =>
+              c._id.toString() === replyingId
+                ? {
+                    ...c,
+                    replies: [res.comment, ...c.replies],
+                  }
+                : c,
+            ),
+          );
+          setRepliengTo("");
+          setReplyingId(null);
+        } else {
+          setComments((prev) => [res.comment, ...prev]);
+        }
+
+        setCommentsCount((prev) => prev - 1);
       } else {
         getComments();
       }
@@ -95,6 +113,7 @@ export default function SinglePostCard({
     const data = await res.json();
 
     setComments(data);
+    setCommentsCount(data.length);
     setIsGettingComments(false);
   }
 
@@ -124,110 +143,124 @@ export default function SinglePostCard({
       </CardHeader>
       <Separator />
 
-      {/* <ScrollArea className="h-112.5"> */}
-      <CardContent className="space-y-4 py-6">
-        <div className="flex flex-row gap-3 items-center">
-          <Avatar className="w-11 h-11">
-            <AvatarImage src={post.author?.avatar?.url} />
-            <AvatarFallback>{getUserInitials(post.author.name)}</AvatarFallback>
-          </Avatar>
+      <ScrollArea className="h-140">
+        <CardContent className="space-y-4 py-6">
+          <div className="flex flex-row gap-3 items-center">
+            <Avatar className="w-11 h-11">
+              <AvatarImage src={post.author?.avatar?.url} />
+              <AvatarFallback>
+                {getUserInitials(post.author.name)}
+              </AvatarFallback>
+            </Avatar>
 
-          <div>
-            <p className="text-lg font-medium leading-none">
-              {post.author.name}
-            </p>
-            <p className="text-sm text-muted-foreground capitalize">
-              {formatDate(post.createdAt)}
-            </p>
-          </div>
-        </div>
-
-        <p>{post.content}</p>
-
-        <MediaSlider media={post.media} />
-
-        <div className="flex items-center ">
-          <LikeButton
-            isLiked={post.isLiked ?? false}
-            likesCount={post.likesCount ?? 0}
-            postId={post._id.toString()}
-          />
-          <Button className="text-muted-foreground" variant="ghost">
-            <MessageCircle className="h-4 w-4" />
-            {commentsCount}
-          </Button>
-          <Button className="text-muted-foreground" variant="ghost">
-            <SendHorizonal className="h-4 w-4" />
-            126
-          </Button>
-        </div>
-
-        {comments.length === 0 && (
-          <Button onClick={getComments} variant="ghost">
-            View Comments{" "}
-            {isGettingComments && (
-              <Loader2 className="text-primary animate-spin" />
-            )}
-          </Button>
-        )}
-
-        {/* COMMENTS */}
-
-        {comments.length > 0 &&
-          comments.map((comment) => (
-            <div key={comment._id.toString()} className="space-y-2">
-              <div className="flex gap-2">
-                <Comment comment={comment} />
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="rounded-full px-0 py-0 h-8 w-8"
-                    >
-                      <Ellipsis />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <Button
-                      onClick={() => {
-                        setRepliengTo(comment.author.name);
-                        setReplyingId(comment._id.toString());
-                      }}
-                      variant="ghost"
-                      size="sm"
-                      className="w-full"
-                    >
-                      Reply
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setEditCommentId(comment._id.toString());
-                        setComment(comment.comment);
-                      }}
-                      variant="ghost"
-                      size="sm"
-                      className="w-full"
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        handleDeleteComment(comment._id.toString())
-                      }
-                      variant="ghost"
-                      size="sm"
-                      className="w-full"
-                    >
-                      Delete
-                    </Button>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-              {/* <CommentReplies comment={comment} /> */}
+            <div>
+              <p className="text-lg font-medium leading-none">
+                {post.author.name}
+              </p>
+              <p className="text-sm text-muted-foreground capitalize">
+                {formatDate(post.createdAt)}
+              </p>
             </div>
-          ))}
-      </CardContent>
-      {/* </ScrollArea> */}
+          </div>
+
+          <p>{post.content}</p>
+
+          {post.media.length > 0 && <MediaSlider media={post.media} />}
+
+          <div className="flex items-center ">
+            <LikeButton
+              isLiked={post.isLiked ?? false}
+              likesCount={post.likesCount ?? 0}
+              postId={post._id.toString()}
+            />
+            <Button className="text-muted-foreground" variant="ghost">
+              <MessageCircle className="h-4 w-4" />
+              {commentsCount}
+            </Button>
+            <Button className="text-muted-foreground" variant="ghost">
+              <SendHorizonal className="h-4 w-4" />
+              126
+            </Button>
+          </div>
+
+          {commentsCount > 0 && comments.length === 0 && (
+            <Button onClick={getComments} variant="ghost">
+              View Comments{" "}
+              {isGettingComments && (
+                <Loader2 className="text-primary animate-spin" />
+              )}
+            </Button>
+          )}
+
+          {commentsCount === 0 && (
+            <p className="text-sm text-muted-foreground my-2">
+              No comments yet
+            </p>
+          )}
+
+          {/* COMMENTS */}
+
+          {comments.length > 0 &&
+            comments.map((comment) => (
+              <div key={comment._id.toString()} className="space-y-2">
+                <div className="flex gap-2">
+                  <Comment comment={comment} />
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="rounded-full px-0 py-0 h-8 w-8"
+                      >
+                        <Ellipsis />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <Button
+                        onClick={() => {
+                          setRepliengTo(comment.author.name);
+                          setReplyingId(comment._id.toString());
+                        }}
+                        variant="ghost"
+                        size="sm"
+                        className="w-full"
+                      >
+                        Reply
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          setEditCommentId(comment._id.toString());
+                          setComment(comment.comment);
+                        }}
+                        variant="ghost"
+                        size="sm"
+                        className="w-full"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        onClick={() =>
+                          handleDeleteComment(comment._id.toString())
+                        }
+                        variant="ghost"
+                        size="sm"
+                        className="w-full"
+                      >
+                        Delete
+                      </Button>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+                <CommentReplies
+                  replies={comment.replies}
+                  setComments={setComments}
+                  parentId={comment._id.toString()}
+                  repliesCount={comment.repliesCount}
+                  parent={comment.author.name}
+                />
+              </div>
+            ))}
+        </CardContent>
+      </ScrollArea>
 
       <CardFooter>
         <div className="w-full">
