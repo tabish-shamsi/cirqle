@@ -1,6 +1,4 @@
-import { posts } from "@/lib/temporary-mock-data";
 import CreatePost from "../posts/create-post";
-import PostList from "../posts/post-list";
 import Stories from "../stories/stories";
 import HomePosts from "./posts";
 import { Suspense } from "react";

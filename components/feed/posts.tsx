@@ -1,12 +1,10 @@
 import getPosts from "@/data/post";
-import { PostCard } from "../posts/post-card";
+import PostList from "./posts-list";
+import { nanoid } from "nanoid";
 
 export default async function HomePosts() {
   const posts = await getPosts();
+  const id = nanoid();
 
-  if (posts.length > 0) {
-    return posts.map((post) => (
-      <PostCard key={post._id.toString()} post={post} />
-    ));
-  } 
+  return <PostList key={id} initialPosts={posts} />;
 }

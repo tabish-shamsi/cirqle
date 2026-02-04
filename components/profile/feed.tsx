@@ -1,17 +1,15 @@
-import { posts, user } from "@/lib/temporary-mock-data";
-import CreatePost from "../posts/create-post";
-import PostList from "../posts/post-list";
+import { Suspense } from "react";
+import CreatePost from "../posts/create-post"; 
+import { PostSkeleton } from "../posts/post-skeleton";
+import ProfilePosts from "./profile-posts";
 
-export default function Feed() {
-  const userPosts = posts.map((post) => {
-    return {...post, author: user}
-  });
-
-  
+export default function Feed({ userId }: { userId: string }) {
   return (
     <div className="space-y-4 w-full lg:w-2/3 lg:pl-4 pt-4">
-      <CreatePost />
-      <PostList posts={userPosts} />
+      <CreatePost userId={userId} />
+      <Suspense fallback={<PostSkeleton />}>
+        <ProfilePosts userId={userId} />
+      </Suspense>
     </div>
   );
 }

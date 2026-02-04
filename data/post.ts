@@ -5,13 +5,13 @@ import Comment from "@/models/Comment";
 import Like from "@/models/Like";
 import toJSON from "@/utils/toJSON";
 import sleep from "@/utils/sleep";
+import { POSTS_LIMIT } from "@/lib/constants";
 
-export default async function getPosts() {
+export default async function getPosts(skip?: number, userId?: string) {
   const { id } = await checkAuth();
-  await db();
+  await db(); 
 
-  const posts = await Post.find()
-    .sort({ createdAt: -1 })
+  const posts = await Post.find({ author: userId })
     .populate({
       path: "author",
       select: "name avatar",
@@ -20,7 +20,10 @@ export default async function getPosts() {
     .populate({
       path: "media",
       select: "url type",
-    });
+    })
+    .sort({ createdAt: -1 })
+    .limit(POSTS_LIMIT)
+    .skip(skip ?? 0);
 
   if (!posts || posts.length === 0) return [];
 
