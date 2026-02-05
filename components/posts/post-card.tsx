@@ -1,18 +1,48 @@
+"use client";
+
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Share2 } from "lucide-react";
+import { Ellipsis, MessageCircle, Pencil, Share2, Trash } from "lucide-react";
 import { formatDate } from "@/utils/formatDate";
 import Link from "next/link";
 import MediaSlider from "./media-slider";
 import { getUserInitials } from "@/utils/getUserInitials";
 import LikeButton from "./like-button";
 import IPost from "@/types/Post";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import useAuth from "@/hooks/useAuth";
+import deletePost from "@/actions/post/delete-post";
+import { toast } from "sonner";
 
-export function PostCard({ post }: { post: IPost }) {
+export function PostCard({ post, setPosts }: { post: IPost; setPosts: any }) {
+  const { user, update } = useAuth();
+
+  const handleDeletePost = async () => {
+    const res = await deletePost(post._id.toString());
+    if (!res.success) {
+      toast.message(res.error);
+      return;
+    }
+
+    if (post.specialType === "avatar" && post.media[0].url === user.avatar) {
+      await update({ avatar: "" });
+    }
+
+    toast.message(res.message);
+    setPosts((prev: IPost[]) =>
+      prev.filter((p) => p._id.toString() !== post._id.toString()),
+    );
+  };
+
   return (
     <Card className="w-full">
-      <CardHeader className="flex flex-row gap-3 items-center">
+      <CardHeader className="flex flex-row gap-3 items-center relative">
         <Avatar className="w-11 h-11">
           <AvatarImage src={post.author?.avatar?.url} />
           <AvatarFallback>{getUserInitials(post.author.name)}</AvatarFallback>
@@ -24,6 +54,29 @@ export function PostCard({ post }: { post: IPost }) {
             {formatDate(post.createdAt)}
           </p>
         </div>
+
+        {user && user.id === post.author._id.toString() && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-0 right-6"
+              >
+                <Ellipsis />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <Pencil /> Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleDeletePost}>
+                <Trash /> Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </CardHeader>
 
       <CardContent className="space-y-4">

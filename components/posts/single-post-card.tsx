@@ -98,6 +98,7 @@ export default function SinglePostCard({
         setCommentsCount((prev) => prev - 1);
       } else {
         getComments();
+        setCommentsCount(commentsCount + 1)
       }
     }
   };
@@ -113,7 +114,6 @@ export default function SinglePostCard({
     const data = await res.json();
 
     setComments(data);
-    setCommentsCount(data.length);
     setIsGettingComments(false);
   }
 

@@ -18,11 +18,16 @@ const PostSchema = new Schema(
       enum: ["image", "video", null],
       default: null,
     },
+    specialType: {
+      type: String,
+      enum: ["avatar", "cover", null],
+      default: null,
+    },
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
-    }, 
+    },
   },
   { timestamps: true },
 );

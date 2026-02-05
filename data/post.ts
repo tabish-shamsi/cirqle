@@ -9,21 +9,38 @@ import { POSTS_LIMIT } from "@/lib/constants";
 
 export default async function getPosts(skip?: number, userId?: string) {
   const { id } = await checkAuth();
-  await db(); 
+  await db();
 
-  const posts = await Post.find({ author: userId })
-    .populate({
-      path: "author",
-      select: "name avatar",
-      populate: { path: "avatar", select: "url" },
-    })
-    .populate({
-      path: "media",
-      select: "url type",
-    })
-    .sort({ createdAt: -1 })
-    .limit(POSTS_LIMIT)
-    .skip(skip ?? 0);
+  let posts = [];
+  if (userId) {
+    posts = await Post.find({ author: userId })
+      .populate({
+        path: "author",
+        select: "name avatar",
+        populate: { path: "avatar", select: "url" },
+      })
+      .populate({
+        path: "media",
+        select: "url type",
+      })
+      .sort({ createdAt: -1 })
+      .limit(POSTS_LIMIT)
+      .skip(skip ?? 0);
+  } else {
+    posts = await Post.find()
+      .populate({
+        path: "author",
+        select: "name avatar",
+        populate: { path: "avatar", select: "url" },
+      })
+      .populate({
+        path: "media",
+        select: "url type",
+      })
+      .sort({ createdAt: -1 })
+      .limit(POSTS_LIMIT)
+      .skip(skip ?? 0);
+  }
 
   if (!posts || posts.length === 0) return [];
 

@@ -6,5 +6,5 @@ export default async function HomePosts() {
   const posts = await getPosts();
   const id = nanoid();
 
-  return <PostList key={id} initialPosts={posts} />;
+  return <PostList key={id} initialPosts={posts}  />;
 }

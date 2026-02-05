@@ -48,7 +48,7 @@ export default function PostList({
   return (
     <>
       {posts.map((post) => (
-        <PostCard key={post._id.toString()} post={post} />
+        <PostCard key={post._id.toString()} post={post} setPosts={setPosts} />
       ))}
       {isEnd ? (
         <p className="text-muted-foreground text-center">

@@ -8,7 +8,9 @@ interface IPost extends Document {
   content: string;
   media: IMedia[];
   author: TUser;
+
   postType: "image" | "video";
+  specialType: "avatar" | "cover";
 
   commentsCount?: number;
   likesCount?: number;

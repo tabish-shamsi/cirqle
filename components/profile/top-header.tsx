@@ -9,19 +9,33 @@ import UploadAvatar from "./upload-avatar";
 import UploadCover from "./upload-cover";
 import { getFriendStatus } from "@/data/friend";
 import FriendButton from "./friend-button";
+import { nanoid } from "nanoid";
 
 export default async function ProfileHeader({ userId }: { userId: string }) {
-  const profileDetails = await getProfileHeader(userId)
-  const friend = await getFriendStatus(userId)
+  const profileDetails = await getProfileHeader(userId);
+  const friend = await getFriendStatus(userId);
+
+  const avatarId = nanoid();
+  const coverId = nanoid();
 
   return (
     <Card className="p-0 gap-0 overflow-hidden w-full">
       {/* Cover Photo */}
-      <UploadCover name={profileDetails.name} cover={profileDetails.cover} userId={userId} />
+      <UploadCover
+        key={coverId}
+        name={profileDetails.name}
+        cover={profileDetails.cover}
+        userId={userId}
+      />
 
       <div className="relative p-4 md:pb-8.5">
         {/* Profile Image */}
-        <UploadAvatar name={profileDetails.name} avatar={profileDetails.avatar} userId={userId} />
+        <UploadAvatar
+          key={avatarId}
+          name={profileDetails.name}
+          avatar={profileDetails.avatar}
+          userId={userId}
+        />
 
         <div className="mt-6 md:mt-0 md:ml-35 flex gap-4 flex-col text-center md:text-left md:flex-row items-center md:justify-between">
           {/* User Details  */}
@@ -32,7 +46,13 @@ export default async function ProfileHeader({ userId }: { userId: string }) {
 
           {/* Action Buttons */}
           <div className="flex items-center gap-2">
-            {friend && <FriendButton friend={friend?.friend} friendType={friend?.friendType} userId={userId} />}
+            {friend && (
+              <FriendButton
+                friend={friend?.friend}
+                friendType={friend?.friendType}
+                userId={userId}
+              />
+            )}
             <Button variant="secondary" className="h-9 md:size-11">
               <Mail className="h-4 md:h-6! w-4 md:w-6!" />
               <span className="md:hidden">Message</span>
@@ -52,7 +72,7 @@ export default async function ProfileHeader({ userId }: { userId: string }) {
             className={cn(
               "pb-3 text-muted-foreground font-semibold text-sm",
               i === 0 &&
-              "border-b-2 border-b-card-foreground text-card-foreground",
+                "border-b-2 border-b-card-foreground text-card-foreground",
             )}
           >
             {link}

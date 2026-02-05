@@ -5,9 +5,6 @@ interface IMedia extends Document {
 
   authorId: mongoose.Types.ObjectId;
 
-  postId?: mongoose.Types.ObjectId;
-  storyId?: mongoose.Types.ObjectId;
-
   url: string;
   type: "image" | "video" | "story";
   fileId: string;
