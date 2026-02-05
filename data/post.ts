@@ -63,9 +63,7 @@ export default async function getPosts(skip?: number, userId?: string) {
 export async function getPostById(postId: string) {
   const { id } = await checkAuth();
   await db();
-
-  await sleep(1000);
-
+  
   const post = await Post.findById(postId)
     .sort({ createdAt: -1 })
     .populate({

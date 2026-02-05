@@ -68,9 +68,11 @@ export function PostCard({ post, setPosts }: { post: IPost; setPosts: any }) {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent>
-              <DropdownMenuItem>
-                <Pencil /> Edit
-              </DropdownMenuItem>
+              <Link href={`/p/${post._id}/edit`}>
+                <DropdownMenuItem>
+                  <Pencil /> Edit
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuItem onClick={handleDeletePost}>
                 <Trash /> Delete
               </DropdownMenuItem>
