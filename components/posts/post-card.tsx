@@ -44,7 +44,9 @@ export function PostCard({ post, setPosts }: { post: IPost; setPosts: any }) {
     <Card className="w-full">
       <CardHeader className="flex flex-row gap-3 items-center relative">
         <Avatar className="w-11 h-11">
-          <AvatarImage src={post.author?.avatar?.url} />
+          <AvatarImage
+            src={`${post.author?.avatar?.url}?tr=w-200,h-200,c-at_max,fo-face,f-auto,q-auto`}
+          />
           <AvatarFallback>{getUserInitials(post.author.name)}</AvatarFallback>
         </Avatar>
 

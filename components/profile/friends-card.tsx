@@ -5,6 +5,7 @@ import { getAcceptedFriends } from "@/data/friend";
 import Link from "next/link";
 import IUser from "@/types/User";
 import { getUserInitials } from "@/utils/getUserInitials";
+import avatarUrl from "@/utils/avatarUrl";
 
 export default async function FriendsCard() {
   const friends = await getAcceptedFriends()
@@ -34,7 +35,7 @@ export default async function FriendsCard() {
                 className="flex flex-col items-center gap-2 text-center"
               >
                 <Avatar className="h-16 w-16">
-                  <AvatarImage src={user?.avatar?.url} alt={user.name} />
+                  <AvatarImage src={avatarUrl(user?.avatar?.url ?? "")} alt={user.name} />
                   <AvatarFallback>
                     {getUserInitials(user.name)}
                   </AvatarFallback>

@@ -9,7 +9,6 @@ import FriendsCardSkeleton from "../skeletons/friends-card-skeleton";
 export default function ProfileSidebar({ userId }: { userId: string }) {
   return (
     <div className="w-full lg:w-1/3 space-y-4 pt-4">
-
       <Suspense fallback={<AboutCardSkeleton />}>
         <AboutCard userId={userId} />
       </Suspense>
@@ -18,7 +17,9 @@ export default function ProfileSidebar({ userId }: { userId: string }) {
         <SocialsCard userId={userId} />
       </Suspense>
 
-      <Suspense fallback={<FriendsCardSkeleton />}><FriendsCard /></Suspense>
+      <Suspense fallback={<FriendsCardSkeleton />}>
+        <FriendsCard />
+      </Suspense>
     </div>
   );
 }

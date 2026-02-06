@@ -1,13 +1,14 @@
 import { getUserInitials } from "@/utils/getUserInitials";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Card, CardContent } from "../ui/card";
+import avatarUrl from "@/utils/avatarUrl";
 
 export default function FriendCard({ friend, actions }: any) {
   return (
     <Card className="w-full">
       <CardContent className="flex flex-col items-center justify-center gap-4">
         <Avatar className="w-12 h-12">
-          <AvatarImage src={friend.avatar.url} />
+          <AvatarImage src={avatarUrl(friend.avatar.url)} />
           <AvatarFallback>{getUserInitials(friend.name)}</AvatarFallback>
         </Avatar>
 

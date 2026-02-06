@@ -4,33 +4,182 @@ import Post from "@/models/Post";
 import Comment from "@/models/Comment";
 import Like from "@/models/Like";
 import toJSON from "@/utils/toJSON";
-import sleep from "@/utils/sleep";
 import { POSTS_LIMIT } from "@/lib/constants";
 
-export default async function getPosts(skip?: number, userId?: string) {
+type GetPostsProps = {
+  skip?: number;
+  userId?: string;
+  postType?: "image" | "video";
+  query?: string;
+};
+
+// export default async function getPosts({
+//   skip,
+//   userId,
+//   postType,
+//   query,
+// }: GetPostsProps) {
+//   const { id } = await checkAuth();
+//   await db();
+
+//   let posts = [];
+//   if (userId) {
+//     posts = await Post.find({ author: userId })
+//       .populate({
+//         path: "author",
+//         select: "name avatar",
+//         populate: { path: "avatar", select: "url" },
+//       })
+//       .populate({
+//         path: "media",
+//         select: "url type",
+//       })
+//       .sort({ createdAt: -1 })
+//       .limit(POSTS_LIMIT)
+//       .skip(skip ?? 0);
+//   } else if (postType) {
+//     posts = await Post.find({ postType })
+//       .populate({
+//         path: "author",
+//         select: "name avatar",
+//         populate: { path: "avatar", select: "url" },
+//       })
+//       .populate({
+//         path: "media",
+//         select: "url type",
+//       })
+//       .sort({ createdAt: -1 })
+//       .limit(POSTS_LIMIT)
+//       .skip(skip ?? 0);
+//   } else {
+//     posts = await Post.find()
+//       .populate({
+//         path: "author",
+//         select: "name avatar",
+//         populate: { path: "avatar", select: "url" },
+//       })
+//       .populate({
+//         path: "media",
+//         select: "url type",
+//       })
+//       .sort({ createdAt: -1 })
+//       .limit(POSTS_LIMIT)
+//       .skip(skip ?? 0);
+//   }
+
+//   if (!posts || posts.length === 0) return [];
+
+//   return Promise.all(
+//     posts.map(async (post) => {
+//       const commentsCount = await Comment.countDocuments({ postId: post._id });
+//       const likesCount = await Like.countDocuments({ postId: post._id });
+//       const isLiked = await Like.findOne({ postId: post._id, userId: id });
+
+//       return {
+//         ...toJSON(post),
+//         commentsCount,
+//         likesCount,
+//         isLiked: isLiked ? true : false,
+//       };
+//     }),
+//   );
+// }
+
+export default async function getPosts({
+  skip,
+  userId,
+  postType,
+  query,
+}: GetPostsProps) {
   const { id } = await checkAuth();
   await db();
 
   let posts = [];
-  if (userId) {
-    posts = await Post.find({ author: userId })
+
+  // =========================
+  // 🔍 SEARCH MODE (AGGREGATION)
+  // =========================
+  if (query) {
+    const regex = new RegExp(query, "i");
+
+    const matchStage = {
+      $or: [
+        { content: regex },
+        { "author.name": regex },
+        { "author.username": regex },
+      ],
+    };
+
+    // Apply optional filters
+    // if (userId) matchStage.authorId = userId;
+    // if (postType) matchStage.postType = postType;
+
+    posts = await Post.aggregate([
+      // Join users
+      {
+        $lookup: {
+          from: "users",
+          localField: "author",
+          foreignField: "_id",
+          as: "author",
+        },
+      },
+      { $unwind: "$author" },
+
+      // Join avatar
+      {
+        $lookup: {
+          from: "media",
+          localField: "author.avatar",
+          foreignField: "_id",
+          as: "author.avatar",
+        },
+      },
+      {
+        $unwind: {
+          path: "$author.avatar",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+
+      // Join post media
+      {
+        $lookup: {
+          from: "media",
+          localField: "media",
+          foreignField: "_id",
+          as: "media",
+        },
+      },
+
+      // Filters
+      {
+        $match: {
+          ...(userId && { author: userId }),
+          ...(postType && { postType }),
+          ...matchStage,
+        },
+      },
+
+      // Sorting & pagination
+      { $sort: { createdAt: -1 } },
+      { $skip: skip ?? 0 },
+      { $limit: POSTS_LIMIT },
+    ]);
+  }
+
+  // =========================
+  // 📄 NORMAL MODE (NO SEARCH)
+  // =========================
+  else {
+    const filter: { author?: string; postType?: "image" | "video" } = {};
+    if (userId) filter.author = userId;
+    if (postType) filter.postType = postType;
+
+    posts = await Post.find(filter)
       .populate({
         path: "author",
-        select: "name avatar",
-        populate: { path: "avatar", select: "url" },
-      })
-      .populate({
-        path: "media",
-        select: "url type",
-      })
-      .sort({ createdAt: -1 })
-      .limit(POSTS_LIMIT)
-      .skip(skip ?? 0);
-  } else {
-    posts = await Post.find()
-      .populate({
-        path: "author",
-        select: "name avatar",
+        select: "name username avatar",
         populate: { path: "avatar", select: "url" },
       })
       .populate({
@@ -44,17 +193,22 @@ export default async function getPosts(skip?: number, userId?: string) {
 
   if (!posts || posts.length === 0) return [];
 
+  // =========================
+  // ❤️ COUNTS & LIKE STATUS
+  // =========================
   return Promise.all(
     posts.map(async (post) => {
-      const commentsCount = await Comment.countDocuments({ postId: post._id });
-      const likesCount = await Like.countDocuments({ postId: post._id });
-      const isLiked = await Like.findOne({ postId: post._id, userId: id });
+      const postId = post._id;
+
+      const commentsCount = await Comment.countDocuments({ postId });
+      const likesCount = await Like.countDocuments({ postId });
+      const isLiked = await Like.findOne({ postId, userId: id });
 
       return {
         ...toJSON(post),
         commentsCount,
         likesCount,
-        isLiked: isLiked ? true : false,
+        isLiked: !!isLiked,
       };
     }),
   );
@@ -63,7 +217,7 @@ export default async function getPosts(skip?: number, userId?: string) {
 export async function getPostById(postId: string) {
   const { id } = await checkAuth();
   await db();
-  
+
   const post = await Post.findById(postId)
     .sort({ createdAt: -1 })
     .populate({

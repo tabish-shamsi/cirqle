@@ -26,7 +26,7 @@ export default function MediaSlider({ media }: { media: IMedia[] }) {
     <div className="relative h-96 w-full overflow-hidden rounded-lg bg-black">
       {media[index].type === "image" ? (
         <Image
-          src={media[index].url}
+          src={`${media[index].url}?tr=w-1080,c-at_max,fo-auto,f-auto,q-auto`}
           fill
           alt=""
           className="object-cover w-full h-full"
@@ -63,7 +63,7 @@ export default function MediaSlider({ media }: { media: IMedia[] }) {
               key={i}
               className={cn(
                 "h-2 w-2 rounded-full",
-                i === index ? "bg-white" : "bg-white/50"
+                i === index ? "bg-white" : "bg-white/50",
               )}
             />
           ))}

@@ -35,6 +35,7 @@ import {
 } from "@/actions/post/comment";
 import CommentReplies from "./comment-replies";
 import { ScrollArea } from "../ui/scroll-area";
+import avatarUrl from "@/utils/avatarUrl";
 
 export default function SinglePostCard({
   post,
@@ -147,7 +148,7 @@ export default function SinglePostCard({
         <CardContent className="space-y-4 py-6">
           <div className="flex flex-row gap-3 items-center">
             <Avatar className="w-11 h-11">
-              <AvatarImage src={post.author?.avatar?.url} />
+              <AvatarImage src={avatarUrl(post.author?.avatar?.url ?? "")} />
               <AvatarFallback>
                 {getUserInitials(post.author.name)}
               </AvatarFallback>

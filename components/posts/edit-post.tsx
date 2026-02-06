@@ -15,6 +15,7 @@ import uploadMedia from "@/utils/uplaod-media";
 import IPost from "@/types/Post";
 import deleteMedia from "@/actions/media/delete-media";
 import editPost from "@/actions/post/edit-post";
+import avatarUrl from "@/utils/avatarUrl";
 
 interface ILocalMedia {
   _id: string;
@@ -160,7 +161,7 @@ export default function EditPostCard({ post: initialPost }: { post: IPost }) {
           <div className="pointer-events-none absolute inset-y-0 left-0 flex pl-3 text-muted-foreground">
             <Avatar className="h-8 w-8 mt-2">
               <AvatarImage
-                src={post.author.avatar?.url}
+                src={avatarUrl(post.author.avatar?.url ?? "")}
                 alt={post.author.name}
                 className="object-cover"
               />

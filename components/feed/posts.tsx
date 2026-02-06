@@ -3,8 +3,8 @@ import PostList from "./posts-list";
 import { nanoid } from "nanoid";
 
 export default async function HomePosts() {
-  const posts = await getPosts();
+  const posts = await getPosts({});
   const id = nanoid();
 
-  return <PostList key={id} initialPosts={posts}  />;
+  return <PostList key={id} initialPosts={posts} />;
 }
