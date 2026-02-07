@@ -1,6 +1,6 @@
 import "swiper/css"; 
 import StoriesSlider from "./stories-slider";
-import { getStories, storiesReadStatus } from "@/data/story";
+import { getStories } from "@/data/story";
 
 export default async function Stories() {
   const stories = await getStories()

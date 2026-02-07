@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import Link from "next/link";
@@ -19,8 +21,6 @@ export default function StoryCard({ story }: { story: IStory }) {
   useEffect(() => {
     checkStatus();
   }, []);
-
-  console.log(`${story.media.url}?tr=h-400,w-200,c-at_max,fo-auto,f-auto,q-auto`);
 
   return (
     <Link href={`/stories/${story.author.name}`}>

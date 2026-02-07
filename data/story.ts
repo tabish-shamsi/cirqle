@@ -62,16 +62,13 @@ export async function storiesReadStatus(userId: string) {
   const { id } = await checkAuth();
   await db();
 
-  const stories = await Story.findOne({ author: userId }).select("readers")
-  if (!stories.readers || stories.readers.length === 0) {
-    return false;
-  }
+  const stories: IStory[] = await Story.find({ author: userId }).select(
+    "readers",
+  );
 
-  let isRead: boolean = false;
+  const allHaveRead = stories.every((story) =>
+    toJSON(story.readers).includes(userId),
+  );
 
-  stories.readers.map((r: mongoose.Types.ObjectId) => {
-    if (r.toString() === id) isRead = true
-  });
-
-  return isRead
+  return allHaveRead;
 }

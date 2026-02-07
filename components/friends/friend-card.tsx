@@ -8,7 +8,7 @@ export default function FriendCard({ friend, actions }: any) {
     <Card className="w-full">
       <CardContent className="flex flex-col items-center justify-center gap-4">
         <Avatar className="w-12 h-12">
-          <AvatarImage src={avatarUrl(friend.avatar.url)} />
+          <AvatarImage src={avatarUrl(friend.avatar?.url)} />
           <AvatarFallback>{getUserInitials(friend.name)}</AvatarFallback>
         </Avatar>
 
