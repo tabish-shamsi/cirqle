@@ -6,7 +6,9 @@ const storySchema = new mongoose.Schema<IStory>(
   {
     media: { type: mongoose.Schema.Types.ObjectId, ref: "Media" },
 
-    authorId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+
+    readers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
     expiresAt: { type: Date, default: STORY_EXPIRES_TIME },
   },

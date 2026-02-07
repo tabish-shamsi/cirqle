@@ -3,7 +3,7 @@ import TProfile from "./Profile";
 import IMedia from "./Media";
 
 interface IUser extends Document {
-  _id: mongoose.Types.ObjectId;
+  _id: string;
 
   profileId?: mongoose.Types.ObjectId;
   profile?: TProfile;

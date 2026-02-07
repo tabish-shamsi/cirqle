@@ -21,7 +21,9 @@ const authOptions: AuthOptions = {
         await db();
         const user = await User.findOne({
           email: credentials.email,
-        }).select("+password");
+        })
+          .select("+password name username email avatar isVerified")
+          .populate({ path: "avatar", select: "url" });
 
         if (!user) {
           throw new Error("Invalid credentials");
@@ -40,7 +42,7 @@ const authOptions: AuthOptions = {
           name: user.name,
           username: user.username,
           email: user.email,
-          avatar: user.avatar,
+          avatar: user.avatar?.url,
           isVerified: user.isVerified,
         };
       },
@@ -61,7 +63,7 @@ const authOptions: AuthOptions = {
       if (user) {
         token.id = user.id;
         token.name = user.name;
-        token.username = user.username
+        token.username = user.username;
         token.email = user.email;
         token.avatar = user.avatar;
         token.isVerified = user.isVerified;
@@ -72,7 +74,7 @@ const authOptions: AuthOptions = {
       if (session?.user) {
         session.user.id = token.id;
         session.user.name = token.name;
-        session.user.username = token.username
+        session.user.username = token.username;
         session.user.email = token.email;
         session.user.avatar = token.avatar;
         session.user.isVerified = token.isVerified;

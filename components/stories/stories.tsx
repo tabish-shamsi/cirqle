@@ -1,11 +1,10 @@
-"use client";
- 
 import "swiper/css"; 
 import StoriesSlider from "./stories-slider";
-import { stories } from "@/lib/temporary-mock-data";
-import StoryViewer from "./story-viewer";
+import { getStories, storiesReadStatus } from "@/data/story";
 
-export default function Stories() {
+export default async function Stories() {
+  const stories = await getStories()
+  
   return (
     <div className="w-full py-4">
       <StoriesSlider stories={stories} /> 

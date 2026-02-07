@@ -7,7 +7,8 @@ import { Skeleton } from "../ui/skeleton";
 import { getUserInitials } from "@/utils/getUserInitials";
 
 export default function UserAvatar() {
-  const { user, isLoading } = useAuth()
+  const { user, isLoading } = useAuth() 
+
   if (isLoading || !user) {
     return (
       <div className="pr-6 lg:pr-8 p-3 hidden lg:block">

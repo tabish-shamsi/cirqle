@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema<IUser>(
 
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     stories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Story" }],
-    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "Friend" }],
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
     otpResendCount: { type: Number, default: 0 },
     lastOtpSentAt: Date,
