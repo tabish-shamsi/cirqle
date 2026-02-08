@@ -18,7 +18,7 @@ interface IUser extends Document {
   birthday: Date;
   password: string;
   isVerified: boolean;
-  avatar?: IMedia;
+  avatar?: IMedia | string;
   
   newEmail?: string;
   lastEmailChange?: Date

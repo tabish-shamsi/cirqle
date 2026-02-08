@@ -1,4 +1,4 @@
-import TUser from "./User";
+import { User } from "next-auth";
 import IMedia from "./Media";
 import IUser from "./User";
 import mongoose from "mongoose";
@@ -14,9 +14,16 @@ interface IStory extends Document {
   updatedAt: Date;
 }
 
-export type Stories = {
-  author: TUser;
-  stories: IStory[];
+export type StoryItem = {
+  _id: string;
+  author: {
+    name: string;
+    username: string;
+    avatar?: string;
+    _id: string;
+  };
+  hasUnread: boolean;
+  story: IStory;
 };
 
 export default IStory;

@@ -32,7 +32,7 @@ export default function CreateStoryCard() {
     const story = await createStory(media.fileId);
     if (story.success) return toast.success("Story created");
   };
-
+  
   return (
     <div
       onClick={() => storyInput.current?.click()}

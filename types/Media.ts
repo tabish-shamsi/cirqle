@@ -1,7 +1,9 @@
+import mongoose from "mongoose";
+
 interface IMedia extends Document {
   _id: string;
 
-  authorId: string;
+  authorId: mongoose.Types.ObjectId;
 
   url: string;
   type: "image" | "video";

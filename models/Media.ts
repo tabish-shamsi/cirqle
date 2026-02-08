@@ -22,7 +22,7 @@ const MediaSchema = new Schema<IMedia>(
     height: Number,
     duration: Number, // for video (seconds)
     isUsed: { type: Boolean, default: false },
-    authorId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
+    authorId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
 );

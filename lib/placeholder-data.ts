@@ -1,9 +1,7 @@
 import {
-  Home,
-  BookOpen,
+  Home, 
   Video,
-  User,
-  Store,
+  User, 
   HelpCircle,
   PieChart,
   MessagesSquare,
@@ -42,11 +40,11 @@ export const NAV_LINKS = [
     path: "/profile",
     icon: User,
   },
-  {
-    name: "Stories",
-    path: "/stories",
-    icon: Activity,
-  },
+  // {
+  //   name: "Stories",
+  //   path: "/stories",
+  //   icon: Activity,
+  // },
 ];
 
 export const ACCOUNT_PAGES = [

@@ -2,10 +2,10 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import CreateStoryCard from "./create-story-card";
-import IStory from "@/types/Story";
+import IStory, { StoryItem } from "@/types/Story";
 import StoryCard from "./story-card";
 
-export default function StoriesSlider({ stories }: { stories: IStory[] }) {
+export default function StoriesSlider({ stories }: { stories: StoryItem[] }) {
   return (
     <Swiper
       slidesPerView={4}
@@ -25,9 +25,9 @@ export default function StoriesSlider({ stories }: { stories: IStory[] }) {
         <CreateStoryCard />
       </SwiperSlide>
 
-      {stories.map((story: IStory) => (
+      {stories.map((story: StoryItem) => (
         <SwiperSlide key={story._id} className="h-50!">
-          <StoryCard story={story} />
+          <StoryCard storyItem={story} />
         </SwiperSlide>
       ))}
     </Swiper>

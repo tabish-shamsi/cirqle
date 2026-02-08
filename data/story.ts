@@ -1,74 +1,187 @@
-import db from "@/lib/db";
-import checkAuth from "./check-auth";
-import User from "@/models/User";
-import Story from "@/models/Story";
-import IStory from "@/types/Story";
+import checkAuth from "./check-auth"; 
+import Story from "@/models/Story"; 
 import mongoose from "mongoose";
 import toJSON from "@/utils/toJSON";
 
-export async function getStories() {
-  const { id } = await checkAuth();
-  await db();
+export async function getFeedStories() {
+  const {id} = await checkAuth()
+  const currentUserId = new mongoose.Types.ObjectId(id);
 
-  let stories: IStory[] = [];
-
-  const userStory = await Story.findOne({ author: id })
-    .populate({
-      path: "media",
-      select: "type url",
-    })
-    .populate({
-      path: "author",
-      select: "name avatar",
-      populate: {
-        path: "avatar",
-        select: "url",
+  const pipeline = [
+    // 1. Only active stories
+    {
+      $match: {
+        expiresAt: { $gt: new Date() },
       },
-    })
-    .sort({ createdAt: -1 });
+    },
 
-  if (userStory) stories.push(userStory);
-
-  const user = await User.findById(id).select("friends");
-  if (!user.friends || user.friends.length === 0) {
-    return stories;
-  }
-
-  await Promise.all(
-    user.friends.map(async (friend: mongoose.Types.ObjectId) => {
-      const story = await Story.findOne({ author: friend })
-        .populate({
-          path: "media",
-          select: "type url",
-        })
-        .populate({
-          path: "author",
-          select: "name avatar",
-          populate: {
-            path: "avatar",
-            select: "url",
+    // 2. Lookup author (LIMITED FIELDS)
+    {
+      $lookup: {
+        from: "users",
+        let: { authorId: "$author" },
+        pipeline: [
+          {
+            $match: {
+              $expr: { $eq: ["$_id", "$$authorId"] },
+            },
           },
-        })
-        .sort({ createdAt: -1 });
+          {
+            $project: {
+              name: 1,
+              username: 1,
+              avatar: 1,
+              friends: 1,
+            },
+          },
 
-      if (story) stories.push(story);
-    }),
-  );
+          // Avatar media (ONLY url)
+          {
+            $lookup: {
+              from: "media",
+              let: { avatarId: "$avatar" },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: { $eq: ["$_id", "$$avatarId"] },
+                  },
+                },
+                {
+                  $project: {
+                    _id: 0,
+                    url: 1,
+                  },
+                },
+              ],
+              as: "avatar",
+            },
+          },
+          {
+            $unwind: {
+              path: "$avatar",
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+        ],
+        as: "author",
+      },
+    },
+    { $unwind: "$author" },
 
-  return toJSON(stories);
-}
+    // 3. Only current user + friends
+    {
+      $match: {
+        $or: [
+          { "author._id": currentUserId },
+          { "author.friends": currentUserId },
+        ],
+      },
+    },
 
-export async function storiesReadStatus(userId: string) {
-  const { id } = await checkAuth();
-  await db();
+    // 4. Story media (ONLY type + url)
+    {
+      $lookup: {
+        from: "media",
+        let: { mediaId: "$media" },
+        pipeline: [
+          {
+            $match: {
+              $expr: { $eq: ["$_id", "$$mediaId"] },
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              type: 1,
+              url: 1,
+            },
+          },
+        ],
+        as: "media",
+      },
+    },
+    {
+      $unwind: {
+        path: "$media",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
 
-  const stories: IStory[] = await Story.find({ author: userId }).select(
-    "readers",
-  );
+    // 5. Read status
+    {
+      $addFields: {
+        isRead: {
+          $in: [currentUserId, "$readers"],
+        },
+      },
+    },
 
-  const allHaveRead = stories.every((story) =>
-    toJSON(story.readers).includes(userId),
-  );
+    // 6. Sort stories per author
+    {
+      $sort: {
+        createdAt: 1,
+      },
+    },
 
-  return allHaveRead;
+    // 7. Group by author
+    {
+      $group: {
+        _id: "$author._id",
+        author: { $first: "$author" },
+        stories: {
+          $push: {
+            _id: "$_id",
+            media: "$media",
+            createdAt: "$createdAt",
+            isRead: "$isRead",
+          },
+        },
+        unreadStories: {
+          $push: {
+            $cond: [
+              { $eq: ["$isRead", false] },
+              {
+                _id: "$_id",
+                media: "$media",
+                createdAt: "$createdAt",
+              },
+              "$$REMOVE",
+            ],
+          },
+        },
+      },
+    },
+
+    // 8. Pick correct story
+    {
+      $project: {
+        author: {
+          _id: "$author._id",
+          name: "$author.name",
+          username: "$author.username",
+          avatar: "$author.avatar.url",
+        },
+        hasUnread: { $gt: [{ $size: "$unreadStories" }, 0] },
+        story: {
+          $cond: [
+            { $gt: [{ $size: "$unreadStories" }, 0] },
+            { $arrayElemAt: ["$unreadStories", -1] }, // latest unread
+            { $arrayElemAt: ["$stories", 0] }, // first story
+          ],
+        },
+      },
+    },
+
+    // 9. Unread authors first
+    {
+      $sort: {
+        hasUnread: -1,
+      },
+    },
+  ];
+
+  // @ts-ignore
+  const stories = await Story.aggregate(pipeline)
+
+  return toJSON(stories)
 }
