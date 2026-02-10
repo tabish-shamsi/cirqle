@@ -5,6 +5,7 @@ import db from "@/lib/db";
 import Media from "@/models/Media";
 import Story from "@/models/Story";
 import User from "@/models/User";
+import { revalidatePath } from "next/cache";
 
 export default async function createStory(mediaId: string) {
   try {
@@ -23,6 +24,8 @@ export default async function createStory(mediaId: string) {
     await media.save();
 
     await User.findByIdAndUpdate(id, { $push: { stories: story._id } });
+
+    revalidatePath("/");
 
     return { success: true };
   } catch (error) {

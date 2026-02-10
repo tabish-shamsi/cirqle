@@ -1,14 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { Plus } from "lucide-react";
-import { ChangeEvent, useRef } from "react";
+import { Loader2, Plus } from "lucide-react";
+import { ChangeEvent, useRef, useState } from "react";
 import { toast } from "sonner";
 import uploadMedia from "@/utils/uplaod-media";
 import createStory from "@/actions/story/create-story";
 import useAuth from "@/hooks/useAuth";
 
 export default function CreateStoryCard() {
+  const [preview, setPreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
   const { user } = useAuth();
 
   const storyInput = useRef<HTMLInputElement>(null);
@@ -23,6 +26,9 @@ export default function CreateStoryCard() {
 
     const file = files[0];
 
+    setLoading(true);
+    setPreview(URL.createObjectURL(file));
+
     const media = await uploadMedia(file);
     if (media?.error || !media?.fileId) {
       toast.error(media?.error);
@@ -31,6 +37,9 @@ export default function CreateStoryCard() {
 
     const story = await createStory(media.fileId);
     if (story.success) return toast.success("Story created");
+
+    setLoading(false);
+    setPreview(null);
   };
 
   return (
@@ -43,13 +52,26 @@ export default function CreateStoryCard() {
 
       {/* Top Image Placeholder */}
       <div className="relative h-35 w-full bg-gray-200">
-        {user?.avatar && (
+        {user?.avatar && !preview ? (
           <Image
             src={`${user?.avatar}?tr=w-200,h-200`}
             alt="create story"
             fill
             className="object-cover"
           />
+        ) : (
+          <img
+            src={preview!}
+            alt="create story"
+            className="object-cover w-full h-full"
+          />
+        )}
+
+        {/* Overlay */}
+        {loading && (
+          <div className="flex items-center justify-center w-full h-full absolute top-0 left-0 bg-black/40">
+            <Loader2 className="text-white animate-spin" />
+          </div>
         )}
 
         <input
@@ -69,7 +91,9 @@ export default function CreateStoryCard() {
 
       {/* Label */}
       <div className="absolute bottom-3 left-0 right-0 text-center">
-        <span className="text-sm font-semibold">Create Story</span>
+        <span className="text-sm font-semibold">
+          {loading ? "Creating Story..." : "Create Story"}
+        </span>
       </div>
     </div>
   );
