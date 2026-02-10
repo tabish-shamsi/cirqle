@@ -7,8 +7,8 @@ import IUser from "@/types/User";
 import { getUserInitials } from "@/utils/getUserInitials";
 import avatarUrl from "@/utils/avatarUrl";
 
-export default async function FriendsCard() {
-  const friends = await getAcceptedFriends()
+export default async function FriendsCard({ userId }: { userId: string }) {
+  const friends = await getAcceptedFriends(userId);
 
   return (
     <Card className="w-full">
@@ -28,17 +28,18 @@ export default async function FriendsCard() {
       <CardContent>
         <div className="grid grid-cols-2 gap-4 content-center">
           {friends.length > 0 ? (
-            friends.map(({ user }: { user: IUser }) => (
+            friends.map((user: IUser) => (
               <Link
                 href={`/u/${user.username}`}
                 key={user._id.toString()}
                 className="flex flex-col items-center gap-2 text-center"
               >
                 <Avatar className="h-16 w-16">
-                  <AvatarImage src={avatarUrl(user?.avatar?.url ?? "")} alt={user.name} />
-                  <AvatarFallback>
-                    {getUserInitials(user.name)}
-                  </AvatarFallback>
+                  <AvatarImage
+                    src={avatarUrl(user?.avatar?.url ?? "")}
+                    alt={user.name}
+                  />
+                  <AvatarFallback>{getUserInitials(user.name)}</AvatarFallback>
                 </Avatar>
 
                 <div className="text-sm">
@@ -50,7 +51,9 @@ export default async function FriendsCard() {
               </Link>
             ))
           ) : (
-            <p className="text-sm text-muted-foreground">You don't have any friends</p>
+            <p className="text-sm text-muted-foreground">
+              You don't have any friends
+            </p>
           )}
         </div>
       </CardContent>

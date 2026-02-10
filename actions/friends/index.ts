@@ -5,6 +5,7 @@ import db from "@/lib/db";
 import Friend from "@/models/Friend";
 import User from "@/models/User";
 import { FriendType } from "@/types/Friend";
+import { revalidatePath } from "next/cache";
 
 export type RequestType =
   | "send-request"
@@ -79,12 +80,14 @@ export async function updateFriendStatus(
 
     case "remove":
       await Friend.findByIdAndDelete(friendId);
-      // await User.findByIdAndUpdate(id, {
-      //   $p: { friends: friend.requestor },
-      // });
-      // await User.findByIdAndUpdate(friend.requestor, {
-      //   $push: { friends: id },
-      // });
+      await User.findByIdAndUpdate(friend.acceptor, {
+        $pull: { friends: friend.requestor },
+      });
+
+      await User.findByIdAndUpdate(friend.requestor, {
+        $pull: { friends: friend.acceptor },
+      });
+
       return {
         success: true,
         message: "Removed friend",
@@ -102,5 +105,33 @@ export async function updateFriendStatus(
         friend: {},
         friendType: "notFriend",
       };
+  }
+}
+
+export async function removeFriend(targetFriendId: string) {
+  try {
+    const { id } = await checkAuth();
+    await db();
+
+    const friend = await Friend.findOne({
+      $or: [
+        { $or: [{ acceptor: id }, { acceptor: targetFriendId }] },
+        { $or: [{ requestor: id }, { requestor: targetFriendId }] },
+      ],
+      status: "accepted",
+    });
+
+    if (!friend) return { error: "Friend not found" };
+
+    await Friend.findByIdAndDelete(friend._id);
+    await User.findByIdAndUpdate(id, { $pull: { friends: targetFriendId } });
+    await User.findByIdAndUpdate(targetFriendId, { $pull: { friends: id } });
+
+    revalidatePath("/friends");
+
+    return { success: true, message: "Friend Removed" };
+  } catch (error) {
+    console.error(error);
+    return { error: "Something went wrong while removing friend" };
   }
 }

@@ -18,7 +18,7 @@ export default function ProfileSidebar({ userId }: { userId: string }) {
       </Suspense>
 
       <Suspense fallback={<FriendsCardSkeleton />}>
-        <FriendsCard />
+        <FriendsCard userId={userId} />
       </Suspense>
     </div>
   );
