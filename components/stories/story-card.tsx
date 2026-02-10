@@ -8,7 +8,7 @@ import avatarUrl from "@/utils/avatarUrl";
 
 export default function StoryCard({ storyItem }: { storyItem: StoryItem }) {
   return (
-    <Link href={`/stories/${storyItem.author.username}/${storyItem._id}`}>
+    <Link href={`/stories/${storyItem.author.username}`}>
       <div className="relative h-full rounded-xl overflow-hidden cursor-pointer shadow-sm">
         {/* Story preview */}
         <Image

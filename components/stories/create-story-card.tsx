@@ -32,7 +32,7 @@ export default function CreateStoryCard() {
     const story = await createStory(media.fileId);
     if (story.success) return toast.success("Story created");
   };
-  
+
   return (
     <div
       onClick={() => storyInput.current?.click()}
@@ -43,7 +43,7 @@ export default function CreateStoryCard() {
 
       {/* Top Image Placeholder */}
       <div className="relative h-35 w-full bg-gray-200">
-        {user && (
+        {user?.avatar && (
           <Image
             src={`${user?.avatar}?tr=w-200,h-200`}
             alt="create story"

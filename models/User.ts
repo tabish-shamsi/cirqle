@@ -1,7 +1,6 @@
 import IUser from "@/types/User";
 import bcrypt from "bcryptjs";
-import mongoose from "mongoose";
-import Media from "@/models/Media"
+import mongoose from "mongoose"; 
 
 const userSchema = new mongoose.Schema<IUser>(
   {
@@ -31,6 +30,7 @@ const userSchema = new mongoose.Schema<IUser>(
 
 // Hash password before saving
 userSchema.pre("save", async function () {
+  // @ts-ignore
   const user = this as IUser & mongoose.Document;
 
   if (!user.isModified("password")) return;
