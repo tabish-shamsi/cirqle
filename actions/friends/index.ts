@@ -135,3 +135,31 @@ export async function removeFriend(targetFriendId: string) {
     return { error: "Something went wrong while removing friend" };
   }
 }
+
+export async function sendFriendRequest(friendId: string) {
+  try {
+    const { id } = await checkAuth();
+    await db();
+
+    const friend = await Friend.findOne({ requestor: id });
+
+    if (friend) {
+      if (friend.status === "accepted") {
+        return { error: "Invalid request" };
+      }
+
+      await Friend.findOneAndDelete({ requestor: id });
+      return { success: true, message: "Request canceled" };
+    } else {
+      await Friend.create({
+        acceptor: friendId,
+        requestor: id,
+      });
+
+      return { success: true, message: "Request sent" };
+    }
+  } catch (error) {
+    console.error(error);
+    return { error: "Something went wrong" };
+  }
+}
