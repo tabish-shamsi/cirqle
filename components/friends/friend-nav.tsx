@@ -9,7 +9,7 @@ export default function FriendNav() {
   const { isActive } = useActivePath();
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex flex-wrap items-center gap-4">
       {FRIEND_TABS.map((tab) => (
         <Link key={tab.href} href={tab.href}>
           <Button

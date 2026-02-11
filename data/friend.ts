@@ -5,6 +5,8 @@ import db from "@/lib/db";
 import toJSON from "@/utils/toJSON";
 import User from "@/models/User";
 import mongoose from "mongoose";
+import Profile from "@/models/Profile";
+import sleep from "@/utils/sleep";
 
 export async function getFriendStatus(userId: string) {
   const { id } = await checkAuth();
@@ -215,4 +217,185 @@ export async function getFriendSuggestions() {
   ]);
 
   return toJSON(suggestions);
+}
+
+export async function getAdvFriendSuggestions() {
+  const { id } = await checkAuth();
+  await db();
+
+  const userId = new mongoose.Types.ObjectId(id);
+
+  const myProfile = await Profile.findOne({ userId });
+
+  const searchText = [
+    myProfile.bio,
+    myProfile.current_city,
+    myProfile.hometown,
+    myProfile.profession,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const suggestions = await Profile.aggregate([
+    // 1️⃣ Text match
+    {
+      $match: {
+        $text: { $search: searchText },
+        userId: { $ne: userId },
+      },
+    },
+
+    // 2️⃣ Add relevance score
+    {
+      $addFields: {
+        score: { $meta: "textScore" },
+      },
+    },
+
+    // 3️⃣ Lookup existing friend relation
+    {
+      $lookup: {
+        from: "friends",
+        let: { suggestedUserId: "$userId" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $or: [
+                  {
+                    $and: [
+                      { $eq: ["$requestor", userId] },
+                      { $eq: ["$acceptor", "$$suggestedUserId"] },
+                    ],
+                  },
+                  {
+                    $and: [
+                      { $eq: ["$requestor", "$$suggestedUserId"] },
+                      { $eq: ["$acceptor", userId] },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+        ],
+        as: "existingRelation",
+      },
+    },
+
+    // 4️⃣ Exclude existing relations
+    {
+      $match: {
+        existingRelation: { $size: 0 },
+      },
+    },
+
+    // 5️⃣ Lookup user
+    {
+      $lookup: {
+        from: "users",
+        localField: "userId",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    { $unwind: "$user" },
+
+    // 6️⃣ Lookup avatar
+    {
+      $lookup: {
+        from: "media",
+        localField: "user.avatar",
+        foreignField: "_id",
+        as: "avatar",
+      },
+    },
+    {
+      $unwind: {
+        path: "$avatar",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+
+    // 7️⃣ Final projection
+    {
+      $project: {
+        _id: "$user._id",
+        name: "$user.name",
+        username: "$user.username",
+        score: 1,
+        avatar: {
+          _id: "$avatar._id",
+          url: "$avatar.url",
+        },
+      },
+    },
+
+    // 8️⃣ Sort by relevance
+    { $sort: { score: -1 } },
+
+    { $limit: 9 },
+  ]);
+
+  return toJSON(suggestions);
+}
+
+export async function getSentFriendRequests() {
+  const { id } = await checkAuth();
+  await db();
+
+  const userId = new mongoose.Types.ObjectId(id);
+
+  const friends = await Friend.aggregate([
+    {
+      $match: {
+        requestor: userId,
+        status: "pending",
+      },
+    },
+
+    {
+      $lookup: {
+        from: "users",
+        localField: "acceptor",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+
+    { $unwind: "$user" },
+
+    {
+      $lookup: {
+        from: "media",
+        localField: "user.avatar",
+        foreignField: "_id",
+        as: "avatar",
+      },
+    },
+    {
+      $unwind: {
+        path: "$avatar",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+
+    {
+      $project: {
+        _id: "$user._id",
+        name: "$user.name",
+        username: "$user.username",
+        avatar: {
+          _id: "$avatar._id",
+          url: "$avatar.url",
+        },
+      },
+    },
+
+    {
+      $limit: 9,
+    },
+  ]);
+
+  return toJSON(friends);
 }

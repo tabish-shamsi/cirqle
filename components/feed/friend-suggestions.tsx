@@ -9,8 +9,7 @@ type Suggestion = IUser & {
 };
 
 export default async function FriendSuggestions() {
-  const suggestsions = await getFriendSuggestions();
-  console.log(suggestsions);
+  const suggestsions = await getFriendSuggestions(); 
 
   if (suggestsions.length > 0) {
     return suggestsions.map((friend: Suggestion) => (

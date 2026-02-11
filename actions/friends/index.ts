@@ -115,12 +115,10 @@ export async function removeFriend(targetFriendId: string) {
 
     const friend = await Friend.findOne({
       $or: [
-        { $or: [{ acceptor: id }, { acceptor: targetFriendId }] },
-        { $or: [{ requestor: id }, { requestor: targetFriendId }] },
+        { requestor: id, acceptor: targetFriendId },
+        { requestor: targetFriendId, acceptor: id },
       ],
-      status: "accepted",
-    });
-
+    }).lean();
     if (!friend) return { error: "Friend not found" };
 
     await Friend.findByIdAndDelete(friend._id);
@@ -156,8 +154,32 @@ export async function sendFriendRequest(friendId: string) {
         requestor: id,
       });
 
+      revalidatePath("/friends/requests");
       return { success: true, message: "Request sent" };
     }
+  } catch (error) {
+    console.error(error);
+    return { error: "Something went wrong" };
+  }
+}
+
+export async function cancelFriendRequest(friendId: string) {
+  try {
+    const { id } = await checkAuth();
+    await db();
+
+    const friend = await Friend.findOne({ requestor: id });
+    if (
+      !friend ||
+      friend.requestor.toString() !== id ||
+      friend.acceptor.toString() !== friendId
+    ) {
+      return { error: "Unexpected error" };
+    }
+
+    await Friend.findOneAndDelete({ requestor: id });
+    revalidatePath("/friends/requests/sent");
+    return { success: true, message: "Request canceled" };
   } catch (error) {
     console.error(error);
     return { error: "Something went wrong" };

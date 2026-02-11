@@ -1,13 +1,11 @@
-import FriendCard from "@/components/friends/friend-card";
-import { Button } from "@/components/ui/button";
-import { suggestions } from "@/lib/temporary-mock-data";
+import { FriendCardSkeleton } from "@/components/skeletons/friend-card-skeleton";
+import { Suspense } from "react";
+import FriendSuggestions from "./friend-suggestions";
 
-export default function FriendSuggestions() {
-  return suggestions.map((request) => (
-    <FriendCard
-      key={request.id}
-      friend={request}
-      actions={<Button>Add Friend</Button>}
-    />
-  ));
+export default function FriendSuggestionsPage() {
+  return (
+    <Suspense fallback={<FriendCardSkeleton />}>
+      <FriendSuggestions />
+    </Suspense>
+  );
 }

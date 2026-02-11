@@ -1,7 +1,7 @@
 import {
-  Home, 
+  Home,
   Video,
-  User, 
+  User,
   HelpCircle,
   PieChart,
   MessagesSquare,
@@ -113,6 +113,10 @@ export const FRIEND_TABS = [
     href: "/friends/requests",
   },
   {
+    label: "Requests Sent",
+    href: "/friends/requests/sent",
+  },
+  {
     label: "Suggestions",
     href: "/friends/suggestions",
   },
@@ -140,7 +144,6 @@ export const SETTINGS_LINKS = {
     },
   ],
   Account: [
-
     {
       label: "Change Password",
       href: "/password",
