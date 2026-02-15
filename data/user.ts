@@ -8,6 +8,8 @@ import Profile from "@/models/Profile";
 import IProfile from "@/types/Profile";
 import { toDateString } from "@/utils/formatDate";
 import toJSON from "@/utils/toJSON";
+import mongoose from "mongoose";
+import { ArrowUpFromLine } from "lucide-react";
 
 export const findAccount = async (identifier: string) => {
   if (!identifier) return null;
@@ -197,19 +199,112 @@ export async function getUsers({
   search: string;
   skip?: number;
 }) {
-  await checkAuth();
+  const { id } = await checkAuth();
   await db();
 
   const regex = new RegExp(search, "i");
-  const match = {
-    $or: [{ name: regex }, { username: regex }],
-  };
+  const userId = new mongoose.Types.ObjectId(id);
 
-  const users = await User.find(match)
-    .select("name username avatar")
-    .populate({ path: "avatar", select: "url" })
-    .limit(USERS_LIMIT)
-    .skip(skip);
+  const users = await User.aggregate([
+    {
+      $match: {
+        $or: [{ name: regex }, { username: regex }],
+        _id: { $ne: userId }, // exclude myself
+      },
+    },
+
+    // get avatar details
+    {
+      $lookup: {
+        from: "media",
+        localField: "avatar",
+        foreignField: "_id",
+        as: "avatar",
+        pipeline: [
+          {
+            $project: {
+              url: 1,
+              _id: 1,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $unwind: {
+        path: "$avatar",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+
+    // Lookup friendship
+    {
+      $lookup: {
+        from: "friends",
+        let: { userId: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $or: [
+                  {
+                    $and: [
+                      { $eq: ["$requestor", userId] },
+                      { $eq: ["$acceptor", "$$userId"] },
+                    ],
+                  },
+                  {
+                    $and: [
+                      { $eq: ["$acceptor", userId] },
+                      { $eq: ["$requestor", "$$userId"] },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+          {
+            $project: { status: 1, requestor: 1, _id: 1 },
+          },
+        ],
+        as: "friendship",
+      },
+    },
+
+    // Extract status (if exists)
+    {
+      $addFields: {
+        friendStatus: {
+          $cond: [
+            { $gt: [{ $size: "$friendship" }, 0] },
+            { $arrayElemAt: ["$friendship.status", 0] },
+            null,
+          ],
+        },
+      },
+    },
+    {
+      $unwind: {
+        path: "$friendship",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+
+    // Cleanup
+    {
+      $project: {
+        name: 1,
+        username: 1,
+        avatar: 1,
+        friendStatus: 1,
+        requestor: "$friendship.requestor",
+        friendId: "$friendship._id",
+      },
+    },
+
+    { $skip: skip },
+    { $limit: USERS_LIMIT },
+  ]);
 
   return toJSON(users);
 }

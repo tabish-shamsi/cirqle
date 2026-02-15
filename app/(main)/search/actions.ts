@@ -9,10 +9,8 @@ type Props = {
   search: string;
 };
 
-const loadMoreUsers = async ({ count, search }: Props) => {
+export const loadMoreUsers = async ({ count, search }: Props) => {
   const users = getUsers({ search, skip: USERS_LIMIT * count });
 
   return toJSON(users);
 };
-
-export default loadMoreUsers;

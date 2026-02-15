@@ -139,14 +139,24 @@ export async function sendFriendRequest(friendId: string) {
     const { id } = await checkAuth();
     await db();
 
-    const friend = await Friend.findOne({ requestor: id });
+    const friend = await Friend.findOne({
+      $or: [
+        { request: id, acceptor: friendId },
+        { acceptor: id, requestor: friendId },
+      ],
+    });
 
     if (friend) {
       if (friend.status === "accepted") {
         return { error: "Invalid request" };
       }
 
-      await Friend.findOneAndDelete({ requestor: id });
+      await Friend.findOneAndDelete({
+        $or: [
+          { request: id, acceptor: friendId },
+          { acceptor: id, requestor: friendId },
+        ],
+      });
       return { success: true, message: "Request canceled" };
     } else {
       await Friend.create({
@@ -168,7 +178,8 @@ export async function cancelFriendRequest(friendId: string) {
     const { id } = await checkAuth();
     await db();
 
-    const friend = await Friend.findOne({ requestor: id });
+    const friend = await Friend.findOne({ requestor: id, acceptor: friendId });
+
     if (
       !friend ||
       friend.requestor.toString() !== id ||
@@ -177,7 +188,7 @@ export async function cancelFriendRequest(friendId: string) {
       return { error: "Unexpected error" };
     }
 
-    await Friend.findOneAndDelete({ requestor: id });
+    await Friend.findOneAndDelete({ requestor: id, acceptor: friendId });
     revalidatePath("/friends/requests/sent");
     return { success: true, message: "Request canceled" };
   } catch (error) {

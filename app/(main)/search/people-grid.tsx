@@ -5,20 +5,25 @@ import IUser from "@/types/User";
 import { RefObject, useEffect, useRef, useState } from "react";
 import FriendStatus from "./friend-status";
 import useInView from "@/hooks/useInView";
-import loadMoreUsers from "./load-more-users";
+import { loadMoreUsers } from "./actions";
 import { useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
+type UserWithFriendStatus = IUser & {
+  friendStatus: "pending" | "accepted" | null;
+  requestor: string | null;
+  friendId: string;
+};
+
 export default function PeopleGrid({
   initialUsers,
 }: {
-  initialUsers: IUser[];
+  initialUsers: UserWithFriendStatus[];
 }) {
-  const [users, setUsers] = useState<IUser[]>(initialUsers);
+  const [users, setUsers] = useState<UserWithFriendStatus[]>(initialUsers);
   const [isEnd, setIsEnd] = useState(false);
   const [count, setCount] = useState(1);
-
   const loadingElement = useRef<HTMLDivElement>(null);
   const isIntersecting = useInView(
     loadingElement as RefObject<HTMLDivElement>,
@@ -27,6 +32,8 @@ export default function PeopleGrid({
       rootMargin: "150px",
     },
   );
+
+  console.log(initialUsers);
 
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
@@ -43,14 +50,25 @@ export default function PeopleGrid({
   };
 
   useEffect(() => {
-    loadMore()
+    loadMore();
   }, [isIntersecting]);
 
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {users.map((user: IUser) => (
-          <FriendCard key={user._id} friend={user} actions={<FriendStatus />} />
+        {users.map((user: UserWithFriendStatus) => (
+          <FriendCard
+            key={user._id}
+            friend={user}
+            actions={
+              <FriendStatus
+                friendStatus={user.friendStatus}
+                requestor={user.requestor}
+                userId={user._id}
+                friendId={user.friendId}
+              />
+            }
+          />
         ))}
       </div>
       {isEnd ? (
