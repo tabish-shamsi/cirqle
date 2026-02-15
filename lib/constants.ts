@@ -21,3 +21,5 @@ export const RESEND_RESET_WINDOW = 60 * 60 * 1000; // 1 hour
 export const EMAIL_CHANGE_RESET_WINDOW = 60 * 60 * 1000 * 24 * 30; // 30 days
 
 export const POSTS_LIMIT = 8;
+
+export const USERS_LIMIT = 9;

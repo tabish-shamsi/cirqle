@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import Form from "../form";
 import InputWithIcon from "../input-with-icon";
 import { Search } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SearchForm() {
   const form = useForm({
@@ -14,9 +14,15 @@ export default function SearchForm() {
   });
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const posts = searchParams.get("posts");
+  const videos = searchParams.get("videos");
+  const people = searchParams.get("people");
 
   const handleSearch = async (data: any) => {
-    router.push(`/search?q=${data.query}&posts=1`);
+    router.push(
+      `/search?q=${data.query}&${posts ? "posts=1" : videos ? "videos=1" : people ? "people=1" : "posts=1"}`,
+    );
   };
 
   return (

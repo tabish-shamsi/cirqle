@@ -7,13 +7,18 @@ import loadMorePosts from "@/actions/post/load-more-posts";
 import { Card, CardContent } from "../ui/card";
 import { Loader2 } from "lucide-react";
 import useInView from "@/hooks/useInView";
+import { quotelessJson } from "zod/v3";
 
 export default function PostList({
   initialPosts,
   userId,
+  q,
+  postType,
 }: {
   initialPosts: IPost[];
   userId?: string;
+  q?: string;
+  postType?: "video";
 }) {
   const [posts, setPosts] = useState<IPost[]>(initialPosts);
   const [count, setCount] = useState(1);
@@ -29,7 +34,7 @@ export default function PostList({
   );
 
   const loadMore = async () => {
-    const more = await loadMorePosts(count, userId);
+    const more = await loadMorePosts(count, userId, q, postType);
 
     if (more.length === 0) {
       setIsEnd(true);

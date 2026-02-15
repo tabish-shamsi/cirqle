@@ -11,5 +11,5 @@ export default async function VideoPostsWrapper({
   const posts = await getPosts({ postType: "video", query });
   const id = nanoid();
 
-  return <PostList initialPosts={posts} key={id} />;
+  return <PostList initialPosts={posts} key={id} postType="video" />;
 }
