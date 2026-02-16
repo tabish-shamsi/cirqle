@@ -3,6 +3,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Bell } from "lucide-react";
 import Link from "next/link";
 import { notifications } from "@/lib/temporary-mock-data";
+import { getRecentNotifications } from "@/data/notifications";
+import { INotification } from "@/models/Notification";
+import { getUserInitials } from "@/utils/getUserInitials";
+import { Suspense } from "react";
+import { format } from "date-fns";
 
 export default function NotificationsPopover() {
   return (
@@ -30,26 +35,56 @@ export default function NotificationsPopover() {
           </Link>
         </div>
 
+        <Suspense fallback={<p>Loadding...</p>}>
+          <NotificationList />
+        </Suspense>
         {/* Notifications list */}
-        <div className="max-h-80 overflow-y-auto">
-          {notifications.map((notification) => (
-            <div
-              key={notification.id}
-              className="flex gap-3 px-4 py-3 hover:bg-muted cursor-pointer"
-            >
-              <Avatar className="h-9 w-9">
-                <AvatarImage src={notification.avatar} />
-                <AvatarFallback>{notification.name[0]}</AvatarFallback>
-              </Avatar>
-
-              <div className="text-sm leading-tight">
-                <p className="font-medium">{notification.name}</p>
-                <p className="text-muted-foreground">{notification.message}</p>
-              </div>
-            </div>
-          ))}
-        </div>
       </PopoverContent>
     </Popover>
   );
+}
+
+async function NotificationList() {
+  const notifications = await getRecentNotifications();
+  // const notifications = []
+  console.log(notifications);
+
+  if (notifications.length > 0) {
+    return (
+      <div className="max-h-80 overflow-y-auto">
+        {notifications.map((notification: INotification) => (
+          <div
+            key={notification._id.toString()}
+            className="flex gap-3 rounded-lg p-3 hover:bg-muted/50"
+          >
+            <Avatar className="h-10 w-10">
+              <AvatarImage src={notification.sender?.avatar?.url} />
+              <AvatarFallback>
+                {getUserInitials(notification.sender?.name)}
+              </AvatarFallback>
+            </Avatar>
+
+            <div className="flex-1">
+              <p className="text-sm">
+                <span className="font-medium">{notification.sender?.name}</span>{" "}
+                {/* {notification.message} */}
+              </p>
+
+              <p className="mt-1 text-xs text-muted-foreground">
+                {/* {format(notification.createdAt, "h:mm a")} */}
+              </p>
+            </div>
+
+            {!notification.isRead && (
+              <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  } else {
+    return (
+      <p className="text-sm text-muted-foreground p-4">No notifications</p>
+    );
+  }
 }

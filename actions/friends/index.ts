@@ -5,6 +5,7 @@ import db from "@/lib/db";
 import Friend from "@/models/Friend";
 import User from "@/models/User";
 import { FriendType } from "@/types/Friend";
+import { createNotification } from "@/utils/helpers";
 import { revalidatePath } from "next/cache";
 
 export type RequestType =
@@ -38,6 +39,13 @@ export async function updateFriendStatus(
         requestor: id,
         status: "pending",
       });
+
+      await createNotification({
+        sender: id,
+        reciever: userId,
+        type: "FRIEND_REQUEST",
+      });
+
       return {
         success: true,
         message: "Friend request sent",
@@ -60,6 +68,7 @@ export async function updateFriendStatus(
       await User.findByIdAndUpdate(friend.requestor, {
         $push: { friends: id },
       });
+
       return {
         success: true,
         message: "Friend request accepted",
