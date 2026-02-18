@@ -3,6 +3,7 @@
 import checkAuth from "@/data/check-auth";
 import db from "@/lib/db";
 import Friend from "@/models/Friend";
+import { NotificationMessages } from "@/models/Notification";
 import User from "@/models/User";
 import { FriendType } from "@/types/Friend";
 import { createNotification } from "@/utils/helpers";
@@ -44,6 +45,7 @@ export async function updateFriendStatus(
         sender: id,
         reciever: userId,
         type: "FRIEND_REQUEST",
+        message: NotificationMessages.sendRequest,
       });
 
       return {

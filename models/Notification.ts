@@ -45,6 +45,7 @@ const notificationSchema = new Schema<INotification>(
       required: true,
     },
     type: { type: String, required: true },
+    message: { type: String, required: true },
     isRead: { type: Boolean, deafault: false },
   },
   {
