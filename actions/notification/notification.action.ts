@@ -45,3 +45,15 @@ export async function cancelRequestNotification(recieverId: string) {
     return { error: "Something went wrong while deleting notification" };
   }
 }
+
+export async function checkUnreadNotifications() {
+  const { id } = await checkAuth();
+  await db();
+
+  const unreadCount = await Notification.countDocuments({
+    reciever: id,
+    isRead: false,
+  });
+
+  return unreadCount;
+}

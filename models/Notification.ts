@@ -46,7 +46,7 @@ const notificationSchema = new Schema<INotification>(
     },
     type: { type: String, required: true },
     message: { type: String, required: true },
-    isRead: { type: Boolean, deafault: false },
+    isRead: { type: Boolean, default: false },
   },
   {
     timestamps: true,

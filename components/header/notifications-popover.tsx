@@ -5,6 +5,7 @@ import { getRecentNotifications } from "@/data/notifications";
 import { Suspense } from "react";
 import { INotification } from "@/models/Notification";
 import NotificationItem from "./notification-item";
+import NotificationDot from "./notification-dot";
 
 export default function NotificationsPopover() {
   return (
@@ -16,7 +17,7 @@ export default function NotificationsPopover() {
           </button>
 
           {/* Notification dot */}
-          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500" />
+          <NotificationDot />
         </div>
       </PopoverTrigger>
 
