@@ -8,6 +8,7 @@ import User from "@/models/User";
 import { FriendType } from "@/types/Friend";
 import { createNotification } from "@/utils/helpers";
 import { revalidatePath } from "next/cache";
+import { cancelRequestNotification } from "../notification/notification.action";
 
 export type RequestType =
   | "send-request"
@@ -64,6 +65,13 @@ export async function updateFriendStatus(
         { new: true },
       );
 
+      await createNotification({
+        sender: id,
+        reciever: friend.requestor.toString(),
+        type: "ACCEPTED_FRIEND_REQUEST",
+        message: NotificationMessages.acceptRequest,
+      });
+
       await User.findByIdAndUpdate(id, {
         $push: { friends: friend.requestor },
       });
@@ -82,6 +90,14 @@ export async function updateFriendStatus(
       if (id !== friend.acceptor.toString())
         return { error: "Invalid request type" };
       await Friend.findByIdAndDelete(friendId);
+
+      await createNotification({
+        sender: id,
+        reciever: userId,
+        type: "DECLINED_FRIEND_REQUEST",
+        message: NotificationMessages.declineRequest,
+      });
+
       return {
         success: true,
         message: "Declined friend request",
@@ -110,6 +126,8 @@ export async function updateFriendStatus(
       if (id !== friend.requestor.toString())
         return { error: "Invalid request type" };
       await Friend.findByIdAndDelete(friendId);
+      await cancelRequestNotification(friend.acceptor.toString());
+
       return {
         success: true,
         message: "Friend request canceld",
@@ -168,8 +186,15 @@ export async function sendFriendRequest(friendId: string) {
           { acceptor: id, requestor: friendId },
         ],
       });
+
       return { success: true, message: "Request canceled" };
     } else {
+      await createNotification({
+        sender: id,
+        reciever: friendId,
+        type: "FRIEND_REQUEST",
+        message: NotificationMessages.sendRequest,
+      });
       await Friend.create({
         acceptor: friendId,
         requestor: id,
@@ -200,6 +225,8 @@ export async function cancelFriendRequest(friendId: string) {
     }
 
     await Friend.findOneAndDelete({ requestor: id, acceptor: friendId });
+    await cancelRequestNotification(friend.acceptor.toString());
+
     revalidatePath("/friends/requests/sent");
     return { success: true, message: "Request canceled" };
   } catch (error) {

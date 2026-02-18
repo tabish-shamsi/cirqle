@@ -1,6 +1,6 @@
 "use client";
-
-import readNotification from "@/actions/notification/read-notification";
+ 
+import { readNotification } from "@/actions/notification/notification.action";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { INotification } from "@/models/Notification";
 import { getUserInitials } from "@/utils/getUserInitials";
