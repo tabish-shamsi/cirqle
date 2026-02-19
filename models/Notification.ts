@@ -18,8 +18,21 @@ export interface INotification extends Document {
   message: string;
   type: NotificationType;
   isRead: boolean;
+  postId: Types.ObjectId;
+  commentId: Types.ObjectId;
   createdAt: Date;
 }
+
+export const notificationType = {
+  POST: "POST",
+  COMMENT: "COMMENT",
+  LIKE: "LIKE",
+  FRIEND_REQUEST: "FRIEND_REQUEST",
+  ACCEPTED_FRIEND_REQUEST: "ACCEPTED_FRIEND_REQUEST",
+  DECLINED_FRIEND_REQUEST: "DECLINED_FRIEND_REQUEST",
+  AVATAR_UPDATE: "AVATAR_UPDATE",
+  COVER_UPDATE: "COVER_UPDATE",
+};
 
 export const NotificationMessages = {
   posted: "posted",
@@ -44,6 +57,8 @@ const notificationSchema = new Schema<INotification>(
       ref: "User",
       required: true,
     },
+    postId: { type: Schema.Types.ObjectId, ref: "Post" },
+    commentId: { type: Schema.Types.ObjectId, ref: "Comment" },
     type: { type: String, required: true },
     message: { type: String, required: true },
     isRead: { type: Boolean, default: false },

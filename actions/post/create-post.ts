@@ -25,11 +25,13 @@ export default async function createPost({ content, media, postType }: Props) {
         }),
       );
     }
+
     revalidatePath("/")
 
     return {
       success: true,
       message: "Post created", 
+      postId: post._id.toString()
     };
   } catch (error) {
     console.error(error);

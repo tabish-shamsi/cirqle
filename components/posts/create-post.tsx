@@ -13,8 +13,9 @@ import uploadMedia from "@/utils/uplaod-media";
 import { Skeleton } from "../ui/skeleton";
 import { nanoid } from "nanoid";
 import createPost from "@/actions/post/create-post";
-import deleteMedia from "@/actions/media/delete-media"; 
+import deleteMedia from "@/actions/media/delete-media";
 import validateMedia from "@/utils/validateMedia";
+import { createPostNotifications } from "@/actions/notification/notification.action";
 
 type MediaItem = string;
 type PreviewType = {
@@ -58,6 +59,8 @@ export default function CreatePost({ userId }: { userId?: string }) {
     }
 
     toast.success(res.message);
+    await createPostNotifications({ postId: res.postId, content });
+
     setMedia([]);
     setPreviews([]);
     setContentError(null);
