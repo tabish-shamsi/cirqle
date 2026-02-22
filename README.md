@@ -1,36 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# **Cirqle**
 
-## Getting Started
+**A social media website built with modern web technologies.**
 
-First, run the development server:
+---
+
+## **Tech Stack**
+
+- **Frontend:** Next.js (App Router), Tailwind CSS, ShadCN
+- **Backend / Database:** MongoDB, NextAuth
+- **Other Tools:** ImageKit (for media storage), Nodemailer (email verification), Zod (validation), TypeScript
+
+---
+
+## **Features**
+
+Cirqle includes social media core functionality:
+
+- User Authentication (login, register, email verification)
+- User Profiles `/u/[username]`
+- Post creation and viewing `/p/[postId]`
+- Stories `/stories/[username]`
+- Friend system: requests, suggestions, sent requests
+- Settings management: account info, email, password, socials
+- Notifications system
+- Real-time interactions: comments, likes, replies
+- Image uploads handled via ImageKit
+- Error, Loading, and 404 pages with custom UI
+
+---
+
+## **Environment Variables**
+
+Create a `.env.local` file in the root of the project with:
+
+```env
+IMAGEKIT_PUBLIC_KEY=your_public_key
+IMAGEKIT_PRIVATE_KEY=your_private_key
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_nextauth_secret
+EMAIL=your_email_address
+PASSWORD=your_email_password
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/your_database
+```
+
+> Make sure the database name is included in `MONGO_URI`.
+
+---
+
+## **Installation & Setup**
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/tabish-shamsi/cirqle.git
+cd cirqle
+```
+
+2. **Install dependencies**
+
+```bash
+npm install
+# or
+yarn install
+```
+
+3. **Set environment variables** as shown above.
+
+4. **Run the development server**
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Visit [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+5. **Build for production**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## **API Routes**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `api/posts/[postId]/get-comments` → Fetch comments for a post
+- `api/upload-auth` → Handle authenticated image uploads
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## **Pages / Routes**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Home / Feed:** `/`
+- **Posts:** `/p/[postId]`
+- **Stories:** `/stories/[username]`
+- **Profile:** `/u/[username]`
+- **Friends:** `/friends`, `/friends/requests`, `/friends/suggestions`
+- **Account:** `/account/login`, `/account/register`, `/account/verify`, `/account/change-password`
+- **Settings:** `/settings`, `/settings/account-information`, `/settings/change-email`, `/settings/password`, `/settings/socials`
+- **Error / Loading / NotFound:** `/error`, `/loading`, `/not-found`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## **Authentication & Access Control**
+
+- NextAuth handles authentication
+- Users **must verify email** to access main features
+- `/account/verify` only accessible for unverified users
+- Verified users cannot access `/account/login`, `/account/register`, `/account/verify`
+
+---
+
+## **Deployment**
+
+Cirqle can be deployed on **Vercel** or any platform supporting Next.js:
+
+1. Set all environment variables in the deployment dashboard.
+2. Build and deploy the project.
+
+---
+
+## **Contributing**
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/my-feature`)
+3. Commit changes (`git commit -m 'Add feature'`)
+4. Push branch (`git push origin feature/my-feature`)
+5. Open a Pull Request
+
+---
+
+## **License**
+
+MIT License

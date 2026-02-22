@@ -4,8 +4,8 @@ import { ReactNode } from "react";
 import { Toaster } from "sonner";
 
 export const metadata = {
-  title: "My App",
-  description: "This is my awesome app built with Next.js",
+  title: "Criqle",
+  description: "A social media website built with modern web technologies.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
