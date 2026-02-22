@@ -227,10 +227,10 @@ export async function getAdvFriendSuggestions() {
   const myProfile = await Profile.findOne({ userId });
 
   const searchText = [
-    myProfile.bio,
-    myProfile.current_city,
-    myProfile.hometown,
-    myProfile.profession,
+    myProfile?.bio,
+    myProfile?.current_city,
+    myProfile?.hometown,
+    myProfile?.profession,
   ]
     .filter(Boolean)
     .join(" ");

@@ -7,7 +7,7 @@ export default function LogoutButton({ children }: { children: ReactNode }) {
   return (
     <button
       className="flex w-full cursor-pointer items-center justify-between border-b"
-      onClick={() => signOut({ redirect: true, callbackUrl: "/login" })}
+      onClick={() => signOut({ redirect: true, callbackUrl: "/account/login" })}
     >
       {children}
     </button>

@@ -53,13 +53,13 @@ export default async function ProfileHeader({ userId }: { userId: string }) {
                 userId={userId}
               />
             )}
-            <Button variant="secondary" className="h-9 md:size-11">
+            {/* <Button variant="secondary" className="h-9 md:size-11">
               <Mail className="h-4 md:h-6! w-4 md:w-6!" />
               <span className="md:hidden">Message</span>
             </Button>
             <Button variant="secondary" className="size-9 md:size-11">
               <Ellipsis className="h-4 md:h-6! w-4 md:w-6!" />
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>
