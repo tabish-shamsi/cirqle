@@ -2,7 +2,6 @@ import LogoutButton from "@/components/settings/logout-button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { SETTINGS_LINKS } from "@/lib/placeholder-data";
 import { ChevronRight } from "lucide-react";
-import { signOut } from "next-auth/react";
 import Link from "next/link";
 
 export default function Settings() {

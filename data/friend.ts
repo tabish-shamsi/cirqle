@@ -5,8 +5,7 @@ import db from "@/lib/db";
 import toJSON from "@/utils/toJSON";
 import User from "@/models/User";
 import mongoose from "mongoose";
-import Profile from "@/models/Profile";
-import sleep from "@/utils/sleep";
+import Profile from "@/models/Profile"; 
 
 export async function getFriendStatus(userId: string) {
   const { id } = await checkAuth();

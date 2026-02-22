@@ -1,10 +1,11 @@
-import FriendRequestsList from "@/components/friends/friend-requests";
-import checkAuth from "@/data/check-auth";
-import { getFriendRequests } from "@/data/friend";
+import { FriendCardSkeleton } from "@/components/skeletons/friend-card-skeleton";
+import { Suspense } from "react";
+import FriendRequests from "./friend-requests";
 
-export default async function FriendRequests() {
-  await checkAuth()
-  const friendRequests = await getFriendRequests()
-
-  return <FriendRequestsList friendRequests={friendRequests} />
+export default function FriendRequestsPage() {
+  return (
+    <Suspense fallback={<FriendCardSkeleton />}>
+      <FriendRequests />
+    </Suspense>
+  );
 }

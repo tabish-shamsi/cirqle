@@ -8,25 +8,25 @@ import { useState } from "react";
 import EmailVerificationDialog from "../email-verification-dialog";
 import emailOTP from "@/actions/email/send-email";
 import { toast } from "sonner";
+import { getUserInitials } from "@/utils/getUserInitials";
 
-
-export default function AccountRecoveryCard({
-  name,
-  email,
-  avatar,
-}: IUser) {
-  const [openDialog, setOpenDialog] = useState(false)
-  const [loading, setLoading] = useState(false)
+export default function AccountRecoveryCard({ name, email, avatar }: IUser) {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const sendOTP = async () => {
-    setLoading(true)
-    const res = await emailOTP({ emailType: "password_reset", email, resend: false })
+    setLoading(true);
+    const res = await emailOTP({
+      emailType: "password_reset",
+      email,
+      resend: false,
+    });
 
-    if (res?.error) toast.error(res.error)
-    if (res?.success) toast.success(res.message)
-    setLoading(false)
-    setOpenDialog(true)
-  }
+    if (res?.error) toast.error(res.error);
+    if (res?.success) toast.success(res.message);
+    setLoading(false);
+    setOpenDialog(true);
+  };
 
   return (
     <>
@@ -34,13 +34,7 @@ export default function AccountRecoveryCard({
         <CardHeader className="text-center space-y-4">
           <Avatar className="mx-auto h-20 w-20">
             <AvatarImage src={avatar?.url} alt={name} />
-            <AvatarFallback>
-              {name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")
-                .slice(0, 2)}
-            </AvatarFallback>
+            <AvatarFallback>{getUserInitials(name)}</AvatarFallback>
           </Avatar>
 
           <div className="space-y-1">
@@ -54,10 +48,18 @@ export default function AccountRecoveryCard({
             This account looks like yours.
           </p>
 
-          <Button disabled={loading} onClick={sendOTP} className="w-full">{loading ? "Please wait..." : "Continue"}</Button>
+          <Button disabled={loading} onClick={sendOTP} className="w-full">
+            {loading ? "Please wait..." : "Continue"}
+          </Button>
         </CardContent>
       </Card>
-      <EmailVerificationDialog open={openDialog} setOpen={setOpenDialog} email={email} redirectUrl={`/account/change-password?email=${email}`} type="password_reset" />
+      <EmailVerificationDialog
+        open={openDialog}
+        setOpen={setOpenDialog}
+        email={email}
+        redirectUrl={`/account/change-password?email=${email}`}
+        type="password_reset"
+      />
     </>
   );
 }

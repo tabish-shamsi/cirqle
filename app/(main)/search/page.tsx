@@ -1,6 +1,7 @@
 import Tabs from "@/app/(main)/search/tab-buttons";
 import SearchWrapper from "./search-wrapper";
 import SearchResults from "./search-results";
+import { Suspense } from "react";
 
 export default function Search({
   searchParams,
@@ -16,9 +17,13 @@ export default function Search({
     <div className="flex items-center justify-center">
       <div className="w-full md:w-3/4">
         <div className="space-y-4">
-          <SearchResults />
+          <Suspense>
+            <SearchResults />
+          </Suspense>
 
-          <Tabs />
+          <Suspense>
+            <Tabs />
+          </Suspense>
 
           <div className="mt-12 space-y-8">
             <SearchWrapper searchParams={searchParams} />

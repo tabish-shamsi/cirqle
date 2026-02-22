@@ -2,13 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/assets/logo.png";
 import SearchForm from "./search-form";
-import ChatPopover from "./chat-popover";
 import NotificationsPopover from "./notifications-popover";
 import UserAvatar from "./user-avatar";
 import Navlinks from "./nav-links";
 import SearchMobile from "./search-mobile";
 import { ThemeToggle } from "./toggle-theme-button";
 import ToggleSidebarButton from "./toggle-sidebar-button";
+import { Suspense } from "react";
 
 export function Header() {
   return (
@@ -26,7 +26,9 @@ export function Header() {
         />
       </Link>
 
-      <SearchForm />
+      <Suspense>
+        <SearchForm />
+      </Suspense>
 
       <Navlinks />
 

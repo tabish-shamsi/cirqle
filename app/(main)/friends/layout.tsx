@@ -1,4 +1,3 @@
-import SearchTitleHeader from "@/components/search-title-header";
 import FriendNav from "@/components/friends/friend-nav";
 import { ReactNode } from "react";
 
