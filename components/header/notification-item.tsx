@@ -7,9 +7,14 @@ import { getUserInitials } from "@/utils/getUserInitials";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import Link from "next/link";
+import { Dispatch, SetStateAction } from "react";
+import { Trash } from "lucide-react";
+import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 type Props = {
   notification: INotification;
+  setNotifications: Dispatch<SetStateAction<INotification[]>>;
 };
 export const notificationType = {
   FRIEND_REQUEST: "FRIEND_REQUEST",
@@ -17,9 +22,33 @@ export const notificationType = {
   DECLINED_FRIEND_REQUEST: "DECLINED_FRIEND_REQUEST",
 };
 
-export default function NotificationItem({ notification }: Props) {
+export default function NotificationItem({
+  notification,
+  setNotifications,
+}: Props) {
+  const router = useRouter();
+
   const handleNotificationRead = async () => {
     const res = await readNotification(notification._id.toString());
+    setNotifications((prev) => {
+      return prev.map((n) => {
+        if (n._id === notification._id) {
+          return { ...n, isRead: true } as INotification;
+        } else {
+          return n;
+        }
+      });
+    });
+
+    if (
+      notification.type === notificationType.ACCEPTED_FRIEND_REQUEST ||
+      notification.type === notificationType.DECLINED_FRIEND_REQUEST ||
+      notification.type === notificationType.FRIEND_REQUEST
+    ) {
+      router.push(`/u/${notification.sender.username}`);
+    } else {
+      router.push(`/p/${notification.postId}`);
+    }
 
     if (res?.error) {
       return toast.error(res.error);
@@ -27,14 +56,7 @@ export default function NotificationItem({ notification }: Props) {
   };
 
   return (
-    <Link
-      href={
-        notification.type === notificationType.ACCEPTED_FRIEND_REQUEST ||
-        notificationType.DECLINED_FRIEND_REQUEST ||
-        notificationType.FRIEND_REQUEST
-          ? `/u/${notification.sender.username}`
-          : `/post/${notification.postId}`
-      }
+    <div
       className="flex gap-3 rounded-lg p-3 hover:bg-muted/50 dark:hover:bg-slate-700 transition-colors"
       onClick={handleNotificationRead}
     >
@@ -59,6 +81,10 @@ export default function NotificationItem({ notification }: Props) {
       {!notification.isRead && (
         <span className="mt-2 h-2 w-2 rounded-full bg-primary" />
       )}
-    </Link>
+
+      <Button variant="ghost" size="icon-sm">
+        <Trash className="w-8 text-primary" />
+      </Button>
+    </div>
   );
 }

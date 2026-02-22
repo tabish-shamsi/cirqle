@@ -3,6 +3,7 @@
 import checkAuth from "@/data/check-auth";
 import db from "@/lib/db";
 import Comment from "@/models/Comment";
+import Notification from "@/models/Notification";
 import Post from "@/models/Post";
 import toJSON from "@/utils/toJSON";
 
@@ -10,6 +11,7 @@ export async function postComment(
   postId: string,
   comment: string,
   parentId: string | null,
+  parentAuthorId?: string,
 ) {
   try {
     const { id } = await checkAuth();
@@ -32,6 +34,20 @@ export async function postComment(
       populate: { path: "avatar", select: "url" },
     });
 
+    const receiver = parentAuthorId ? parentAuthorId : post.author;
+    if (receiver.toString() !== id) {
+      await Notification.create({
+        sender: id,
+        reciever: parentAuthorId ? parentAuthorId : post.author,
+        postId: postId,
+        commentId: newComment._id,
+        type: "COMMENT",
+        message: parentId
+          ? "replied to your comment"
+          : "commented on your post",
+      });
+    }
+
     return { success: true, comment: toJSON(comment_) };
   } catch (error) {
     console.error(error);
@@ -52,7 +68,6 @@ export async function editComment(commentId: string, newComment: string) {
 
     comment.comment = newComment;
     await comment.save();
-
     return { success: true };
   } catch (error) {
     console.error(error);

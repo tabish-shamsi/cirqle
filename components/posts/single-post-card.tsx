@@ -54,6 +54,7 @@ export default function SinglePostCard({
   const [comment, setComment] = useState("");
   const [repliengTo, setRepliengTo] = useState("");
   const [replyingId, setReplyingId] = useState<string | null>(null);
+  const [parentAuthorId, setParentAuthorId] = useState("")
   const [editCommentId, setEditCommentId] = useState("");
 
   const handleCommenting = async () => {
@@ -70,7 +71,7 @@ export default function SinglePostCard({
       return;
     }
 
-    const res = await postComment(post._id.toString(), comment, replyingId);
+    const res = await postComment(post._id.toString(), comment, replyingId, parentAuthorId);
     if (res.error) {
       toast.error(res.error);
       return;
@@ -220,6 +221,7 @@ export default function SinglePostCard({
                         onClick={() => {
                           setRepliengTo(comment.author.name);
                           setReplyingId(comment._id.toString());
+                          setParentAuthorId(comment.author._id.toString())
                         }}
                         variant="ghost"
                         size="sm"
@@ -271,6 +273,8 @@ export default function SinglePostCard({
               className="text-sm text-muted-foreground mb-1"
               onClick={() => {
                 setRepliengTo("");
+                setParentAuthorId("")
+                setReplyingId(null)
               }}
             >
               Replying to: <strong>{repliengTo}</strong> <X />

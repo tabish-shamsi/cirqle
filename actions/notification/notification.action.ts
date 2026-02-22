@@ -1,6 +1,7 @@
 "use server";
 
 import checkAuth from "@/data/check-auth";
+import { getRecentNotifications } from "@/data/notifications";
 import db from "@/lib/db";
 import Notification, {
   NotificationMessages,
@@ -8,6 +9,11 @@ import Notification, {
 } from "@/models/Notification";
 import User from "@/models/User";
 import mongoose from "mongoose";
+
+export async function getNotificationsAction() {
+  const data = await getRecentNotifications();
+  return data;
+}
 
 export async function readNotification(notificationId: string) {
   const { id } = await checkAuth();
@@ -119,7 +125,3 @@ export async function createNotificationAction({
     return { error: "Something went wrong while sending notificaiton" };
   }
 }
-
-// export async function deleteNotification({}){
-
-// }
