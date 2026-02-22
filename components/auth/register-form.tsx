@@ -22,11 +22,11 @@ export default function RegisterForm() {
   const form = useForm<TRegisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      name: "test1",
+      name: "",
       username: "",
-      email: "test@gmail.com",
-      birthday: new Date("01/09/2007"),
-      password: "Tabish@123",
+      email: "",
+      birthday: undefined,
+      password: "",
       terms: true,
     },
   });

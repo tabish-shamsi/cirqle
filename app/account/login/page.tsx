@@ -21,13 +21,13 @@ export default function Login() {
       </p>
 
       {/* SOCIAL LOGIN */}
-      <div className="space-y-4">
+      {/* <div className="space-y-4">
         <p className="text-center text-sm text-muted-foreground">
           Or, Sign in with your social account
         </p>
 
         <SocialsLoginButtons />
-      </div>
+      </div> */}
     </>
   );
 }

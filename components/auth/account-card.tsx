@@ -9,6 +9,7 @@ import EmailVerificationDialog from "../email-verification-dialog";
 import emailOTP from "@/actions/email/send-email";
 import { toast } from "sonner";
 import { getUserInitials } from "@/utils/getUserInitials";
+import avatarUrl from "@/utils/avatarUrl";
 
 export default function AccountRecoveryCard({ name, email, avatar }: IUser) {
   const [openDialog, setOpenDialog] = useState(false);
@@ -33,7 +34,7 @@ export default function AccountRecoveryCard({ name, email, avatar }: IUser) {
       <Card className="max-w-md mx-auto shadow-sm">
         <CardHeader className="text-center space-y-4">
           <Avatar className="mx-auto h-20 w-20">
-            <AvatarImage src={avatar?.url} alt={name} />
+            <AvatarImage src={avatarUrl(avatar?.url ?? "")} alt={name} />
             <AvatarFallback>{getUserInitials(name)}</AvatarFallback>
           </Avatar>
 

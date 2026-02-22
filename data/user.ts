@@ -18,7 +18,9 @@ export const findAccount = async (identifier: string) => {
 
   const user = await User.findOne({
     $or: [{ email: identifier }, { username: identifier }],
-  }).select("name email avatar");
+  })
+    .select("name email avatar")
+    .populate({ path: "avatar", select: "url" });
 
   if (!user) return null;
 
