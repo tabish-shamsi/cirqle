@@ -59,12 +59,14 @@ export default function CreateStoryCard() {
             fill
             className="object-cover"
           />
-        ) : (
+        ) : preview ? (
           <img
             src={preview!}
             alt="create story"
             className="object-cover w-full h-full"
           />
+        ) : (
+          <div className="w-full h-full flex bg-muted"></div>
         )}
 
         {/* Overlay */}

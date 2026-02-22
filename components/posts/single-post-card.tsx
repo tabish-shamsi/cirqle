@@ -54,7 +54,7 @@ export default function SinglePostCard({
   const [comment, setComment] = useState("");
   const [repliengTo, setRepliengTo] = useState("");
   const [replyingId, setReplyingId] = useState<string | null>(null);
-  const [parentAuthorId, setParentAuthorId] = useState("")
+  const [parentAuthorId, setParentAuthorId] = useState("");
   const [editCommentId, setEditCommentId] = useState("");
 
   const handleCommenting = async () => {
@@ -71,7 +71,12 @@ export default function SinglePostCard({
       return;
     }
 
-    const res = await postComment(post._id.toString(), comment, replyingId, parentAuthorId);
+    const res = await postComment(
+      post._id.toString(),
+      comment,
+      replyingId,
+      parentAuthorId,
+    );
     if (res.error) {
       toast.error(res.error);
       return;
@@ -100,7 +105,7 @@ export default function SinglePostCard({
         setCommentsCount((prev) => prev - 1);
       } else {
         getComments();
-        setCommentsCount(commentsCount + 1)
+        setCommentsCount(commentsCount + 1);
       }
     }
   };
@@ -179,10 +184,10 @@ export default function SinglePostCard({
               <MessageCircle className="h-4 w-4" />
               {commentsCount}
             </Button>
-            <Button className="text-muted-foreground" variant="ghost">
+            {/* <Button className="text-muted-foreground" variant="ghost">
               <SendHorizonal className="h-4 w-4" />
               126
-            </Button>
+            </Button> */}
           </div>
 
           {commentsCount > 0 && comments.length === 0 && (
@@ -221,7 +226,7 @@ export default function SinglePostCard({
                         onClick={() => {
                           setRepliengTo(comment.author.name);
                           setReplyingId(comment._id.toString());
-                          setParentAuthorId(comment.author._id.toString())
+                          setParentAuthorId(comment.author._id.toString());
                         }}
                         variant="ghost"
                         size="sm"
@@ -229,27 +234,31 @@ export default function SinglePostCard({
                       >
                         Reply
                       </Button>
-                      <Button
-                        onClick={() => {
-                          setEditCommentId(comment._id.toString());
-                          setComment(comment.comment);
-                        }}
-                        variant="ghost"
-                        size="sm"
-                        className="w-full"
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        onClick={() =>
-                          handleDeleteComment(comment._id.toString())
-                        }
-                        variant="ghost"
-                        size="sm"
-                        className="w-full"
-                      >
-                        Delete
-                      </Button>
+                      {user?.id === comment.author._id && (
+                        <>
+                          <Button
+                            onClick={() => {
+                              setEditCommentId(comment._id.toString());
+                              setComment(comment.comment);
+                            }}
+                            variant="ghost"
+                            size="sm"
+                            className="w-full"
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            onClick={() =>
+                              handleDeleteComment(comment._id.toString())
+                            }
+                            variant="ghost"
+                            size="sm"
+                            className="w-full"
+                          >
+                            Delete
+                          </Button>
+                        </>
+                      )}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
@@ -273,8 +282,8 @@ export default function SinglePostCard({
               className="text-sm text-muted-foreground mb-1"
               onClick={() => {
                 setRepliengTo("");
-                setParentAuthorId("")
-                setReplyingId(null)
+                setParentAuthorId("");
+                setReplyingId(null);
               }}
             >
               Replying to: <strong>{repliengTo}</strong> <X />

@@ -135,13 +135,7 @@ export const SETTINGS_LINKS = {
       href: "/socials",
       icon: Bird,
       tab: "General",
-    },
-    {
-      label: "Saved Address",
-      href: "#",
-      icon: Locate,
-      tab: "General",
-    },
+    }, 
   ],
   Account: [
     {
@@ -158,12 +152,12 @@ export const SETTINGS_LINKS = {
     },
   ],
   Other: [
-    {
-      label: "Notifications",
-      href: "/notifications",
-      icon: Bell,
-      tab: "Other",
-    },
+    // {
+    //   label: "Notifications",
+    //   href: "/notifications",
+    //   icon: Bell,
+    //   tab: "Other",
+    // },
     {
       label: "Logout",
       href: "LOGOUT",

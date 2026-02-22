@@ -34,7 +34,7 @@ export function Header() {
 
       <NotificationsPopover />
 
-      <ChatPopover />
+      {/* <ChatPopover /> */}
 
       <ThemeToggle />
 

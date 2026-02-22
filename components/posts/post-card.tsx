@@ -104,9 +104,9 @@ export function PostCard({ post, setPosts }: { post: IPost; setPosts: any }) {
             </Link>
           </div>
 
-          <Button variant="ghost" size="sm">
+          {/* <Button variant="ghost" size="sm">
             <Share2 className="h-4 w-4" />
-          </Button>
+          </Button> */}
         </div>
       </CardContent>
     </Card>

@@ -15,7 +15,7 @@ import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import checkUsernameUnique from "@/actions/auth/check-username-unique"; 
+import checkUsernameUnique from "@/actions/auth/check-username-unique";
 import emailOTP from "@/actions/email/send-email";
 
 export default function RegisterForm() {
@@ -63,9 +63,13 @@ export default function RegisterForm() {
       return;
     }
 
-    const sendOTP = await emailOTP({ email: values.email, emailType: "email_verification", resend: false })
+    const sendOTP = await emailOTP({
+      email: values.email,
+      emailType: "email_verification",
+      resend: false,
+    });
     if (sendOTP?.error) {
-      toast.error(sendOTP.error)
+      toast.error(sendOTP.error);
     }
 
     setLoading(false);

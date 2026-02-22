@@ -66,7 +66,7 @@ export default function NotificationsPopover() {
         <div className="flex items-center justify-between border-b px-4 py-3">
           <h4 className="text-sm font-semibold">Notifications</h4>
           <Link
-            href="/notifications"
+            href="/settings/notifications"
             className="text-xs text-primary hover:underline"
           >
             View all
