@@ -20,11 +20,16 @@ export default function LikeButton({ likesCount, isLiked, postId }: Props) {
 
   const handleLike = async () => {
     setLoading(true);
+
+    setLiked(!liked);
+    setCount(liked ? count - 1 : count + 1);
+
     const res = await likeUnlikePost(postId);
-    if (res.error) toast.error(res.error);
-    else {
-      setCount(liked ? count - 1 : count + 1);
+    if (res.error) {
+      toast.error(res.error);
+
       setLiked(!liked);
+      setCount(liked ? count + 1 : count - 1);
     }
 
     setLoading(false);

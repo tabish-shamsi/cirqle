@@ -85,7 +85,7 @@ export default function ViewStoryCard({ author, stories }: Props) {
 
   return (
     <>
-      <div className="relative h-150 my-8 w-87.5 overflow-hidden rounded-xl bg-black">
+      <div className="relative h-160 my-8 w-90 overflow-hidden rounded-xl bg-black">
         <img
           src={story.media.url}
           className="absolute inset-0 h-full w-full object-cover"
@@ -124,7 +124,7 @@ export default function ViewStoryCard({ author, stories }: Props) {
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-4 right-4 h-9 w-9 rounded-full"
+        className="absolute top-4 right-4 h-9 w-9 rounded-full text-white"
         onClick={close}
       >
         <X />
@@ -134,9 +134,9 @@ export default function ViewStoryCard({ author, stories }: Props) {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
-              className="absolute top-14 right-4 h-8 w-8"
+              className="absolute top-14 right-4 h-8 w-8 text-white"
               onClick={delStory}
             >
               <Trash />

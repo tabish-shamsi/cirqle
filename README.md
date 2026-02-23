@@ -32,7 +32,6 @@ Cirqle includes social media core functionality:
 ## **Environment Variables**
 
 Create a `.env.local` file in the root of the project with:
-
 ```env
 IMAGEKIT_PUBLIC_KEY=your_public_key
 IMAGEKIT_PRIVATE_KEY=your_private_key

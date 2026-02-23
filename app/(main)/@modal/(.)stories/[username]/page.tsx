@@ -1,11 +1,5 @@
 import ViewUserStoryWrapper from "@/components/stories/view-story-wrapper";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogOverlay,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Loader2 } from "lucide-react";
 import { Suspense } from "react";
 
 export default function ViewStory({
@@ -14,22 +8,12 @@ export default function ViewStory({
   params: Promise<{ username: string }>;
 }) {
   return (
-    <Dialog defaultOpen>
-      <DialogOverlay>
-        <DialogContent
-          showCloseButton={false}
-          className="p-0 rounded-xl bg-none"
-        >
-          <DialogHeader className="hidden">
-            <DialogTitle>View Story</DialogTitle>
-          </DialogHeader>
-          <div className="flex h-[calc(80vh)] w-full items-center justify-center relative">
-            <Suspense fallback={<p>Loading...</p>}>
-              <ViewUserStoryWrapper params={params} />
-            </Suspense>
-          </div>
-        </DialogContent>
-      </DialogOverlay>
-    </Dialog>
+    <div className="flex h-full w-full items-center justify-center relative">
+      <Suspense
+        fallback={<Loader2 className="animate-spin text-primary" size={50} />}
+      >
+        <ViewUserStoryWrapper params={params} />
+      </Suspense>
+    </div>
   );
 }

@@ -1,7 +1,7 @@
 import checkAuth from "@/data/check-auth";
 import { getPostById } from "@/data/post";
 import { notFound } from "next/navigation";
-import PostDialog from "./PostDialog";
+import SinglePostCard from "./single-post-card";
 
 export default async function PostDiaglogWrapper({
   params,
@@ -15,5 +15,5 @@ export default async function PostDiaglogWrapper({
 
   if (!post) return notFound();
 
-  return <PostDialog post={post} />;
+  return <SinglePostCard post={post} />;
 }

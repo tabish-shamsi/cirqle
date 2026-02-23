@@ -51,7 +51,7 @@ export default function CreateStoryCard() {
       <div className="absolute inset-0 bg-card " />
 
       {/* Top Image Placeholder */}
-      <div className="relative h-35 w-full bg-gray-200">
+      <div className="relative h-35 w-full ">
         {user?.avatar && !preview ? (
           <Image
             src={`${user?.avatar}?tr=w-200,h-200`}
