@@ -93,6 +93,7 @@ const emailOTP = async ({ emailType, email, resend }: EmailOTPProps) => {
     await OTP.deleteMany({ userId: user._id, type: emailType });
 
     const { expiresAt, otp } = generateOtpToken();
+    console.log("VERIFICATION CODE: ", otp)
 
     await OTP.create({
       userId: user._id,

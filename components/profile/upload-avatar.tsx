@@ -85,7 +85,7 @@ export default function UploadAvatar({
         <Avatar className="w-full h-full text-3xl font-bold">
           <AvatarImage
             src={preview?.url}
-            className="w-full h-full object-cover"
+            className="w-full h-full"
           />
           <AvatarFallback>{getUserInitials(name)}</AvatarFallback>
         </Avatar>

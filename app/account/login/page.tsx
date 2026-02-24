@@ -20,6 +20,18 @@ export default function Login() {
         </Link>
       </p>
 
+      <p className="text-sm text-muted-foreground">
+        Demo Credentials <br />
+        <br />
+        Emails: <br />
+        daniel.kim@example.com <br />
+        maya.thompson92@example.com
+        <br />
+        sofia.martinez88@example.com
+        <br />
+        Password: Demo@123
+      </p>
+
       {/* SOCIAL LOGIN */}
       {/* <div className="space-y-4">
         <p className="text-center text-sm text-muted-foreground">

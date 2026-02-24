@@ -11,7 +11,7 @@ interface Props {
 export default function SearchTitleHeader({ title, placeholder }: Props) {
   return (
     <Card>
-      <CardContent className="flex w-full items-center justify-between">
+      <CardContent className="flex flex-wrap gap-2 w-full items-center justify-between">
         <CardTitle className="text-2xl font-bold">{title}</CardTitle>
 
         <div className="flex gap-2">

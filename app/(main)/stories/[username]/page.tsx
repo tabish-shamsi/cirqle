@@ -7,7 +7,6 @@ export default async function StoriesPage({
 }) {
   return (
     <div className="flex h-[calc(85vh)] w-full items-center justify-center relative">
-      {" "}
       <ViewUserStoryWrapper params={params} />
     </div>
   );
