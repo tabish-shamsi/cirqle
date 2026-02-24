@@ -2,13 +2,7 @@ import { Header } from "@/components/header/header";
 import Sidebar from "@/components/nav-sidebar/sidebar";
 import { ReactNode } from "react";
 
-export default function MainLayout({
-  children,
-  modal,
-}: {
-  children: ReactNode;
-  modal?: ReactNode;
-}) {
+export default function MainLayout({ children }: { children: ReactNode }) {
   return (
     <div>
       <Header />
@@ -18,7 +12,6 @@ export default function MainLayout({
           <div className="w-full max-w-240 mx-auto pt-4 px-4">{children}</div>
         </main>
       </div>
-      {modal}
     </div>
   );
 }
