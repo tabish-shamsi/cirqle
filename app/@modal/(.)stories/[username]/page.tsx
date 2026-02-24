@@ -7,11 +7,6 @@ export default async function ViewStory({
 }: {
   params: Promise<{ username: string }>;
 }) {
-  // const sleep = (ms: number) =>
-  //   new Promise((resolve) => setTimeout(resolve, ms));
-
-  // await sleep(1000);
-
   return (
     <div className="flex h-full w-full items-center justify-center relative">
       <Suspense

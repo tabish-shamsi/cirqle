@@ -19,6 +19,7 @@ import {
 import useAuth from "@/hooks/useAuth";
 import deletePost from "@/actions/post/delete-post";
 import { toast } from "sonner";
+import avatarUrl from "@/utils/avatarUrl";
 
 export function PostCard({ post, setPosts }: { post: IPost; setPosts: any }) {
   const { user, update } = useAuth();
@@ -44,18 +45,16 @@ export function PostCard({ post, setPosts }: { post: IPost; setPosts: any }) {
     <Card className="w-full">
       <CardHeader className="flex flex-row gap-3 items-center relative">
         <Avatar className="w-11 h-11">
-          <AvatarImage
-            src={`${post.author?.avatar?.url}?tr=w-200,h-200,c-at_max,fo-face,f-auto,q-auto`}
-          />
+          <AvatarImage src={avatarUrl(post.author?.avatar?.url ?? "")} />
           <AvatarFallback>{getUserInitials(post.author.name)}</AvatarFallback>
         </Avatar>
 
-        <div>
+        <Link href={`/u/${post.author.username}`}>
           <p className="text-lg font-medium leading-none">{post.author.name}</p>
           <p className="text-sm text-muted-foreground capitalize">
             {formatDate(post.createdAt)}
           </p>
-        </div>
+        </Link>
 
         {user && user.id === post.author._id.toString() && (
           <DropdownMenu>
